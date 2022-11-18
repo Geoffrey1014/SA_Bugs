@@ -268,11 +268,11 @@ class ExprVisitor : public RecursiveASTVisitor<ExprVisitor> {
      bo_gt_rules(exprStr, LExprStr, typeL, RExprStr, typeR, exprEvelVector, exprEvelVector2, ifCondVector);
       break;
     case BinaryOperatorKind::BO_LE: 
-      bo_le_rules(exprStr, LExprStr, typeL, RExprStr, typeR, exprEvelVector);
+      bo_le_rules(exprStr, LExprStr, typeL, RExprStr, typeR, exprEvelVector, exprEvelVector2, ifCondVector);
       break;
 
     case BinaryOperatorKind::BO_GE:
-      bo_ge_rules(exprStr, LExprStr, typeL, RExprStr, typeR, exprEvelVector);
+      bo_ge_rules(exprStr, LExprStr, typeL, RExprStr, typeR, exprEvelVector, exprEvelVector2, ifCondVector);
 
       break;
     case BinaryOperatorKind::BO_NE:
@@ -288,7 +288,7 @@ class ExprVisitor : public RecursiveASTVisitor<ExprVisitor> {
 
 };
 
-
+ 
 // By implementing RecursiveASTVisitor, we can specify which AST nodes
 // we're interested in by overriding relevant methods.
 class MyASTVisitor : public RecursiveASTVisitor<MyASTVisitor> {

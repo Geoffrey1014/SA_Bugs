@@ -329,7 +329,7 @@ void bo_gt_rules(std::string exprStr, std::string LExprStr, QualType typeL, std:
 }
 
 template<typename T>
-void bo_le_rules(std::string exprStr, std::string LExprStr, QualType typeL, std::string RExprStr,QualType typeR, std::vector<T> & exprEvelVector){
+void bo_le_rules(std::string exprStr, std::string LExprStr, QualType typeL, std::string RExprStr,QualType typeR, std::vector<T> & exprEvelVector, std::vector<T> & exprEvelVector2, std::vector<T> & ifCondVector){
    // llvm::errs() << "\n  BO_LE: " <<  opcode << " \n";
   //  exprEvelVector.push_back(std::string() + "(bo_le_rules)" + "==" + "true"); // 
       exprEvelVector.push_back(std::string() + "(" + exprStr + ")" + "==" + "true");
@@ -426,7 +426,7 @@ void bo_le_rules(std::string exprStr, std::string LExprStr, QualType typeL, std:
 
 
 template<typename T>
-void bo_ge_rules(std::string exprStr, std::string LExprStr, QualType typeL, std::string RExprStr,QualType typeR, std::vector<T> & exprEvelVector){
+void bo_ge_rules(std::string exprStr, std::string LExprStr, QualType typeL, std::string RExprStr,QualType typeR, std::vector<T> & exprEvelVector, std::vector<T> & exprEvelVector2, std::vector<T> & ifCondVector){
   // llvm::errs() << "\n  BO_GE: " <<  opcode << " \n";
      
       // "a >= b"   is equal to " b <=  a "
