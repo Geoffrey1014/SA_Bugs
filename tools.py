@@ -20,7 +20,7 @@ NPD_DISAPPEAR = "NPD_FLAG disappear"
 UB_STRING = "Undefined behavior"
 
 
-def fuzz(args: argparse.Namespace):
+def fuzz_fp(args: argparse.Namespace):
     fuzzing_par_dir = args.path
     analyzer = args.analyzer
     opt = args.optimize
@@ -29,7 +29,7 @@ def fuzz(args: argparse.Namespace):
     print("fuzz thread_num %s" % thread_num)
 
     iter_times = args.num
-    script_path = "/home/working-space/scripts/fuzz_sa.py"
+    script_path = "/home/working-space/scripts/fuzz_sa_fp.py"
     fuzzing_working_dir = create_fuzzing_place(
         fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
 
@@ -37,10 +37,30 @@ def fuzz(args: argparse.Namespace):
 
     for i in range(0, thread_num):
         os.chdir('fuzz_%s' % i)
-        subprocess.Popen(['python3', 'fuzz_sa.py', analyzer, '-o='+str(opt),
+        subprocess.Popen(['python3', 'fuzz_sa_fp.py', analyzer, '-o='+str(opt),
                          str(iter_times)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         os.chdir("..")
 
+def fuzz_fn(args: argparse.Namespace):
+    fuzzing_par_dir = args.path
+    analyzer = args.analyzer
+    opt = args.optimize
+    thread_num = args.thread
+
+    print("fuzz thread_num %s" % thread_num)
+
+    iter_times = args.num
+    script_path = "/home/working-space/scripts/fuzz_sa_fn.py"
+    fuzzing_working_dir = create_fuzzing_place(
+        fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
+
+    os.chdir(fuzzing_working_dir)
+
+    for i in range(0, thread_num):
+        os.chdir('fuzz_%s' % i)
+        subprocess.Popen(['python3', 'fuzz_sa_fn.py', analyzer, '-o='+str(opt),
+                         str(iter_times)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        os.chdir("..")
 
 def create(args: argparse.Namespace):
     # print("creat")
@@ -54,6 +74,10 @@ def create(args: argparse.Namespace):
 
 
 def create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, opt_level, dir_num):
+    '''
+    create $dir_num dirctories in fuzzing_par_dir
+    and copy script_path to those dirs
+    '''
     abs_par_path = os.path.abspath(fuzzing_par_dir)
     # print(abs_par_path)
 
@@ -515,7 +539,7 @@ def gen_reduce_script(template_abspath: str, cfile_name: str, opt_level: str, ar
         print(cfile_lines[4])
         cfile_lines[4] = 'CFILE = "%s.c"\n' % cfile_name
         print(cfile_lines[5])
-        cfile_lines[5] = 'OPT_LEVEL = "%s\n"' % opt_level
+        cfile_lines[5] = 'OPT_LEVEL = "%s"\n' % opt_level
 
         if args.script_path and args.cfile:
             script_abspath = os.path.abspath(args.script_path)
@@ -760,9 +784,9 @@ def handle_args():
 
     parser_run_reduce.set_defaults(func=run_reduce)
 
-    # add subcommand fuzz
+    # add subcommand fuzz-fp
     parser_fuzz = subparsers.add_parser(
-        "fuzz", help="fuzzing static analyzer in a given dir")
+        "fuzz-fp", help="fuzzing static analyzer in a given dir")
     parser_fuzz.add_argument(
         "path", help="given a parent dir of fuzzing working dir")
     parser_fuzz.add_argument("analyzer", type=str, choices={
@@ -774,7 +798,23 @@ def handle_args():
     parser_fuzz.add_argument(
         "num", type=int, default=1, help="the iteration times of fuzzing")
 
-    parser_fuzz.set_defaults(func=fuzz)
+    parser_fuzz.set_defaults(func=fuzz_fp)
+
+    # add subcommand fuzz-fn
+    parser_fuzz = subparsers.add_parser(
+        "fuzz-fn", help="fuzzing static analyzer in a given dir")
+    parser_fuzz.add_argument(
+        "path", help="given a parent dir of fuzzing working dir")
+    parser_fuzz.add_argument("analyzer", type=str, choices={
+        'gcc', 'clang'}, help="give a analyzer")
+    parser_fuzz.add_argument("optimize", type=int, choices={
+        0, 1, 2, 3}, default=0, help="optimization level")
+    parser_fuzz.add_argument(
+        "thread", type=int, default=1, help="specify the thread num for fuzzing")
+    parser_fuzz.add_argument(
+        "num", type=int, default=1, help="the iteration times of fuzzing")
+
+    parser_fuzz.set_defaults(func=fuzz_fn)
 
     # add subcommand create fuzzing working dir
     parser_create = subparsers.add_parser(

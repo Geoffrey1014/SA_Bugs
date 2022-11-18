@@ -45,15 +45,17 @@ GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -Wno-analyzer-double-fc
 
 # CLANG_OPTIONS = " "
 
+TESTCASE_NUM = 0
+RUN_DUMP_NUM =0
 NPD_NUM = 0
-TIMEOUT_NUM = 0
+ANALYZE_TIMEOUT_NUM = 0
 CRASH_NUM = 0
-ANALYZER_TIMEOUT = "timeout 30 "
+ANALYZER_TIMEOUT = "timeout 300 " # we should give SA more time to find the given bug
 
 
 def read_value_from_file(file, match):
     '''
-    extra the group(1) of searched pattern
+    extract the group(1) of searched pattern
     '''
     with open(file, 'r') as f:
         pattern = re.compile(r''+match)
@@ -79,22 +81,22 @@ def analyze_with_gcc(num, optimization_level, args):
     '''
     use gcc to analyze Csmith-generated c program
     '''
-    global TIMEOUT_NUM
+    global ANALYZE_TIMEOUT_NUM
     report_file = "test_%s.txt" % num
     cfile = "test_%s.c" % num
 
     ret = os.system(ANALYZER_TIMEOUT + GCC_ANALYZER + " -O" + optimization_level +
-                    "  -msse4.2 -c -I " + CSMITH_HEADER + " " + cfile + " > " + report_file + " 2>&1")
+                    "  -c -I " + CSMITH_HEADER + " " + cfile + " > " + report_file + " 2>&1")
     ret >>= 8
     print("gcc analyzer ret: " + str(ret))
 
     if ret == 124:
-        TIMEOUT_NUM += 1
+        ANALYZE_TIMEOUT_NUM += 1
         print(ANALYZER_TIMEOUT)
         clean_gcc_products(num, args.saveProducts)
         return None
     elif ret != 0:
-        # TODO: 该处的逻辑是否有问题？返回值既不是 0 也不是 124 一定是 analyzer crash 吗？
+        # TODO: 该处的逻辑是否有问题？返回值既不是 0 也不是 124 也一定是 analyzer crash 
         save_crashing_file(num)
         clean_gcc_products(num, args.saveProducts)
         return None
@@ -192,7 +194,9 @@ def clean_gcc_products(num, save_products_flag):
 
 def generate_code(num, ctrl_max):
     '''
-    generate wanted-size code with csmith
+    generate wanted-size code with csmith,
+    if success, return cfile name
+    else: return None
     '''
     cfile = "test_%s.c" % num
     os.system("rm -f %s" % cfile)
@@ -206,7 +210,7 @@ def generate_code(num, ctrl_max):
 
         if len(seed) <= 0:
             print("Random program %s has no seed information!\n" % cfile)
-            sys.exit()
+            return None
 
         if ctrl_max:
             if file_size < MAX_PROGRAM_SIZE:
@@ -222,13 +226,54 @@ def generate_code(num, ctrl_max):
     print(cfile + ' ' + seed)
     return cfile
 
+def run_npd(cfile, optimize):
+    '''
+    compile and run generated code
+    if Segmentation fault, return True
+    else, return False
+    '''
+    compile_ret = subprocess.run(['gcc', '-O' + optimize, '-I', CSMITH_HEADER, cfile],
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
+    # print(compile_ret.stderr)
 
+    # program cannot have compiler error
+    if compile_ret.returncode != 0:
+        print("Compile failed") 
+        return False
+
+    # print("run")
+    run_ret = subprocess.run(['timeout', '5s', './a.out'],
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
+    # print(run_ret)
+    # Segmentation fault
+    if run_ret.stderr.count("the monitored command dumped core") >= 1:
+        print("the monitored command dumped core")
+        return True
+    else:
+        print("did not dump core")
+        return False
+
+
+# 有可能运行的case 的那个 segment fault 不是 SA 找出来的那个 
 def gcc_test_one(num, args):
+    '''
+    generate a test case with csmith,
+    check if the case has segmentation fault,
+    and check if static analyer can find it
+    '''
+    global TESTCASE_NUM, RUN_DUMP_NUM
     cfile = generate_code(num, args.max)
-    report_file = analyze_with_gcc(num, str(args.optimize), args)
+    if cfile :
+        TESTCASE_NUM += 1
+        ret = run_npd(cfile, str(args.optimize))
+        if ret :
+            RUN_DUMP_NUM += 1
+            report_file = analyze_with_gcc(num, str(args.optimize), args)
 
-    if report_file is not None:
-        process_gcc_report(num, report_file, args)
+            if report_file is not None:
+                process_gcc_report(num, report_file, args)
+        else:
+            clean_gcc_products(num, False)
 
 
 # def clang_test_one(num, report_html, args):
@@ -268,8 +313,10 @@ def write_fuzzing_result(stop_message):
     '''
     with open('fuzzing_result.txt', 'w') as f:
         f.write("STOP: %s\n" % stop_message)
-        f.write("NPD_NUM: %s\n" % NPD_NUM)
-        f.write("\nTIMEOUT_NUM: %s\n" % TIMEOUT_NUM)
+        f.write( "\nTESTCASE_NUM: %s\n" % TESTCASE_NUM)
+        f.write("\nRUN_DUMP_NUM: %s\n"%RUN_DUMP_NUM)
+        f.write("\nNPD_NUM: %s\n" % NPD_NUM)
+        f.write("\nANALYZE_TIMEOUT_NUM: %s\n" % ANALYZE_TIMEOUT_NUM)
         f.write("\nCRASH_NUM: %s\n" % CRASH_NUM)
 
 
