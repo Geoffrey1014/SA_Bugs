@@ -10,7 +10,7 @@ GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -Wno-analyzer-double-fc
 
 print("compile: gcc")
 
-compile_ret = subprocess.run(['gcc', '-O' + OPT_LEVEL, '-msse4.2', '-I', CSMITH_HEADER, CFILE],
+compile_ret = subprocess.run(['gcc', '-O' + OPT_LEVEL, '-I', CSMITH_HEADER, CFILE],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
 # print(compile_ret.stderr)
 # program cannot have compiler error
