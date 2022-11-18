@@ -5,7 +5,7 @@ import shlex
 CFILE = " "
 OPT_LEVEL = " "
 
-CSMITH_HEADER = "/usr/bin/csmith"
+CSMITH_HEADER = "/usr/include/csmith"
 GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -Wno-analyzer-double-fclose -Wno-analyzer-double-free -Wno-analyzer-exposure-through-output-file -Wno-analyzer-file-leak -Wno-analyzer-free-of-non-heap -Wno-analyzer-malloc-leak -Wno-analyzer-mismatching-deallocation -Wno-analyzer-null-argument -Wno-analyzer-possible-null-argument -Wno-analyzer-possible-null-dereference -Wno-analyzer-shift-count-negative -Wno-analyzer-shift-count-overflow -Wno-analyzer-stale-setjmp-buffer -Wno-analyzer-unsafe-call-within-signal-handler -Wno-analyzer-use-after-free -Wno-analyzer-use-of-pointer-in-stale-stack-frame -Wno-analyzer-use-of-uninitialized-value -Wno-analyzer-write-to-const -Wno-analyzer-write-to-string-literal -fdiagnostics-plain-output -fdiagnostics-format=text "
 
 print("compile: gcc")
@@ -29,8 +29,8 @@ elif run_ret.returncode != 0:
     print("Run failed!")  # cannot comment this line!
     exit(run_ret.returncode)
 
-count_npd_flag = run_ret.stdout.count("NPD FLAG")
-print("cannot NPD_FLAG: %s" % count_npd_flag)
+count_npd_flag = run_ret.stdout.count("NPD_FLAG")
+print("count NPD_FLAG: %s" % count_npd_flag)
 # program run result has to keep output NPD_FLAG
 if count_npd_flag == 0:
     print("NPD FLAG disappear")  # cannot comment this line!
@@ -49,7 +49,7 @@ if analyzer_ret.stderr.count("CWE-476") == 0:
 
 # use ccomp to check if there are undefined behaviors
 print("run compcert")
-ccomp_ret = subprocess.run(['ccomp', '-I', CSMITH_HEADER, '-interp', '-fail', '-fstruct-passing',
+ccomp_ret = subprocess.run(['ccomp', '-I', CSMITH_HEADER, '-interp', '-fall', '-fstruct-passing',
                            CFILE], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
 if ccomp_ret.stdout.count("Undefined behavior") != 0:
     print("Undefined behavior")
