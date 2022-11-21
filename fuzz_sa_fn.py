@@ -46,11 +46,13 @@ GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -Wno-analyzer-double-fc
 # CLANG_OPTIONS = " "
 
 TESTCASE_NUM = 0
-RUN_DUMP_NUM =0
+RUN_DUMP_NUM = 0
+MIS_NPD_NUM = 0
 NPD_NUM = 0
 ANALYZE_TIMEOUT_NUM = 0
 CRASH_NUM = 0
-ANALYZER_TIMEOUT = "timeout 300 " # we should give SA more time to find the given bug
+# we should give SA more time to find the given bug
+ANALYZER_TIMEOUT = "timeout 300 "
 
 
 def read_value_from_file(file, match):
@@ -96,7 +98,7 @@ def analyze_with_gcc(num, optimization_level, args):
         clean_gcc_products(num, args.saveProducts)
         return None
     elif ret != 0:
-        # TODO: 该处的逻辑是否有问题？返回值既不是 0 也不是 124 也一定是 analyzer crash 
+        # TODO: 该处的逻辑是否有问题？返回值既不是 0 也不是 124 也一定是 analyzer crash
         save_crashing_file(num)
         clean_gcc_products(num, args.saveProducts)
         return None
@@ -166,7 +168,7 @@ def process_gcc_report(num, report_file, args):
     '''
     check whether the given report contains the target CWE (NPD)
     '''
-    global NPD_NUM
+    global NPD_NUM, MIS_NPD_NUM
     save_products_flag = args.saveProducts
 
     if not os.path.exists(report_file):
@@ -183,6 +185,10 @@ def process_gcc_report(num, report_file, args):
         os.system("mv test*.c npd%s.c " % (NPD_NUM))
         os.system("mv test*.txt npd%s.txt " % (NPD_NUM))
         NPD_NUM += 1
+    else:
+        MIS_NPD_NUM += 1
+        os.system("mv test*.c mis_npd%s.c " % (MIS_NPD_NUM))
+        os.system("mv test*.txt mis_npd%s.txt " % (MIS_NPD_NUM))
 
     clean_gcc_products(num, save_products_flag)
 
@@ -226,6 +232,7 @@ def generate_code(num, ctrl_max):
     print(cfile + ' ' + seed)
     return cfile
 
+
 def run_npd(cfile, optimize):
     '''
     compile and run generated code
@@ -233,19 +240,21 @@ def run_npd(cfile, optimize):
     else, return False
     '''
     compile_ret = subprocess.run(['gcc', '-O' + optimize, '-I', CSMITH_HEADER, cfile],
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
     # print(compile_ret.stderr)
 
     # program cannot have compiler error
     if compile_ret.returncode != 0:
-        print("Compile failed") 
+        print("Compile failed")
         return False
 
     # print("run")
     run_ret = subprocess.run(['timeout', '5s', './a.out'],
-                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
-    # print(run_ret)
-    # Segmentation fault
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
+    print(run_ret)
+
+    # Segmentation fault 
+    #  内存访问越界 也会导致 Segmentation fault (core dumped)， 这里抓的不准确
     if run_ret.stderr.count("the monitored command dumped core") >= 1:
         print("the monitored command dumped core")
         return True
@@ -254,7 +263,7 @@ def run_npd(cfile, optimize):
         return False
 
 
-# 有可能运行的case 的那个 segment fault 不是 SA 找出来的那个 
+# 有可能运行的 case 的那个 segment fault 不是 SA 找出来的那个
 def gcc_test_one(num, args):
     '''
     generate a test case with csmith,
@@ -263,10 +272,11 @@ def gcc_test_one(num, args):
     '''
     global TESTCASE_NUM, RUN_DUMP_NUM
     cfile = generate_code(num, args.max)
-    if cfile :
+
+    if cfile:
         TESTCASE_NUM += 1
         ret = run_npd(cfile, str(args.optimize))
-        if ret :
+        if ret:
             RUN_DUMP_NUM += 1
             report_file = analyze_with_gcc(num, str(args.optimize), args)
 
@@ -294,7 +304,7 @@ def get_analyzer_version(analyzer):
 
 def write_script_run_args(args):
     '''
-    write doen script running args
+    write down script running args
     '''
     with open('script_run_args.info', 'w') as f:
         f.write("Time: %s\n" % str(time.strftime(
@@ -313,9 +323,9 @@ def write_fuzzing_result(stop_message):
     '''
     with open('fuzzing_result.txt', 'w') as f:
         f.write("STOP: %s\n" % stop_message)
-        f.write( "\nTESTCASE_NUM: %s\n" % TESTCASE_NUM)
-        f.write("\nRUN_DUMP_NUM: %s\n"%RUN_DUMP_NUM)
-        f.write("\nNPD_NUM: %s\n" % NPD_NUM)
+        f.write("\nTESTCASE_NUM: %s\n" % TESTCASE_NUM)
+        f.write("\nRUN_DUMP_NUM: %s\n" % RUN_DUMP_NUM)
+        f.write("\nMIS_NPD_NUM: %s\n" % MIS_NPD_NUM)
         f.write("\nANALYZE_TIMEOUT_NUM: %s\n" % ANALYZE_TIMEOUT_NUM)
         f.write("\nCRASH_NUM: %s\n" % CRASH_NUM)
 

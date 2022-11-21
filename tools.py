@@ -41,6 +41,7 @@ def fuzz_fp(args: argparse.Namespace):
                          str(iter_times)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         os.chdir("..")
 
+
 def fuzz_fn(args: argparse.Namespace):
     fuzzing_par_dir = args.path
     analyzer = args.analyzer
@@ -61,6 +62,7 @@ def fuzz_fn(args: argparse.Namespace):
         subprocess.Popen(['python3', 'fuzz_sa_fn.py', analyzer, '-o='+str(opt),
                          str(iter_times)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         os.chdir("..")
+
 
 def create(args: argparse.Namespace):
     # print("creat")
@@ -406,7 +408,7 @@ def check_cfile_npd_line_reachable(args: argparse.Namespace):
 
     clean_npd_check_input(args, cfile_abspath, report_abspath, npd_exist)
     clean_npd_check_output(args, instrumented_cfile,
-                               run_out_file, npd_exist)
+                           run_out_file, npd_exist)
 
 
 def clean_npd_check_input(args, cfile_abspath, report_abspath, npd_exist):
@@ -679,11 +681,13 @@ def run_reduce(args: argparse.Namespace):
                 print("finish!")
                 subprocess.run("rm -rf /tmp/instrument_npd%s*" % serial_num,
                                shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+                subprocess.run("rm -rf /tmp/compcert*",
+                               shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
     os.chdir("reduce")
     ub_list.sort()
     reduce_list.sort()
-    
+
     with open("reduce_result-%s.txt" % str(time.strftime("%Y-%m-%d-%H-%M", time.localtime())), "w") as f:
         f.write("Undefined behavior:\n")
         for i in ub_list:

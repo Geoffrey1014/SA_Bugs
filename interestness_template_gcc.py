@@ -12,16 +12,17 @@ print("compile: gcc")
 
 compile_ret = subprocess.run(['gcc', '-O' + OPT_LEVEL, '-I', CSMITH_HEADER, CFILE],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
-# print(compile_ret.stderr)
+print(compile_ret.stderr)
 # program cannot have compiler error
 if compile_ret.returncode != 0:
     print("Compile failed")  # cannot comment this line!
     exit(compile_ret.returncode)
 
-# print("run")
+print("run")
 run_ret = subprocess.run(['timeout', '5s', './a.out'],
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
-# print(run_ret)
+print(run_ret)
+
 if run_ret.returncode == 124:
     print("Timeout!")  # cannot comment this line!
     exit(run_ret.returncode)
@@ -37,11 +38,12 @@ if count_npd_flag == 0:
     exit(2)
 
 # analyzer has to keep npd warning
-# print("run analyzer")
+print("run analyzer")
 analyzer_args_split = shlex.split(GCC_ANALYZER)
 analyzer_ret = subprocess.run(
     analyzer_args_split + ['-O' + OPT_LEVEL, '-c', '-I', CSMITH_HEADER, CFILE], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
-# print(analyzer_ret)
+print(analyzer_ret.stderr)
+
 if analyzer_ret.stderr.count("CWE-476") == 0:
     print("CWE-476 disappear")
     print("NullDereference disappear")  # cannot comment this line!
