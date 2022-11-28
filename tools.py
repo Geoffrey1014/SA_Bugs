@@ -523,6 +523,7 @@ def check_dir_npd_line_reachable(args: argparse.Namespace):
             short_name = get_short_name(cfile)
             report_file = short_name + ".txt"
             report_abspath = os.path.join(target_dir_abspath, report_file)
+            print("report: " + report_abspath)
             instrumented_cfile = "instrument_" + short_name + ".c"
             run_out_file = "instrument_" + short_name + ".out"
 
@@ -548,10 +549,10 @@ def check_dir_npd_line_reachable(args: argparse.Namespace):
                 else:
                     res_compile_or_run_fail.append(cfile_abspath)
 
-            clean_npd_check_input(args, cfile_abspath,
-                                  report_abspath, npd_exist)
-            clean_npd_check_output(
-                args, instrumented_cfile, run_out_file, npd_exist)
+                clean_npd_check_input(args, cfile_abspath,
+                                      report_abspath, npd_exist)
+                clean_npd_check_output(
+                    args, instrumented_cfile, run_out_file, npd_exist)
 
     # write result to file
     res_reachable.sort()
@@ -599,10 +600,11 @@ def gen_reduce_script(template_abspath: str, cfile_name: str, opt_level: str, ar
         cfile_lines = f.readlines()
 
         # hard coding
-        print(cfile_lines[4])
         cfile_lines[4] = 'CFILE = "%s.c"\n' % cfile_name
-        print(cfile_lines[5])
+        print(cfile_lines[4])
+        
         cfile_lines[5] = 'OPT_LEVEL = "%s"\n' % opt_level
+        print(cfile_lines[5])
 
         if args.script_path and args.cfile:
             script_abspath = os.path.abspath(args.script_path)
@@ -650,6 +652,16 @@ def gen_reduce(args: argparse.Namespace):
         # handle dir path
         print(target_dir_abspath)
         os.chdir(target_dir_abspath)
+        files = os.listdir(target_dir_abspath)
+        print("file nums: " + str(len(files)))
+
+        for file in files:
+            if file.endswith(".c"):
+                cfile_name = get_short_name(file)
+                gen_reduce_script(
+                    template_abspath, cfile_name, opt_level, args)
+    else:
+        target_dir_abspath = os.getcwd()
         files = os.listdir(target_dir_abspath)
         print("file nums: " + str(len(files)))
 
