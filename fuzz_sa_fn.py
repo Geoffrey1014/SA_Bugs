@@ -26,8 +26,8 @@ PROG_TIMEOUT = 8
 
 # These options are more important and need to be singled out
 CSMITH_USER_OPTIONS = " --no-global-variables --max-pointer-depth 2"
-# CSMITH_USER_OPTIONS = " --no-global-variables --max-funcs 1 "
-# CSMITH_USER_OPTIONS = " --no-global-variables --max-funcs 1 --no-safe-math"
+# CSMITH_USER_OPTIONS = " --no-global-variables --max-funcs 1"
+# CSMITH_USER_OPTIONS = " --no-global-variables --max-funcs 2 --no-safe-math"
 # CSMITH_USER_OPTIONS = " --no-bitfields --packed-struct --no-global-variables --max-pointer-depth 2 "
 
 # Command line options:
@@ -103,6 +103,7 @@ def analyze_with_gcc(num, optimization_level, args):
         clean_gcc_products(num, args.saveProducts)
         return None
 
+    # the results of gcc analysis are written to report_file
     return report_file
 
 
@@ -236,7 +237,7 @@ def generate_code(num, ctrl_max):
 def run_npd(cfile, optimize):
     '''
     compile and run generated code
-    if Segmentation fault, return True
+    if segmentation fault, return True
     else, return False
     '''
     compile_ret = subprocess.run(['gcc', '-O' + optimize, '-I', CSMITH_HEADER, cfile],
@@ -253,8 +254,8 @@ def run_npd(cfile, optimize):
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
     print(run_ret)
 
-    # Segmentation fault 
-    #  内存访问越界 也会导致 Segmentation fault (core dumped)， 这里抓的不准确
+    # segmentation fault 
+    # 内存访问越界 也会导致 segmentation fault (core dumped)， 这里抓的不准确
     if run_ret.stderr.count("the monitored command dumped core") >= 1:
         print("the monitored command dumped core")
         return True
@@ -263,7 +264,7 @@ def run_npd(cfile, optimize):
         return False
 
 
-# 有可能运行的 case 的那个 segment fault 不是 SA 找出来的那个
+# 有可能运行的 case 的那个 segmentfault 不是 SA 找出来的那个
 def gcc_test_one(num, args):
     '''
     generate a test case with csmith,
@@ -276,6 +277,7 @@ def gcc_test_one(num, args):
     if cfile:
         TESTCASE_NUM += 1
         ret = run_npd(cfile, str(args.optimize))
+        # segmentation fault exists
         if ret:
             RUN_DUMP_NUM += 1
             report_file = analyze_with_gcc(num, str(args.optimize), args)
