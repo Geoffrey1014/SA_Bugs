@@ -6,14 +6,11 @@ import shlex
 import subprocess
 import time
 
-
 CSMITH_HEADER = "/usr/include/csmith"
 
 GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -Wno-analyzer-double-fclose -Wno-analyzer-double-free -Wno-analyzer-exposure-through-output-file -Wno-analyzer-file-leak -Wno-analyzer-free-of-non-heap -Wno-analyzer-malloc-leak -Wno-analyzer-mismatching-deallocation -Wno-analyzer-null-argument -Wno-analyzer-possible-null-argument -Wno-analyzer-possible-null-dereference -Wno-analyzer-shift-count-negative -Wno-analyzer-shift-count-overflow -Wno-analyzer-stale-setjmp-buffer -Wno-analyzer-unsafe-call-within-signal-handler -Wno-analyzer-use-after-free -Wno-analyzer-use-of-pointer-in-stale-stack-frame -Wno-analyzer-use-of-uninitialized-value -Wno-analyzer-write-to-const -Wno-analyzer-write-to-string-literal -fdiagnostics-plain-output -fdiagnostics-format=text -msse4.2 "
-
-CLANG_ANALYZER = " "
-
-CLANG_OPTIONS = " "
+CLANG_ANALYZER = "scan-build -disable-checker core.CallAndMessage -disable-checker core.DivideZero -disable-checker core.NonNullParamChecker -disable-checker core.StackAddressEscape -disable-checker core.UndefinedBinaryOperatorResult -disable-checker core.VLASize -disable-checker core.uninitialized.ArraySubscript -disable-checker core.uninitialized.Assign -disable-checker core.uninitialized.Branch -disable-checker core.uninitialized.CapturedBlockVariable -disable-checker core.uninitialized.UndefReturn -disable-checker cplusplus.InnerPointer -disable-checker cplusplus.Move -disable-checker cplusplus.NewDelete -disable-checker cplusplus.NewDeleteLeaks -disable-checker cplusplus.PlacementNew -disable-checker cplusplus.PureVirtualCall -disable-checker deadcode.DeadStores -disable-checker nullability.NullPassedToNonnull -disable-checker nullability.NullReturnedFromNonnull -disable-checker security.insecureAPI.gets -disable-checker security.insecureAPI.mkstemp -disable-checker security.insecureAPI.mktemp -disable-checker security.insecureAPI.vfork -disable-checker unix.API -disable-checker unix.Malloc -disable-checker unix.MallocSizeof -disable-checker unix.MismatchedDeallocator -disable-checker unix.Vfork -disable-checker unix.cstring.BadSizeArg -disable-checker unix.cstring.NullArg "
+CLANG_OPTIONS = "-Wno-literal-conversion -Wno-bool-operation -Wno-pointer-sign -Wno-tautological-compare -Wno-incompatible-pointer-types -Wno-tautological-constant-out-of-range-compare -Wno-compare-distinct-pointer-types -Wno-implicit-const-int-float-conversion -Wno-constant-logical-operand -Wno-parentheses-equality -Wno-constant-conversion -Wno-unused-value -Xclang -analyzer-config -Xclang widen-loops=true "
 
 REACHABLE_DIR = "reachable"
 NPD_DISAPPEAR = "NPD_FLAG disappear"
@@ -29,7 +26,7 @@ def fuzz_fp(args: argparse.Namespace):
     print("fuzz thread_num %s" % thread_num)
 
     iter_times = args.num
-    script_path = "/home/working-space/scripts/fuzz_sa_fp.py"
+    script_path = "/home/working_space/scripts/fuzz_sa_fp.py"
     fuzzing_working_dir = create_fuzzing_place(
         fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
 
@@ -51,7 +48,7 @@ def fuzz_fn(args: argparse.Namespace):
     print("fuzz thread_num %s" % thread_num)
 
     iter_times = args.num
-    script_path = "/home/working-space/scripts/fuzz_sa_fn.py"
+    script_path = "/home/working_space/scripts/fuzz_sa_fn.py"
     fuzzing_working_dir = create_fuzzing_place(
         fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
 
@@ -65,8 +62,6 @@ def fuzz_fn(args: argparse.Namespace):
 
 
 def create(args: argparse.Namespace):
-    # print("creat")
-
     fuzzing_par_dir = args.path
     num = args.num
     script_path = args.script
@@ -81,14 +76,12 @@ def create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, opt_level, dir_
     and copy script_path to those dirs
     '''
     abs_par_path = os.path.abspath(fuzzing_par_dir)
-    # print(abs_par_path)
 
     if not os.path.exists(script_path) or not os.path.isfile(script_path):
         print("%s does not exist or is not a file!" % script_path)
         exit(-1)
 
     abs_script_path = os.path.abspath(script_path)
-    # print(abs_script_path)
 
     time_now = time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime())
     ret = subprocess.run([analyzer, '-dumpversion'],
@@ -99,7 +92,6 @@ def create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, opt_level, dir_
 
     if not os.path.exists(abs_working_path):
         os.makedirs(abs_working_path)
-        # print("文件夹创建完成..." + abs_working_path)
 
     for i in range(dir_num):
         fuzz_i = abs_working_path + '/' + "fuzz_%s" % i
@@ -136,7 +128,7 @@ def get_analyzer_version(analyzer):
 
 def analyze_with_gcc(optimization_level, cfile):
     '''
-    use gcc to analyze Csmith-generated c program
+    use gcc to analyze csmith-generated c program
     '''
     short_name = get_short_name(cfile)
     report_file = short_name + '.txt'
@@ -149,10 +141,11 @@ def analyze_with_gcc(optimization_level, cfile):
     gcc_analyzer_args_split = shlex.split(GCC_ANALYZER)
 
     if not os.path.exists(cfile):
-        print("File does not exist! : " + cfile)
+        print("file does not exist! : " + cfile)
     else:
         ret = subprocess.run(gcc_analyzer_args_split + ["-O" + optimization_level, "-c", "-I", CSMITH_HEADER,
                              "-o", object_file, cfile], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf-8")
+        print(ret)
 
         with open(report_file, "w") as f:
             f.write("gcc: version: " + version)
@@ -163,21 +156,83 @@ def analyze_with_gcc(optimization_level, cfile):
     return report_file
 
 
+def analyze_with_clang(cfile):
+    '''
+    use clang to analyze csmith-generated c program
+    '''
+    short_name = get_short_name(cfile)
+    report_file = short_name + '.txt'
+    object_file = short_name + '.o'
+
+    print("analyze_with_clang report: " + report_file)
+
+    version = get_analyzer_version("clang")
+    print("clang: version: \n" + version)
+    clang_analyzer_args_split = shlex.split(CLANG_ANALYZER)
+
+    if not os.path.exists("report_html"):
+        ret = os.system("mkdir report_html")
+        if ret != 0:
+            print("fail to mkdir report_html")
+            exit(ret >> 8)
+
+    report_html = "report_html"
+
+    if not os.path.exists(cfile):
+        print("file does not exist! : " + cfile)
+    else:
+        ret = subprocess.run(clang_analyzer_args_split + ["-o", report_html, "clang", CLANG_OPTIONS, "-c", "-I", CSMITH_HEADER, "-o", object_file,
+                             cfile], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf-8")
+        # print(ret)
+
+        with open(report_file, "w") as f:
+            f.write("clang: version: " + version)
+            f.write(ret.stdout)
+
+        print("analyze_with_clang return code: " + str(ret.returncode))
+
+    return report_file
+
+
 def process_gcc_report(report_file, args):
     '''
     check whether the given report contains the target CWE(NPD)
     '''
-    # print("process_gcc_report")
-
     name = get_short_name(report_file)
 
     if not os.path.exists(report_file):
         print("report does not exist: " + str(report_file))
         clean_analyze_producets(args.saveReport, name)
-        return
+        return None
 
     with open(report_file, "r") as f:
-        ret = subprocess.run(['grep', '\[CWE-476\]'], stdin=f,
+        ret = subprocess.run(['grep', '\[CWE\-476\]'], stdin=f,
+                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
+        print(ret)
+
+    clean_analyze_producets(args.saveReport, name)
+
+    if ret.returncode == 0:
+        print("npd!")
+        return True
+    else:
+        print("no npd!")
+        return False
+
+
+def process_clang_report(report_file, args):
+    '''
+    check whether the given report contains the target CWE(NPD)
+    '''
+    name = get_short_name(report_file)
+
+    if not os.path.exists(report_file):
+        print("report does not exist: " + str(report_file))
+        clean_analyze_producets(args.saveReport, name)
+        return None
+
+    with open(report_file, "r") as f:
+        ret = subprocess.run(['grep', '\[core\.NullDereference\]'], stdin=f,
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
         print(ret)
 
@@ -195,12 +250,9 @@ def clean_analyze_producets(saveFlag, name):
     if not saveFlag:
         ret = subprocess.run(["rm", "-f", name + '.o', name + '.txt'],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
-        # print("ret")
 
 
 def check_one(args: argparse.Namespace):
-    # print("check npd of one file")
-
     analyzer = args.analyzer
     record_npd_times = []
 
@@ -210,19 +262,23 @@ def check_one(args: argparse.Namespace):
             npd_exist = process_gcc_report(report_file, args)
             if npd_exist:
                 record_npd_times.append(i)
-    # elif analyzer == "clang":
-    #     pass
-    # elif analyzer == "pp":
-    #     pass
+
+    elif analyzer == "clang":
+        for i in range(args.num):
+            report_file = analyze_with_clang(args.file)
+            npd_exist = process_clang_report(report_file, args)
+            if npd_exist:
+                record_npd_times.append(i)
+
+    elif analyzer == "pp":
+        pass
 
     print("recode_npd_times: ")
     print(record_npd_times)
 
 
 def check_dir(args: argparse.Namespace):
-    print("check npd of one dir: ")
     # TODO: handle args.num
-
     analyzer = args.analyzer
     target_dir = args.dir
     target_abspath = os.path.abspath(target_dir)
@@ -239,10 +295,17 @@ def check_dir(args: argparse.Namespace):
                 if npd_exist:
                     res.append(full_path)
 
-    # elif analyzer == "clang":
-    #     pass
-    # elif analyzer == "pp":
-    #     pass
+    elif analyzer == "clang":
+        for file in files:
+            if file.endswith(".c"):
+                full_path = os.path.join(target_abspath, file)
+                report_file = analyze_with_clang(full_path)
+                npd_exist = process_clang_report(report_file, args)
+                if npd_exist:
+                    res.append(full_path)
+
+    elif analyzer == "pp":
+        pass
 
     res.sort()
 
@@ -255,8 +318,6 @@ def check_dir(args: argparse.Namespace):
 
 
 def check_npd(args: argparse.Namespace):
-    # print("check npd")
-
     if args.file and args.dir:
         print('cannot give both "-file" and "-dir" options')
         exit(-1)
@@ -274,10 +335,10 @@ def grep_npd(run_out_file):
                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf-8")
 
     if grep_ret.returncode == 0:
-        print("reach NPD!")
+        print("reach npd!")
         return True
     else:
-        print("cannot reach NPD!")
+        print("cannot reach npd!")
         return False
 
 
@@ -294,10 +355,20 @@ def get_npd_lines(args: argparse.Namespace, report_abspath):
                     # npd_info[1] is the npd report lineß
                     npd_lines.append(npd_info.pop(1))
 
+            # print(npd_lines)
+
+    elif args.analyzer == "clang":
+        with open(report_abspath, "r") as f:
+            report_lines = f.readlines()
+
+            for line in report_lines:
+                if re.search("core.NullDereference", line):
+                    npd_info = re.split(":", line)
+                    # npd_info[1] is the npd report lineß
+                    npd_lines.append(npd_info.pop(1))
+
             print(npd_lines)
 
-    # elif args.analyzer == "clang":
-    #     pass
     # else args.analyzer == "pp":
     #     pass
 
@@ -353,8 +424,6 @@ def compile_and_run_instrument_cfile(args, instrumented_cfile, run_out_file):
 
 
 def check_npd_line_reachable(args: argparse.Namespace):
-    # print("check_npd_line_reachable")
-
     if args.cfile:
         print(args.cfile)
         check_cfile_npd_line_reachable(args)
@@ -370,28 +439,29 @@ def check_npd_line_reachable(args: argparse.Namespace):
         # TODO
         return
     else:
-        print("There is no such file/dir !")
+        print("there is no such file/dir!")
 
 
 def check_cfile_npd_line_reachable(args: argparse.Namespace):
-    print("check whether cfile npd line reachable according to the corresponding analysis report")
-
+    # print("check whether cfile npd line reachable according to the corresponding analysis report")
     version = get_analyzer_version(args.analyzer)
     print(args.analyzer + ": version: \n" + version)
 
-    # handle file path
+    # handle cfile path
     cfile_abspath = os.path.abspath(args.cfile)
-    # print("cfile: " + cfile_abspath)
     par_dir, cfile = os.path.split(cfile_abspath)
+
+    # handle report_file path
     short_name = get_short_name(cfile)
     report_file = short_name + ".txt"
     report_abspath = os.path.join(par_dir, report_file)
-    # print("report: " + report_abspath)
+
     instrumented_cfile = "instrument_" + short_name + ".c"
     run_out_file = "instrument_" + short_name + ".out"
 
     if not os.path.exists(report_abspath):
         print("report file does not exist!")
+        npd_exist = False
     else:
         print("report file exist!")
         npd_lines = get_npd_lines(args, report_abspath)
@@ -407,15 +477,13 @@ def check_cfile_npd_line_reachable(args: argparse.Namespace):
             print("compile_and_run_instrument_cfile fail!")
 
     clean_npd_check_input(args, cfile_abspath, report_abspath, npd_exist)
-    clean_npd_check_output(args, instrumented_cfile,
-                           run_out_file, npd_exist)
+    clean_npd_check_output(args, instrumented_cfile, run_out_file, npd_exist)
 
 
 def clean_npd_check_input(args, cfile_abspath, report_abspath, npd_exist):
     if (not npd_exist and args.rmNonReachable) or args.rmAllReachable:
         ret = subprocess.run(['rm', "-f", cfile_abspath, report_abspath],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
-        # print(ret)
 
 
 def clean_npd_check_output(args, instrumented_cfile, run_out_file, npd_exist):
@@ -427,14 +495,11 @@ def clean_npd_check_output(args, instrumented_cfile, run_out_file, npd_exist):
 
 
 def check_dir_npd_line_reachable(args: argparse.Namespace):
-    # print("check_dir_npd_line_reachable")
-
     version = get_analyzer_version(args.analyzer)
     print(args.analyzer + ": version: \n" + version)
 
     # handle dir pathes
     target_dir_abspath = os.path.abspath(args.dir)
-    # print(target_dir_abspath)
     os.chdir(target_dir_abspath)
 
     # create the reachable dir
@@ -455,17 +520,16 @@ def check_dir_npd_line_reachable(args: argparse.Namespace):
             # handle file pathes
             cfile = file
             cfile_abspath = os.path.join(target_dir_abspath, file)
-            # print("cfile" + cfile_abspath)
             short_name = get_short_name(cfile)
             report_file = short_name + ".txt"
             report_abspath = os.path.join(target_dir_abspath, report_file)
-            # print("report: " + report_abspath)
             instrumented_cfile = "instrument_" + short_name + ".c"
             run_out_file = "instrument_" + short_name + ".out"
 
             if not os.path.exists(report_abspath):
                 print("report file does not exist!")
                 res_report_not_exist.append(cfile_abspath)
+                npd_exist = False
             else:
                 print("report file exist!")
                 npd_lines = get_npd_lines(args, report_abspath)
@@ -501,7 +565,6 @@ def check_dir_npd_line_reachable(args: argparse.Namespace):
     with open(reachable_report, "w") as f:
         f.write("%s: version: \n %s\n" %
                 (args.analyzer, get_analyzer_version(args.analyzer)))
-
         f.write("\nnpd_reachable:\n")
         print("\nnpd_reachable:\n")
 
@@ -532,8 +595,6 @@ def check_dir_npd_line_reachable(args: argparse.Namespace):
 
 
 def gen_reduce_script(template_abspath: str, cfile_name: str, opt_level: str, args: argparse.Namespace):
-    # print("gen_reduce_script")
-
     with open(template_abspath, "r") as f:
         cfile_lines = f.readlines()
 
@@ -562,8 +623,6 @@ def gen_reduce_script(template_abspath: str, cfile_name: str, opt_level: str, ar
 
 
 def gen_reduce(args: argparse.Namespace):
-    # print("gen_reduce script")
-
     template_abspath = os.path.abspath(args.template)
     if not os.path.exists(template_abspath):
         print("template_abspath does not exist: " + template_abspath)
@@ -574,6 +633,7 @@ def gen_reduce(args: argparse.Namespace):
 
     if args.cfile:
         cfile_abspath = os.path.abspath(args.cfile)
+
         if not os.path.exists(cfile_abspath):
             print("cfile_path does not exist: " + cfile_abspath)
             exit(-1)
@@ -590,7 +650,6 @@ def gen_reduce(args: argparse.Namespace):
         # handle dir path
         print(target_dir_abspath)
         os.chdir(target_dir_abspath)
-
         files = os.listdir(target_dir_abspath)
         print("file nums: " + str(len(files)))
 
@@ -608,6 +667,7 @@ def get_serial_num(name):
     '''
     res = re.search(r'instrument_npd(\w+)\..*', name)
     print(res)
+
     if res:
         return res.group(1)
     else:
@@ -617,10 +677,9 @@ def get_serial_num(name):
 def run_reduce(args: argparse.Namespace):
     '''
     run every reduce script in the given dir
-    if the intended reduce file has Undefine behavior, then delete it
-    else reduce it
+    if the intended reduce file has undefine behavior
+    then delete it, else reduce it
     '''
-    print("run reduce")
     thread_num = str(args.thread)
 
     if args.dir:
@@ -629,7 +688,7 @@ def run_reduce(args: argparse.Namespace):
             print("dir_abspath does not exist: " + targer_dir_abspath)
             exit(-1)
 
-        # handle dir pathes
+        # handle dir pathe
         print(targer_dir_abspath)
         os.chdir(targer_dir_abspath)
 
@@ -654,13 +713,12 @@ def run_reduce(args: argparse.Namespace):
                 res = subprocess.run(
                     ["./" + file], stderr=subprocess.DEVNULL, stdout=subprocess.PIPE, encoding="utf-8")
 
-                # if the intended reduce file has Undefine behavior, then delete it
+                # if the intended reduce file has undefine behavior, then delete it
                 if res.stdout.count(UB_STRING) != 0:
                     print(UB_STRING)
                     ub_list.append(os.path.abspath(file))
                     ret = subprocess.run("rm -f *instrument_npd%s*" % serial_num,
                                          shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-                    # print(ret)
                     continue
 
                 elif res.stdout.count(NPD_DISAPPEAR) != 0:
@@ -672,13 +730,12 @@ def run_reduce(args: argparse.Namespace):
 
                 ret = subprocess.run(["creduce", file, "instrument_npd%s.c" % serial_num,
                                      "--n", thread_num], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
+
                 reduce_list.append(os.path.abspath(file))
-                print(ret)
+
                 ret = subprocess.run("mv instrument_npd%s.c* instrument_npd%s.out reduce_instrument_npd%s.py reduce/" % (
                     serial_num, serial_num, serial_num), shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-                print(ret)
 
-                print("finish!")
                 subprocess.run("rm -rf /tmp/instrument_npd%s*" % serial_num,
                                shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
                 subprocess.run("rm -rf /tmp/compcert*",
@@ -692,6 +749,7 @@ def run_reduce(args: argparse.Namespace):
         f.write("Undefined behavior:\n")
         for i in ub_list:
             f.write(i + "\n")
+
         f.write("\nReduced files:\n")
         for i in reduce_list:
             f.write(i + "\n")
@@ -700,8 +758,8 @@ def run_reduce(args: argparse.Namespace):
 def replace_type(abs_file_path):
     '''
     input: abs_file_path of a c file
-    return: the given c file with type replaced
-    backup the origin c file
+    return: the given c file with type 
+    replaced backup the origin c file
     '''
     with open(abs_file_path, "r") as f:
         lines = f.readlines()
@@ -710,16 +768,16 @@ def replace_type(abs_file_path):
         for line in lines:
             line = line.replace("uint8_t ", "unsigned char ")
             line = line.replace("uint16_t ", "unsigned short int ")
-            line = line.replace("uint32_t", "unsigned int ")
+            line = line.replace("uint32_t ", "unsigned int ")
             line = line.replace("uint64_t ", "unsigned long int ")
-            line = line.replace("int8_t", "char ")
-            line = line.replace("int16_t", "short int ")
-            line = line.replace("int32_t", "int")
-            line = line.replace("int64_t", "long int")
+            line = line.replace("int8_t ", "char ")
+            line = line.replace("int16_t ", "short int ")
+            line = line.replace("int32_t ", "int ")
+            line = line.replace("int64_t ", "long int ")
             new_lines.append(line)
-            print(line)
 
         short_name = get_short_name(abs_file_path)
+
         with open(short_name + "-0.c", "w") as f:
             f.writelines(lines)
         with open(short_name + ".c", "w") as f:
@@ -742,7 +800,7 @@ def replace(args: argparse.Namespace):
 
 def handle_args():
     parser = argparse.ArgumentParser(
-        description="tools for testing static analyzer")
+        description="some tools for testing static analyzer")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-v", "--verbose", action="store_true")
     group.add_argument("-q", "--quiet", action="store_true")
@@ -796,7 +854,7 @@ def handle_args():
     parser_fuzz.add_argument("analyzer", type=str, choices={
         'gcc', 'clang'}, help="give a analyzer")
     parser_fuzz.add_argument("optimize", type=int, choices={
-        0, 1, 2, 3}, default=0, help="optimization level")
+        0, 1, 2, 3}, default=0, help="optimization level ( if clang, ...")
     parser_fuzz.add_argument(
         "thread", type=int, default=1, help="specify the thread num for fuzzing")
     parser_fuzz.add_argument(
@@ -812,7 +870,7 @@ def handle_args():
     parser_fuzz.add_argument("analyzer", type=str, choices={
         'gcc', 'clang'}, help="give a analyzer")
     parser_fuzz.add_argument("optimize", type=int, choices={
-        0, 1, 2, 3}, default=0, help="optimization level")
+        0, 1, 2, 3}, default=0, help="optimization level ( if clang, ...")
     parser_fuzz.add_argument(
         "thread", type=int, default=1, help="specify the thread num for fuzzing")
     parser_fuzz.add_argument(
@@ -833,7 +891,7 @@ def handle_args():
 
     parser_create.set_defaults(func=create)
 
-    # add subcommand checknpd
+    # add subcommand check-npd
     parser_checknpd = subparsers.add_parser(
         "check-npd", help="check whether the given analyzer complain npd of the given c program")
     parser_checknpd.add_argument("analyzer", type=str, choices={
@@ -881,7 +939,7 @@ def handle_args():
     parser_reach_npd_lines.set_defaults(func=check_npd_line_reachable)
 
     args = parser.parse_args()
-    # print(args)
+    print(args)
     return args
 
 

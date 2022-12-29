@@ -1,54 +1,48 @@
 #!/usr/bin/python3
 import argparse
-import os
 import re
+import os
 import signal
 import subprocess
 import sys
 import time
 
-#############
+##########################
 # user-configurable stuff
-#############
-
-# programs shorter than this many bytes are too boring to test
-MIN_PROGRAM_SIZE = 8000
-MAX_PROGRAM_SIZE = 8000
-
-# kill Csmith after this many seconds
-CSMITH_TIMEOUT = 90
-
-# kill a compiler after this many seconds
-COMPILER_TIMEOUT = 120
-
-# kill a compiler's output after this many seconds
-PROG_TIMEOUT = 8
-
-# These options are more important and need to be singled out
-CSMITH_USER_OPTIONS = " --no-global-variables --max-pointer-depth 2"
-# CSMITH_USER_OPTIONS = " --no-global-variables --max-funcs 1 "
-# CSMITH_USER_OPTIONS = " --no-global-variables --max-funcs 1 --no-safe-math"
-# CSMITH_USER_OPTIONS = " --no-bitfields --packed-struct --no-global-variables --max-pointer-depth 2 "
-
-# Command line options:
-# ...
-
-#############
-# end user-configurable stuff
-#############
+##########################
 
 CSMITH_HEADER = "/usr/include/csmith"
 
+MIN_PROGRAM_SIZE = 8000
+MAX_PROGRAM_SIZE = 8000
+
+# kill csmith after this many seconds
+CSMITH_TIMEOUT = 90
+
+# kill compiler after this many seconds
+COMPILER_TIMEOUT = 120
+
+# kill compiler's output after this many seconds
+PROG_TIMEOUT = 8
+
 GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -Wno-analyzer-double-fclose -Wno-analyzer-double-free -Wno-analyzer-exposure-through-output-file -Wno-analyzer-file-leak -Wno-analyzer-free-of-non-heap -Wno-analyzer-malloc-leak -Wno-analyzer-mismatching-deallocation -Wno-analyzer-null-argument -Wno-analyzer-possible-null-argument -Wno-analyzer-possible-null-dereference -Wno-analyzer-shift-count-negative -Wno-analyzer-shift-count-overflow -Wno-analyzer-stale-setjmp-buffer -Wno-analyzer-unsafe-call-within-signal-handler -Wno-analyzer-use-after-free -Wno-analyzer-use-of-pointer-in-stale-stack-frame -Wno-analyzer-use-of-uninitialized-value -Wno-analyzer-write-to-const -Wno-analyzer-write-to-string-literal -fdiagnostics-plain-output -fdiagnostics-format=text "
+CLANG_ANALYZER = "scan-build -disable-checker core.CallAndMessage -disable-checker core.DivideZero -disable-checker core.NonNullParamChecker -disable-checker core.StackAddressEscape -disable-checker core.UndefinedBinaryOperatorResult -disable-checker core.VLASize -disable-checker core.uninitialized.ArraySubscript -disable-checker core.uninitialized.Assign -disable-checker core.uninitialized.Branch -disable-checker core.uninitialized.CapturedBlockVariable -disable-checker core.uninitialized.UndefReturn -disable-checker cplusplus.InnerPointer -disable-checker cplusplus.Move -disable-checker cplusplus.NewDelete -disable-checker cplusplus.NewDeleteLeaks -disable-checker cplusplus.PlacementNew -disable-checker cplusplus.PureVirtualCall -disable-checker deadcode.DeadStores -disable-checker nullability.NullPassedToNonnull -disable-checker nullability.NullReturnedFromNonnull -disable-checker security.insecureAPI.gets -disable-checker security.insecureAPI.mkstemp -disable-checker security.insecureAPI.mktemp -disable-checker security.insecureAPI.vfork -disable-checker unix.API -disable-checker unix.Malloc -disable-checker unix.MallocSizeof -disable-checker unix.MismatchedDeallocator -disable-checker unix.Vfork -disable-checker unix.cstring.BadSizeArg -disable-checker unix.cstring.NullArg "
+CLANG_OPTIONS = "-Wno-literal-conversion -Wno-bool-operation -Wno-pointer-sign -Wno-tautological-compare -Wno-incompatible-pointer-types -Wno-tautological-constant-out-of-range-compare -Wno-compare-distinct-pointer-types -Wno-implicit-const-int-float-conversion -Wno-constant-logical-operand -Wno-parentheses-equality -Wno-constant-conversion -Wno-unused-value -Xclang -analyzer-config -Xclang widen-loops=true "
 
-# CLANG_ANALYZER = " "
+CSMITH_USER_OPTIONS = " --no-global-variables --max-pointer-depth 2 "
+# CSMITH_USER_OPTIONS = " --no-global-variables --max-funcs 1 "
+# CSMITH_USER_OPTIONS = " --no-global-variables --max-funcs 1 --no-safe-math "
+# CSMITH_USER_OPTIONS = " --no-bitfields --packed-struct --no-global-variables --max-pointer-depth 2 "
 
-# CLANG_OPTIONS = " "
+##############################
+# end user-configurable stuff
+##############################
 
+CRASH_NUM = 0
 NPD_NUM = 0
 TIMEOUT_NUM = 0
-CRASH_NUM = 0
-ANALYZER_TIMEOUT = "timeout 30 "
+
+ANALYZER_TIMEOUT = "timeout 60 "
 
 
 def read_value_from_file(file, match):
@@ -75,9 +69,66 @@ def save_crashing_file(num):
     CRASH_NUM += 1
 
 
+def generate_code(num, ctrl_max):
+    '''
+    generate wanted-size code with csmith
+    '''
+    cfile = "test_%s.c" % num
+    os.system("rm -f %s" % cfile)
+
+    while True:
+        cmd = "csmith %s --output %s" % (CSMITH_USER_OPTIONS, cfile)
+        os.system(cmd)
+        file_size = os.stat(cfile).st_size
+        seed = read_value_from_file(cfile, 'Seed:\s+(\d+)')
+        # print("generated a file, Seed: " + seed)
+
+        if len(seed) <= 0:
+            print("random program %s has no seed information!\n" % cfile)
+            sys.exit()
+
+        if ctrl_max:
+            if file_size < MAX_PROGRAM_SIZE:
+                print("succ generated a file whose size is no more than %s, seed %s: " % (
+                    MAX_PROGRAM_SIZE, seed))
+                break
+        else:
+            if file_size > MIN_PROGRAM_SIZE:
+                print("succ generated a file whose size is no less than %s, seed %s: " % (
+                    MIN_PROGRAM_SIZE, seed))
+                break
+
+    print(cfile + ' ' + seed)
+    return cfile
+
+
+def gcc_test_one(num, args):
+    cfile = generate_code(num, args.max)
+    report_file = analyze_with_gcc(num, str(args.optimize), args)
+
+    if report_file is not None:
+        process_gcc_report(num, report_file, args)
+
+
+def clang_test_one(num, report_html, args):
+    cfile = generate_code(num, args.max)
+    report_file = analyze_with_clang(
+        num, report_html, str(args.optimize), args)
+
+    if report_file is not None:
+        process_clang_report(num, report_file, report_html, args)
+
+
+def get_analyzer_version(analyzer):
+    res = subprocess.run([analyzer, "-v"], stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE, encoding='utf-8')
+
+    return res.stderr
+
+
 def analyze_with_gcc(num, optimization_level, args):
     '''
-    use gcc to analyze Csmith-generated c program
+    use gcc to analyze csmith-generated c program
     '''
     global TIMEOUT_NUM
     report_file = "test_%s.txt" % num
@@ -86,7 +137,8 @@ def analyze_with_gcc(num, optimization_level, args):
     ret = os.system(ANALYZER_TIMEOUT + GCC_ANALYZER + " -O" + optimization_level +
                     "  -msse4.2 -c -I " + CSMITH_HEADER + " " + cfile + " > " + report_file + " 2>&1")
     ret >>= 8
-    print("gcc analyzer ret: " + str(ret))
+
+    print("gcc static analyzer ret: " + str(ret))
 
     if ret == 124:
         TIMEOUT_NUM += 1
@@ -94,7 +146,8 @@ def analyze_with_gcc(num, optimization_level, args):
         clean_gcc_products(num, args.saveProducts)
         return None
     elif ret != 0:
-        # TODO: 该处的逻辑是否有问题？返回值既不是 0 也不是 124 一定是 analyzer crash 吗？
+        # TODO: Is there a problem with the logic there?
+        # Is the return value neither 0 nor 124 necessarily an analyzer crash?
         save_crashing_file(num)
         clean_gcc_products(num, args.saveProducts)
         return None
@@ -102,62 +155,33 @@ def analyze_with_gcc(num, optimization_level, args):
     return report_file
 
 
-# def analyze_with_clang(num, report_html, optimization_level, args):
-#     '''
-#     use clang to analyze Csmith-generated c program
-#     '''
-#     global TIMEOUT_NUM
-#     report_file = "test_%s.txt" % num
-#     cfile = "test_%s.c" % num
+def analyze_with_clang(num, report_html, optimization_level, args):
+    '''
+    use clang to analyze csmith-generated c program
+    '''
+    global TIMEOUT_NUM
+    report_file = "test_%s.txt" % num
+    cfile = "test_%s.c" % num
 
-#     ret = os.system(ANALYZER_TIMEOUT + CLANG_ANALYZER + " -o " + report_html + " clang " + CLANG_OPTIONS +
-#                     " -0" + optimization_level + " -msse4.2 -c -I " + CSMITH_HEADER + " " + cfile + " > " + report_file + " 2>&1")
-#     ret >>= 8
-#     print("clang ret: " + str(ret))
+    ret = os.system(ANALYZER_TIMEOUT + CLANG_ANALYZER + " -o " + report_html + " clang " +
+                    CLANG_OPTIONS + " -c -I " + CSMITH_HEADER + " " + cfile + " > " + report_file + " 2>&1")
+    ret >>= 8
 
-#     if ret == 124:
-#         TIMEOUT_NUM += 1
-#         print(ANALYZER_TIMEOUT)
-#         clean_clang_products(num, report_html, args.saveProducts)
-#         return None
-#     elif ret != 0:
-#         # TODO: 该处的逻辑是否有问题？返回值既不是 0 也不是 124 一定是 analyzer crash 吗？
-#         save_crashing_file(num)
-#         clean_clang_products(num, report_html, args.saveProducts)
-#         return None
+    print("clang static analyzer ret: " + str(ret))
 
-#     return report_file
+    if ret == 124:
+        TIMEOUT_NUM += 1
+        print(ANALYZER_TIMEOUT)
+        clean_clang_products(num, report_html, args.saveProducts)
+        return None
+    elif ret != 0:
+        # TODO: Is there a problem with the logic there?
+        # Is the return value neither 0 nor 124 necessarily an analyzer crash?？
+        save_crashing_file(num)
+        clean_clang_products(num, report_html, args.saveProducts)
+        return None
 
-
-# def process_clang_report(num, report_file, report_html, args):
-#     '''
-#     check whether the given report contains the target CWE(NPD)
-#     '''
-#     global NPD_NUM
-#     save_products_flag = args.saveProducts
-
-#     if not os.path.exists(report_file):
-#         print("report does not exist: " + str(report_file))
-#         clean_clang_products(num, report_html, save_products_flag)
-#         return
-
-#     check_cmd = 'grep "\[core\.NullDereference\]"'
-#     ret = os.system(check_cmd + " < " + report_file)
-#     ret >> 8
-
-#     if ret == 0:
-#         os.system("mv test_%s.c npd%s.c " % (num, NPD_NUM))
-#         os.system("mv test_%s.txt npd%s.txt " % (num, NPD_NUM))
-#         NPD_NUM += 1
-
-#     clean_clang_products(num, report_html, save_products_flag)
-
-
-# def clean_clang_products(num, report_html, save_products_flag):
-#     if not save_products_flag:
-#         os.system("rm -f test_%s*" % num)
-#         ret = os.system("rm -rf %s/*" % report_html)
-#         # print("clean ret: %s" % (ret >> 8))
+    return report_file
 
 
 def process_gcc_report(num, report_file, args):
@@ -172,7 +196,7 @@ def process_gcc_report(num, report_file, args):
         clean_gcc_products(num, save_products_flag)
         return
 
-    # TODO: 进一步优化
+    # TODO: optimization
     check_cmd = 'grep "\[CWE\-476\]"'
     ret = os.system(check_cmd + " < " + report_file)
     ret >>= 8
@@ -190,61 +214,35 @@ def clean_gcc_products(num, save_products_flag):
         os.system("rm -f test_%s*" % num)
 
 
-def generate_code(num, ctrl_max):
+def process_clang_report(num, report_file, report_html, args):
     '''
-    generate wanted-size code with csmith
+    check whether the given report contains the target CWE(NPD)
     '''
-    cfile = "test_%s.c" % num
-    os.system("rm -f %s" % cfile)
+    global NPD_NUM
+    save_products_flag = args.saveProducts
 
-    while True:
-        cmd = "csmith %s --output %s" % (CSMITH_USER_OPTIONS, cfile)
-        os.system(cmd)
-        file_size = os.stat(cfile).st_size
-        seed = read_value_from_file(cfile, 'Seed:\s+(\d+)')
-        # print("generated a file, Seed: " + seed)
+    if not os.path.exists(report_file):
+        print("report does not exist: " + str(report_file))
+        clean_clang_products(num, report_html, save_products_flag)
+        return
 
-        if len(seed) <= 0:
-            print("Random program %s has no seed information!\n" % cfile)
-            sys.exit()
+    check_cmd = 'grep "\[core\.NullDereference\]"'
+    ret = os.system(check_cmd + " < " + report_file)
+    ret >> 8
 
-        if ctrl_max:
-            if file_size < MAX_PROGRAM_SIZE:
-                print("succ generated a file whose size is no more than %s, seed %s: " % (
-                    MAX_PROGRAM_SIZE, seed))
-                break
-        else:
-            if file_size > MIN_PROGRAM_SIZE:
-                print("succ generated a file whose size is no more than %s, seed %s: " % (
-                    MIN_PROGRAM_SIZE, seed))
-                break
+    if ret == 0:
+        os.system("mv test_%s.c npd%s.c " % (num, NPD_NUM))
+        os.system("mv test_%s.txt npd%s.txt " % (num, NPD_NUM))
+        NPD_NUM += 1
 
-    print(cfile + ' ' + seed)
-    return cfile
+    clean_clang_products(num, report_html, save_products_flag)
 
 
-def gcc_test_one(num, args):
-    cfile = generate_code(num, args.max)
-    report_file = analyze_with_gcc(num, str(args.optimize), args)
-
-    if report_file is not None:
-        process_gcc_report(num, report_file, args)
-
-
-# def clang_test_one(num, report_html, args):
-#     cfile = generate_code(num, args.max)
-#     report_file = analyze_with_clang(
-#         num, report_html, str(args.optimize), args)
-
-#     if report_file is not None:
-#         process_clang_report(num, report_file, report_html, args)
-
-
-def get_analyzer_version(analyzer):
-    res = subprocess.run([analyzer, "-v"], stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE, encoding='utf-8')
-
-    return res.stderr
+def clean_clang_products(num, report_html, save_products_flag):
+    if not save_products_flag:
+        os.system("rm -f test_%s*" % num)
+        ret = os.system("rm -rf %s/*" % report_html)
+        # print("clean ret: %s" % (ret >> 8))
 
 
 def write_script_run_args(args):
@@ -258,8 +256,8 @@ def write_script_run_args(args):
         f.write("\nCsmit options: \n" + CSMITH_USER_OPTIONS)
         f.write("\n\nargs:\n" + str(args))
         f.write("\n\nanalyzer info:\n" + get_analyzer_version(args.compiler))
-        # if args.compiler == "clang":
-        #     f.write("\n\nanalyzer options:\n" + CLANG_OPTIONS)
+        if args.compiler == "clang":
+            f.write("\n\nanalyzer options:\n" + CLANG_OPTIONS)
 
 
 def write_fuzzing_result(stop_message):
@@ -296,8 +294,8 @@ def bye(signum, frame):
     '''
     responsible func of signal.SIGINT and signal.SIGTERM
     '''
-    # print("Bye bye")
-    write_fuzzing_result("Interrupted")
+    print("bye bye ~")
+    write_fuzzing_result("interrupted!")
     exit(0)
 
 
@@ -315,19 +313,18 @@ def main():
     if target_analyzer == "gcc":
         for i in range(int(num)):
             gcc_test_one(i, args)
-    # elif target_analyzer == 'clang':
-    #     if not os.path.exists("report_html"):
-    #         ret = os.system("mkdir report_html")
-    #         if ret != 0:
-    #             print("fail to mkdir report_html")
-    #             exit(ret >> 8)
-
-    #     for i in range(int(num)):
-    #         clang_test_one(i, "report_html", args)
+    elif target_analyzer == 'clang':
+        if not os.path.exists("report_html"):
+            ret = os.system("mkdir report_html")
+            if ret != 0:
+                print("fail to mkdir report_html!")
+                exit(ret >> 8)
+        for i in range(int(num)):
+            clang_test_one(i, "report_html", args)
     else:
-        print("target analyzer: %s is not supported" % target_analyzer)
+        print("target analyzer: %s is not supported!" % target_analyzer)
 
-    write_fuzzing_result("Over")
+    write_fuzzing_result("OVER!")
 
 
 if __name__ == "__main__":
