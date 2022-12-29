@@ -1,2 +1,2 @@
 # SA_Bugs
-record bugs of static analyzer
+record bugs of static analyzers
