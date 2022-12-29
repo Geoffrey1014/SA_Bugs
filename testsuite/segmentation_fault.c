@@ -4,7 +4,6 @@ void a(int *e)
   printf("NPD_FLAG\n");
   if (e == 0)
   {
-    // int *d = 0;
     *e = 1;
   }
 }

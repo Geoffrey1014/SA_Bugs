@@ -52,12 +52,10 @@ ccomp_ret = subprocess.run(['ccomp', '-I', CSMITH_HEADER, '-interp', '-fall', '-
 
 if ccomp_ret.stdout.count("Undefined behavior") != 0:
     print("undefined behavior!")
-    # print(ccomp_ret)
     exit(4)
 if ccomp_ret.returncode != 0:
     print("ccomp_ret returncode: %s" % ccomp_ret.returncode)
     print("compcert failed!")  # cannot comment this line!
-    # print(ccomp_ret)
     exit(ccomp_ret.returncode)
 
 exit(0)

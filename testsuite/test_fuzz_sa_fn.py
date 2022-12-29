@@ -1,5 +1,5 @@
-import subprocess
 import fuzz_sa_fn
+import subprocess
 import sys
 import unittest
 
