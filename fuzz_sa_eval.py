@@ -25,7 +25,7 @@ COMPILER_TIMEOUT = 120
 PROG_TIMEOUT = 8
 
 # These options are more important and need to be singled out
-CSMITH_USER_OPTIONS = " --max-pointer-depth 2"
+CSMITH_USER_OPTIONS = "--no-global-variables --no-safe-math --max-pointer-depth 2"
 # CSMITH_USER_OPTIONS = " --no-global-variables --max-funcs 1 "
 # CSMITH_USER_OPTIONS = " --no-global-variables --max-funcs 1 --no-safe-math"
 # CSMITH_USER_OPTIONS = " --no-bitfields --packed-struct --no-global-variables --max-pointer-depth 2 "
@@ -39,7 +39,7 @@ CSMITH_USER_OPTIONS = " --max-pointer-depth 2"
 
 CSMITH_HEADER = "/usr/include/csmith"
 
-GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -Wanalyzer-too-complex -fdiagnostics-plain-output -fdiagnostics-format=text "
+GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -Wanalyzer-too-complex -fdiagnostics-format=text "
 
 # CLANG_ANALYZER = " "
 
@@ -73,6 +73,7 @@ def save_crashing_file(num):
     global CRASH_NUM
     os.system("mv test_%s.c crash%s.c " % (num, CRASH_NUM))
     os.system("mv instrument_test_%s.c instrument_crash%s.c " % (num, CRASH_NUM))
+    os.system("mv instrument_test_%s.log instrument_crash%s.log " % (num, CRASH_NUM))
 
 
 def do_preprocess(file_path, analyzer):
@@ -103,15 +104,14 @@ def do_preprocess(file_path, analyzer):
                                stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True , check=True )
     return instrument_file
 
-
-
+# csmith --> test_0.c --> instrument_test_0.c -->instrument_test_0.log
 def analyze_with_gcc(num, optimization_level, args):
     '''
     use gcc to analyze Csmith-generated c program
     '''
     global TIMEOUT_NUM
     global CRASH_NUM
-    report_file = "test_%s.log" % num
+    report_file = "instrument_test_%s.log" % num
     cfile = "test_%s.c" % num
     instrument_cfile = do_preprocess(cfile, args.analyzer)
 
@@ -152,9 +152,9 @@ def process_gcc_report(num, report_file, args):
     ret >>= 8
 
     if ret == 0:
-        os.system("mv instrument_test_%s.c instrument_eval%s.c " % (num, EVAL_NUM))
-        # os.system("mv test_%s.c eval%s.c " % (num, FALSE_EVAL_NUM))
-        os.system("mv test_%s.log eval%s.log " % (num, EVAL_NUM))
+        os.system("mv instrument_test_%s.c instrument_eval_%s.c " % (num, EVAL_NUM))
+        os.system("mv test_%s.c eval_%s.c " % (num, EVAL_NUM))
+        os.system("mv instrument_test_%s.log instrument_eval_%s.log " % (num, EVAL_NUM))
         EVAL_NUM += 1
 
     clean_gcc_products(num, save_products_flag)
