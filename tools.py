@@ -751,6 +751,51 @@ def replace(args: argparse.Namespace):
         print(args.dir)
 
 
+def do_preprocess(abs_file_path, analyzer):
+    subprocess.run("/home/working-space/build-llvm-main/bin/cfe_preprocess %s -- -I /usr/include/csmith "%abs_file_path,
+                               stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True, check=True)
+
+    new_lines = []
+    with open(abs_file_path, "r") as f:
+        lines = f.readlines()
+        if analyzer == "gcc":
+            new_lines.append("#include <stdbool.h>\n")
+            new_lines.append("void __analyzer_eval(int a){}\n")
+        elif analyzer == "clang":
+            new_lines.append("#include <stdbool.h>\n")
+            new_lines.append("void clang_analyzer_eval(int a){}\n")
+
+        for line in lines:
+            new_lines.append(line)
+    with open(abs_file_path, "w") as f:
+        f.writelines(new_lines)   
+
+    short_name = get_short_name(abs_file_path)
+    pat_path, _ = os.path.split(abs_file_path)
+
+    if analyzer == "gcc":
+        subprocess.run("/home/working-space/build-llvm-main/bin/tooling-sample --analyzer=gcc %s -- -I /usr/include/csmith > %s"%(abs_file_path,pat_path+ "/instru_" + short_name + ".c"),
+                               stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True , check=True )
+    elif analyzer == "clang":
+        subprocess.run("/home/working-space/build-llvm-main/bin/tooling-sample --analyzer=clang %s -- -I /usr/include/csmith > %s"%(abs_file_path,pat_path+ "/instru_" + short_name + ".c"),
+                               stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True , check=True )
+
+
+
+def preprocess(args: argparse.Namespace):
+    '''
+    add include head to csmith-generated program
+    '''
+    if args.file:
+        print(args.file)
+        abs_file_path = os.path.abspath(args.file)
+        do_preprocess(abs_file_path, args.analyzer)
+        
+    elif args.dir:
+        print(args.dir)
+
+
+
 def handle_args():
     parser = argparse.ArgumentParser(
         description="tools for testing static analyzer")
@@ -759,6 +804,19 @@ def handle_args():
     group.add_argument("-q", "--quiet", action="store_true")
 
     subparsers = parser.add_subparsers(help='sub-command help')
+
+    # add subcommand preprocess
+    parser_preprocess = subparsers.add_parser(
+        "preprocess", help="preprocess a program")
+    parser_preprocess.add_argument("analyzer", type=str, choices={
+        'gcc', 'clang'}, help="give a analyzer")
+    group_preprocess = parser_preprocess.add_mutually_exclusive_group()
+    group_preprocess.add_argument("-f", "--file", type=str, help="target file")
+    group_preprocess.add_argument(
+        "-d", "--dir", type=str, help="give a directory")
+
+    parser_preprocess.set_defaults(func=preprocess)
+
 
     # add subcommand replace
     parser_replace = subparsers.add_parser(
