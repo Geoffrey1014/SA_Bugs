@@ -41,7 +41,7 @@ CSMITH_HEADER = "/usr/include/csmith"
 
 GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -Wanalyzer-too-complex -fdiagnostics-format=text "
 
-# CLANG_ANALYZER = " "
+CLANG_ANALYZER = "clang --analyze  -Xclang -analyzer-stats  -Xclang  -analyzer-constraints=range -Xclang  -setup-static-analyzer  -Xclang -analyzer-config  -Xclang  eagerly-assume=false   -Xclang  -analyzer-checker=core,alpha.security.taint,debug.ExprInspection,debug.TaintTest  "
 
 # CLANG_OPTIONS = " "
 
@@ -137,7 +137,7 @@ def analyze_with_gcc(num, optimization_level, args):
 
 def process_gcc_report(num, report_file, args):
     '''
-    check whether the given report contains the target CWE (NPD)
+    check whether the given report contains the target error
     '''
     global EVAL_NUM
     save_products_flag = args.saveProducts
@@ -165,62 +165,65 @@ def clean_gcc_products(num, save_products_flag):
         os.system("rm -f instrument_test_%s* test_%s*" % (num, num))
 
 
-# def analyze_with_clang(num, report_html, optimization_level, args):
-#     '''
-#     use clang to analyze Csmith-generated c program
-#     '''
-#     global TIMEOUT_NUM
-#     report_file = "test_%s.txt" % num
-#     cfile = "test_%s.c" % num
+def analyze_with_clang(num, optimization_level, args):
+    '''
+    use clang to analyze Csmith-generated c program
+    '''
+    global CRASH_NUM
+    global TIMEOUT_NUM
+    report_file = "instrument_test_%s.log" % num
+    cfile = "test_%s.c" % num
 
-#     ret = os.system(ANALYZER_TIMEOUT + CLANG_ANALYZER + " -o " + report_html + " clang " + CLANG_OPTIONS +
-#                     " -0" + optimization_level + " -msse4.2 -c -I " + CSMITH_HEADER + " " + cfile + " > " + report_file + " 2>&1")
-#     ret >>= 8
-#     print("clang ret: " + str(ret))
+    instrument_cfile = do_preprocess(cfile, args.analyzer)
 
-#     if ret == 124:
-#         TIMEOUT_NUM += 1
-#         print(ANALYZER_TIMEOUT)
-#         clean_clang_products(num, report_html, args.saveProducts)
-#         return None
-#     elif ret != 0:
-#         # TODO: 该处的逻辑是否有问题？返回值既不是 0 也不是 124 一定是 analyzer crash 吗？
-#         save_crashing_file(num)
-#         clean_clang_products(num, report_html, args.saveProducts)
-#         return None
+    ret = os.system(ANALYZER_TIMEOUT + CLANG_ANALYZER + " -O" + optimization_level +
+                    " -c -I " + CSMITH_HEADER + " " + instrument_cfile + " > " + report_file + " 2>&1")
+    ret >>= 8
+    print("clang ret: " + str(ret))
 
-#     return report_file
+    if ret == 124:
+        TIMEOUT_NUM += 1
+        print(ANALYZER_TIMEOUT)
+        clean_clang_products(num, args.saveProducts)
+        return None
+    elif ret != 0:
+        # TODO: 该处的逻辑是否有问题？返回值既不是 0 也不是 124 一定是 analyzer crash 吗？
+        save_crashing_file(num)
+        clean_clang_products(num, args.saveProducts)
+        return None
 
-
-# def process_clang_report(num, report_file, report_html, args):
-#     '''
-#     check whether the given report contains the target CWE(NPD)
-#     '''
-#     global NPD_NUM
-#     save_products_flag = args.saveProducts
-
-#     if not os.path.exists(report_file):
-#         print("report does not exist: " + str(report_file))
-#         clean_clang_products(num, report_html, save_products_flag)
-#         return
-
-#     check_cmd = 'grep "\[core\.NullDereference\]"'
-#     ret = os.system(check_cmd + " < " + report_file)
-#     ret >> 8
-
-#     if ret == 0:
-#         os.system("mv test_%s.c npd%s.c " % (num, NPD_NUM))
-#         os.system("mv test_%s.txt npd%s.txt " % (num, NPD_NUM))
-#         NPD_NUM += 1
-
-#     clean_clang_products(num, report_html, save_products_flag)
+    return report_file
 
 
-# def clean_clang_products(num, report_html, save_products_flag):
-#     if not save_products_flag:
-#         os.system("rm -f test_%s*" % num)
-#         ret = os.system("rm -rf %s/*" % report_html)
-#         # print("clean ret: %s" % (ret >> 8))
+def process_clang_report(num, report_file, args):
+    '''
+    check whether the given report contains the target error
+    '''
+    global EVAL_NUM
+    save_products_flag = args.saveProducts
+
+    if not os.path.exists(report_file):
+        print("report does not exist: " + str(report_file))
+        clean_clang_products(num, save_products_flag)
+        return
+
+    check_cmd = 'grep "warning: FALSE"'
+    ret = os.system(check_cmd + " < " + report_file)
+    ret >> 8
+
+    if ret == 0:
+        os.system("mv instrument_test_%s.c instrument_eval_%s.c " % (num, EVAL_NUM))
+        os.system("mv test_%s.c eval_%s.c " % (num, EVAL_NUM))
+        os.system("mv instrument_test_%s.log instrument_eval_%s.log " % (num, EVAL_NUM))
+        EVAL_NUM += 1
+
+    clean_clang_products(num, save_products_flag)
+
+
+def clean_clang_products(num, save_products_flag):
+    if not save_products_flag:
+        os.system("rm -f test_%s* instrument_test_%s*" % (num, num))
+        
 
 
 
@@ -272,14 +275,15 @@ def gcc_test_one(num, args):
     
 
 
-# def clang_test_one(num, report_html, args):
-#     cfile = generate_code(num, args.max)
-#     report_file = analyze_with_clang(
-#         num, report_html, str(args.optimize), args)
-
-#     if report_file is not None:
-#         process_clang_report(num, report_file, report_html, args)
-
+def clang_test_one(num, args):
+    global CSMITH_ERROR
+    cfile = generate_code(num, args)
+    if cfile:
+        report_file = analyze_with_clang(num, str(args.optimize), args)
+        if report_file is not None:
+            process_clang_report(num, report_file, args)
+    else:
+        CSMITH_ERROR += 1
 
 def get_analyzer_version(analyzer):
     res = subprocess.run([analyzer, "-v"], stdout=subprocess.PIPE,
@@ -362,15 +366,10 @@ def main():
     if target_analyzer == "gcc":
         for i in range(int(num)):
             gcc_test_one(i, args)
-    # elif target_analyzer == 'clang':
-    #     if not os.path.exists("report_html"):
-    #         ret = os.system("mkdir report_html")
-    #         if ret != 0:
-    #             print("fail to mkdir report_html")
-    #             exit(ret >> 8)
-
-    #     for i in range(int(num)):
-    #         clang_test_one(i, "report_html", args)
+    elif target_analyzer == 'clang':
+        
+        for i in range(int(num)):
+            clang_test_one(i, args)
     else:
         print("target analyzer: %s is not supported" % target_analyzer)
 
