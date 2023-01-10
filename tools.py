@@ -537,7 +537,7 @@ def gen_reduce_script(template_abspath: str, cfile_name: str, opt_level: str, ar
     with open(template_abspath, "r") as f:
         cfile_lines = f.readlines()
 
-        # hard coding
+        # TODO: change the hard coding
         cfile_lines[4] = 'CFILE = "%s.c"\n' % cfile_name
         print(cfile_lines[4])
         
@@ -596,7 +596,7 @@ def gen_reduce(args: argparse.Namespace):
         print("file nums: " + str(len(files)))
 
         for file in files:
-            if file.endswith(".c"):
+            if file.endswith(".c") and not file.startswith("instrument"):
                 cfile_name = get_short_name(file)
                 gen_reduce_script(
                     template_abspath, cfile_name, opt_level, args)
@@ -612,7 +612,7 @@ def gen_reduce(args: argparse.Namespace):
                     template_abspath, cfile_name, opt_level, args)
 
 
-def get_serial_num(name):
+def get_instrument_npd_serial_num(name):
     '''
     get serial num of given name
     example: input instrument_npd123.c ; retuen 123 ;
@@ -623,6 +623,80 @@ def get_serial_num(name):
         return res.group(1)
     else:
         return None
+
+
+def run_reduce_eval(args: argparse.Namespace):
+    print("run reduce eval")
+    thread_num = str(args.thread)
+    analyzer = args.analyzer
+    opt = str(args.opt)
+
+    if args.dir:
+        targer_dir_abspath = os.path.abspath(args.dir)
+        if not os.path.exists(targer_dir_abspath):
+            print("dir_abspath does not exist: " + targer_dir_abspath)
+            exit(-1)
+
+        # handle dir pathes
+        print(targer_dir_abspath)
+        os.chdir(targer_dir_abspath)
+
+        # result list
+        reduce_list = []
+
+        if not os.path.exists("reduce"):
+            subprocess.run(["mkdir", "reduce"],
+                           stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
+
+        # handle every reducing script
+        files = os.listdir(targer_dir_abspath)
+        print("file num: " + str(len(files)))
+
+        for file in files:
+            if file.startswith("reduce_eval"):
+                print(file)
+                serial_num = re.search(r'reduce_eval_(\w+)\..*', file).group(1)
+                print(serial_num)
+                
+                ret = subprocess.run(["creduce", file, "eval_%s.c" % serial_num,
+                                     "--n", thread_num], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
+                reduce_list.append(os.path.abspath(file))
+                print(ret)
+                
+                ret = subprocess.run("/home/working-space/build-llvm-main/bin/tooling-sample %s eval_%s.c -- -I /usr/include/csmith/ > instrument_eval_%s.c"%(analyzer, serial_num,serial_num), 
+                    shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+                print(ret)
+
+                if analyzer == "gcc":
+                    ret = subprocess.run("gcc -fanalyzer -O%s -c -I /usr/include/csmith/ instrument_eval_%s.c &> instrument_eval_%s.log"%(opt, serial_num, serial_num), 
+                    shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+                    print(ret)
+
+                elif analyzer == "clang":
+                    pass
+
+
+                ret = subprocess.run("mv instrument_eval_%s.c instrument_eval_%s.log eval_%s.c reduce/" % (
+                    serial_num, serial_num, serial_num), shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+                print(ret)
+
+                print("finish!")
+                subprocess.run("rm -rf instrument_eval_%s.o" % serial_num,
+                               shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+                subprocess.run("rm -rf /tmp/instrument_eval_%s*" % serial_num,
+                               shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+                subprocess.run("rm -rf /tmp/compcert*",
+                               shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+
+    os.chdir("reduce")
+    reduce_list.sort()
+
+    with open("reduce_result-%s.txt" % str(time.strftime("%Y-%m-%d-%H-%M", time.localtime())), "w") as f:
+        
+        f.write("\nReduced files:\n")
+        for i in reduce_list:
+            f.write(i + "\n")
+
 
 
 def run_reduce(args: argparse.Namespace):
@@ -660,7 +734,7 @@ def run_reduce(args: argparse.Namespace):
         for file in files:
             if file.endswith(".py"):
                 print(file)
-                serial_num = get_serial_num(file)
+                serial_num = get_instrument_npd_serial_num(file)
                 print(serial_num)
                 res = subprocess.run(
                     ["./" + file], stderr=subprocess.DEVNULL, stdout=subprocess.PIPE, encoding="utf-8")
@@ -856,6 +930,20 @@ def handle_args():
         "thread", type=int, default=0, help="specify the thread num for reducing")
 
     parser_run_reduce.set_defaults(func=run_reduce)
+
+
+    # add subcommand run-reduce-eval
+    parser_run_reduce_eval = subparsers.add_parser(
+        "run-reduce-eval", help="run reduce-eval script")
+    parser_run_reduce_eval.add_argument("dir", type=str, help="give a directory")
+    parser_run_reduce_eval.add_argument(
+        "thread", type=int, default=0, help="specify the thread num for reducing")
+    parser_run_reduce_eval.add_argument("analyzer", type=str, choices={
+        'gcc', 'clang'}, help="give a analyzer")
+    parser_run_reduce_eval.add_argument("opt", type=int, choices={
+                                   0, 1, 2, 3}, help="optimization level")
+
+    parser_run_reduce_eval.set_defaults(func=run_reduce_eval)
 
     # add subcommand fuzz-fp
     parser_fuzz = subparsers.add_parser(
