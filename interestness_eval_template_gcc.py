@@ -10,6 +10,7 @@ GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -fdiagnostics-plain-out
 
 INSTRUMENT_FILE = "instrument_" + CFILE
 
+# 这一步的返回值是不是要处理一下？
 print("instrument cfile")
 subprocess.run("/home/working-space/build-llvm-main/bin/tooling-sample gcc %s -- -I %s > %s"%(CFILE, CSMITH_HEADER, INSTRUMENT_FILE),
                                stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True , check=True )
