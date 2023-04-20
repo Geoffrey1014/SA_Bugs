@@ -63,6 +63,27 @@ def fuzz_fn(args: argparse.Namespace):
                          str(iter_times)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         os.chdir("..")
 
+def fuzz_eval(args: argparse.Namespace):
+    fuzzing_par_dir = args.path
+    analyzer = args.analyzer
+    opt = args.optimize
+    thread_num = args.thread
+
+    print("fuzz thread_num %s" % thread_num)
+    iter_times = args.num
+    script_path = "/home/working-space/scripts/fuzz_sa_eval.py"
+    fuzzing_working_dir = create_fuzzing_place(
+        fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
+    
+    os.chdir(fuzzing_working_dir)
+
+    for i in range(0, thread_num):
+        os.chdir('fuzz_%s' % i)
+        subprocess.Popen(['python3', 'fuzz_sa_eval.py', analyzer, '-o='+str(opt),
+                         str(iter_times)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        os.chdir("..")
+
+
 
 def create(args: argparse.Namespace):
     # print("creat")
@@ -72,7 +93,7 @@ def create(args: argparse.Namespace):
     script_path = args.script
     analyzer = args.analyzer
 
-    create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, 'a', num)
+    create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, 'not', num)
 
 
 def create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, opt_level, dir_num):
@@ -631,6 +652,17 @@ def run_reduce_eval(args: argparse.Namespace):
     analyzer = args.analyzer
     opt = str(args.opt)
 
+    if args.file:
+        file = args.file
+        if file.startswith("reduce_eval"):
+            print(file)
+            serial_num = re.search(r'reduce_eval_(\w+)\..*', file).group(1)
+            ret = subprocess.run(["./"+file, "eval_%s.c" % serial_num,
+                                    "--n", thread_num], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
+            print(ret)
+        return 
+
+
     if args.dir:
         targer_dir_abspath = os.path.abspath(args.dir)
         if not os.path.exists(targer_dir_abspath):
@@ -642,7 +674,8 @@ def run_reduce_eval(args: argparse.Namespace):
         os.chdir(targer_dir_abspath)
 
         # result list
-        reduce_list = []
+        reduced_list = []
+        not_reduced_list = {}
 
         if not os.path.exists("reduce"):
             subprocess.run(["mkdir", "reduce"],
@@ -655,21 +688,36 @@ def run_reduce_eval(args: argparse.Namespace):
         for file in files:
             if file.startswith("reduce_eval"):
                 print(file)
+                rfile = file
                 serial_num = re.search(r'reduce_eval_(\w+)\..*', file).group(1)
-                print(serial_num)
+                # print(serial_num)
+                cfile = "eval_%s.c" % serial_num
+
+                # if the reduce script does not return 0, then this cfile is useless
+                ret = subprocess.run(["./"+rfile, cfile,
+                                    "--n", thread_num], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
+                print("reduce script return code: %s" %ret.returncode)
+                if ret.returncode != 0:
+                    print(ret)
+                    not_reduced_list[os.path.abspath(rfile)] = ret.returncode
+                    ret = subprocess.run("rm instrument_eval_%s.c instrument_p_eval_%s.c instrument_eval_%s.log eval_%s.c reduce_eval_%s.py" % (
+                                            serial_num, serial_num, serial_num, serial_num, serial_num), shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+                    continue
                 
-                ret = subprocess.run(["creduce", file, "eval_%s.c" % serial_num,
+                # reduce the cfile
+                ret = subprocess.run(["creduce", rfile, "eval_%s.c" % serial_num,
                                      "--n", thread_num], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
-                reduce_list.append(os.path.abspath(file))
+                reduced_list.append(os.path.abspath(cfile))
                 print(ret)
                 
+                # move the reduced file and it's static analysis result to reduce/ dir
                 ret = subprocess.run("/home/working-space/build-llvm-main/bin/tooling-sample %s eval_%s.c -- -I /usr/include/csmith/ > instrument_eval_%s.c"%(analyzer, serial_num,serial_num), 
                     shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
                 print(ret)
 
                 if analyzer == "gcc":
-                    ret = subprocess.run("gcc -fanalyzer -O%s -c -I /usr/include/csmith/ instrument_eval_%s.c &> instrument_eval_%s.log"%(opt, serial_num, serial_num), 
-                    shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+                    ret = subprocess.run("gcc -fanalyzer -O%s -I /usr/include/csmith/ instrument_eval_%s.c &> instrument_eval_%s.log"%(opt, serial_num, serial_num), 
+                    shell=True)
                     print(ret)
 
                 elif analyzer == "clang":
@@ -688,14 +736,19 @@ def run_reduce_eval(args: argparse.Namespace):
                 subprocess.run("rm -rf /tmp/compcert*",
                                shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
+
     os.chdir("reduce")
-    reduce_list.sort()
+    reduced_list.sort()
 
     with open("reduce_result-%s.txt" % str(time.strftime("%Y-%m-%d-%H-%M", time.localtime())), "w") as f:
         
         f.write("\nReduced files:\n")
-        for i in reduce_list:
+        for i in reduced_list:
             f.write(i + "\n")
+
+        f.write("\n\nNot Reduced files:\n")
+        for i in not_reduced_list:
+            f.write(i + ": " + not_reduced_list[i] + "\n")
 
 
 
@@ -935,7 +988,8 @@ def handle_args():
     # add subcommand run-reduce-eval
     parser_run_reduce_eval = subparsers.add_parser(
         "run-reduce-eval", help="run reduce-eval script")
-    parser_run_reduce_eval.add_argument("dir", type=str, help="give a directory")
+    parser_run_reduce_eval.add_argument("-d","--dir", type=str, help="give a directory")
+    parser_run_reduce_eval.add_argument("-f","--file", type=str, help="give a file")
     parser_run_reduce_eval.add_argument(
         "thread", type=int, default=0, help="specify the thread num for reducing")
     parser_run_reduce_eval.add_argument("analyzer", type=str, choices={
@@ -976,6 +1030,23 @@ def handle_args():
         "num", type=int, default=1, help="the iteration times of fuzzing")
 
     parser_fuzz.set_defaults(func=fuzz_fn)
+
+     # add subcommand fuzz-fn
+    parser_fuzz = subparsers.add_parser(
+        "fuzz-eval", help="fuzzing static analyzer in a given dir")
+    parser_fuzz.add_argument(
+        "path", help="given a parent dir of fuzzing working dir")
+    parser_fuzz.add_argument("analyzer", type=str, choices={
+        'gcc', 'clang'}, help="give a analyzer")
+    parser_fuzz.add_argument("optimize", type=int, choices={
+        0, 1, 2, 3}, default=0, help="optimization level")
+    parser_fuzz.add_argument(
+        "thread", type=int, default=1, help="specify the thread num for fuzzing")
+    parser_fuzz.add_argument(
+        "num", type=int, default=1, help="the iteration times of fuzzing")
+
+    parser_fuzz.set_defaults(func=fuzz_eval)
+
 
     # add subcommand create fuzzing working dir
     parser_create = subparsers.add_parser(

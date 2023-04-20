@@ -43,6 +43,8 @@ GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -Wanalyzer-too-complex 
 
 CLANG_ANALYZER = "clang --analyze  -Xclang -analyzer-stats  -Xclang  -analyzer-constraints=range -Xclang  -setup-static-analyzer  -Xclang -analyzer-config  -Xclang  eagerly-assume=false   -Xclang  -analyzer-checker=core,alpha.security.taint,debug.ExprInspection,debug.TaintTest  "
 
+TOOLING_EVAL = "/home/working-space/build-llvm-main/bin/tooling-sample"
+TOOLING_CFE = "/home/working-space/build-llvm-main/bin/cfe_preprocess"
 # CLANG_OPTIONS = " "
 
 CSMITH_ERROR = 0
@@ -77,7 +79,7 @@ def save_crashing_file(num):
 
 
 def do_preprocess(file_path, analyzer):
-    subprocess.run("/home/working-space/build-llvm-main/bin/cfe_preprocess %s -- -I %s "%(file_path, CSMITH_HEADER),
+    subprocess.run("%s %s -- -I %s "%(TOOLING_CFE, file_path, CSMITH_HEADER),
                                stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True, check=True)
 
     new_lines = []
@@ -97,10 +99,10 @@ def do_preprocess(file_path, analyzer):
 
     instrument_file = "instrument_" + file_path
     if analyzer == "gcc":
-        subprocess.run("/home/working-space/build-llvm-main/bin/tooling-sample gcc %s -- -I %s > %s"%(file_path, CSMITH_HEADER, instrument_file),
+        subprocess.run("%s gcc %s -- -I %s > %s"%(TOOLING_EVAL, file_path, CSMITH_HEADER, instrument_file),
                                stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True , check=True )
     elif analyzer == "clang":
-        subprocess.run("/home/working-space/build-llvm-main/bin/tooling-sample clang %s -- -I %s > %s"%(file_path, CSMITH_HEADER, instrument_file),
+        subprocess.run("%s clang %s -- -I %s > %s"%(TOOLING_EVAL, file_path, CSMITH_HEADER, instrument_file),
                                stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True , check=True )
     return instrument_file
 

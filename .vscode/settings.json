@@ -1,6 +1,7 @@
 {
     "files.associations": {
-        "csmith.h": "c"
+        "csmith.h": "c",
+        "stdint.h": "c"
     },
     "python.formatting.provider": "yapf"
 }
