@@ -1,5 +1,5 @@
 __pycache__/
-tmp/
+tmp_gcc/
 hwg_place
 instrument_cases
 tmp_clang
