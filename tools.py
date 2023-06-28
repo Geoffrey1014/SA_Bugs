@@ -1071,7 +1071,7 @@ def handle_args():
 
     # add subcommand check-npd
     parser_checknpd = subparsers.add_parser(
-        "check-npd", help="check whether the given analyzer complain npd of the given c program")
+        "check-npd", help="check whether the given analyzer complain npd of the given c program (discarded)")
     parser_checknpd.add_argument("analyzer", type=str, choices={
                                  'gcc', 'clang'}, help="give a analyzer")
     parser_checknpd.add_argument("-o", "--optimize", type=int,
@@ -1090,7 +1090,7 @@ def handle_args():
 
     # add subcommand reach-npd
     parser_reach_npd_lines = subparsers.add_parser(
-        "reach-npd", help="check whether the npd line complained by the given analyzer is reahable")
+        "reach-npd", help="check whether the npd line complained by the given analyzer is reahable （discarded）")
     parser_reach_npd_lines.add_argument("analyzer", type=str, choices={
                                         'gcc', 'clang'}, help="give a analyzer")
     parser_reach_npd_lines.add_argument(
