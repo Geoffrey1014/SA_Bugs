@@ -89,61 +89,63 @@ if analyzer_ret.stderr.count("undefined reference") != 0 :
     print("has undefined reference ")
     exit(6)
     
-# 从 analyze 的结果中拿到 FALSE 的行号， 然后插桩 printf(“FALSE_FLAG”); 
-
-eval_false_lines = get_eval_false_lines(analyzer_ret.stderr)
-instrument_cfile(eval_false_lines)
 
 
-print("compile: gcc")
+# # 从 analyze 的结果中拿到 FALSE 的行号， 然后插桩 printf(“FALSE_FLAG”); 
 
-compile_ret = subprocess.run(['gcc', '-O' + OPT_LEVEL, '-I', CSMITH_HEADER, INSTRUMENT_P_FILE, '-o', RUN_FILE],
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
-# print(compile_ret.stderr)
-# program cannot have compiler error
-if compile_ret.returncode != 0:
-    print("Compile failed")  # cannot comment this line!
-    exit(compile_ret.returncode)
-
-print("run")
-run_ret = subprocess.run(['timeout', '5s', './'+RUN_FILE],
-                         stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
-print(run_ret)
+# eval_false_lines = get_eval_false_lines(analyzer_ret.stderr)
+# instrument_cfile(eval_false_lines)
 
 
-# check 是否有 flag 
-if run_ret.stdout.count("FALSE_FLAG") == 0:
-    exit(7)
+# print("compile: gcc")
 
-# 看看是不是 一直 print
-if run_ret.stdout.count("FALSE_FLAG") > 10000:
-    exit(8)
+# compile_ret = subprocess.run(['gcc', '-O' + OPT_LEVEL, '-I', CSMITH_HEADER, INSTRUMENT_P_FILE, '-o', RUN_FILE],
+#                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
+# # print(compile_ret.stderr)
+# # program cannot have compiler error
+# if compile_ret.returncode != 0:
+#     print("Compile failed")  # cannot comment this line!
+#     exit(compile_ret.returncode)
 
-# if run_ret.returncode == 124:
-#     print("Timeout!")  # cannot comment this line!
-#     exit(run_ret.returncode)
-# elif run_ret.returncode != 0: #TODO： run fail 没有关系其实
-#     print("Run failed!")  # cannot comment this line!
-#     exit(run_ret.returncode)
-
-
+# print("run")
+# run_ret = subprocess.run(['timeout', '5s', './'+RUN_FILE],
+#                          stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
+# print(run_ret)
 
 
-# 要保证 main 函数还在，
+# # check 是否有 flag 
+# if run_ret.stdout.count("FALSE_FLAG") == 0:
+#     exit(7)
 
-# use ccomp to check if there are undefined behaviors
-print("run compcert")
-ccomp_ret = subprocess.run(['ccomp', '-I', CSMITH_HEADER, '-interp', '-fall', 
-                           CFILE], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
-if ccomp_ret.stdout.count("Undefined behavior") != 0:
-    print("Undefined behavior")
-    # print(ccomp_ret)
-    exit(4)
-if ccomp_ret.returncode != 0:
-    print("ccomp_ret returncode: %s" % ccomp_ret.returncode)
-    print("Compcert failed")  # cannot comment this line!
-    # print(ccomp_ret)
-    exit(ccomp_ret.returncode)
+# # 看看是不是 一直 print
+# if run_ret.stdout.count("FALSE_FLAG") > 10000:
+#     exit(8)
+
+# # if run_ret.returncode == 124:
+# #     print("Timeout!")  # cannot comment this line!
+# #     exit(run_ret.returncode)
+# # elif run_ret.returncode != 0: #TODO： run fail 没有关系其实
+# #     print("Run failed!")  # cannot comment this line!
+# #     exit(run_ret.returncode)
+
+
+
+
+# # 要保证 main 函数还在，
+
+# # use ccomp to check if there are undefined behaviors
+# print("run compcert")
+# ccomp_ret = subprocess.run(['ccomp', '-I', CSMITH_HEADER, '-interp', '-fall', 
+#                            CFILE], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
+# if ccomp_ret.stdout.count("Undefined behavior") != 0:
+#     print("Undefined behavior")
+#     # print(ccomp_ret)
+#     exit(4)
+# if ccomp_ret.returncode != 0:
+#     print("ccomp_ret returncode: %s" % ccomp_ret.returncode)
+#     print("Compcert failed")  # cannot comment this line!
+#     # print(ccomp_ret)
+#     exit(ccomp_ret.returncode)
 
 # use gcc sanitizer to check undefined behaviors
 
