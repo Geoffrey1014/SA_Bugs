@@ -894,48 +894,6 @@ def run_reduce(args: argparse.Namespace):
             f.write(i + "\n")
 
 
-def replace_type(abs_file_path):
-    '''
-    input: abs_file_path of a c file
-    return: the given c file with type 
-    replaced backup the origin c file
-    '''
-    with open(abs_file_path, "r") as f:
-        lines = f.readlines()
-        new_lines = []
-        new_lines.append("#include <stdio.h>\n")
-        for line in lines:
-            line = line.replace("uint8_t ", "unsigned char ")
-            line = line.replace("uint16_t ", "unsigned short int ")
-            line = line.replace("uint32_t ", "unsigned int ")
-            line = line.replace("uint64_t ", "unsigned long int ")
-            line = line.replace("int8_t ", "char ")
-            line = line.replace("int16_t ", "short int ")
-            line = line.replace("int32_t ", "int ")
-            line = line.replace("int64_t ", "long int ")
-            new_lines.append(line)
-
-        short_name = get_short_name(abs_file_path)
-
-        with open(short_name + "-0.c", "w") as f:
-            f.writelines(lines)
-        with open(short_name + ".c", "w") as f:
-            f.writelines(new_lines)
-
-    return abs_file_path
-
-
-def replace(args: argparse.Namespace):
-    '''
-    replace csmith defined type to default type
-    '''
-    if args.file:
-        print(args.file)
-        abs_file_path = os.path.abspath(args.file)
-        replace_type(abs_file_path)
-    elif args.dir:
-        print(args.dir)
-
 
 def do_preprocess(abs_file_path, analyzer):
     subprocess.run("/home/working-space/build-llvm-main/bin/cfe_preprocess %s -- -I /usr/include/csmith "%abs_file_path,
@@ -1004,15 +962,6 @@ def handle_args():
     parser_preprocess.set_defaults(func=preprocess)
 
 
-    # add subcommand replace
-    parser_replace = subparsers.add_parser(
-        "replace", help="replace int32_t to int and so on")
-    group_replace = parser_replace.add_mutually_exclusive_group()
-    group_replace.add_argument("-f", "--file", type=str, help="target file")
-    group_replace.add_argument(
-        "-d", "--dir", type=str, help="give a directory")
-
-    parser_replace.set_defaults(func=replace)
 
     # add subcommand gen-reduce
     parser_gen_reduce = subparsers.add_parser(
@@ -1090,7 +1039,7 @@ def handle_args():
 
     parser_fuzz.set_defaults(func=fuzz_fn)
 
-     # add subcommand fuzz-fn
+     # add subcommand fuzz-eval
     parser_fuzz = subparsers.add_parser(
         "fuzz-eval", help="fuzzing static analyzer in a given dir")
     parser_fuzz.add_argument(
