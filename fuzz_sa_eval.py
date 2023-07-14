@@ -41,7 +41,9 @@ CSMITH_HEADER = "/usr/include/csmith"
 
 GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -Wanalyzer-too-complex -fdiagnostics-format=text "
 
-CLANG_ANALYZER = "clang --analyze  -Xclang -analyzer-stats  -Xclang  -analyzer-constraints=range -Xclang  -setup-static-analyzer  -Xclang -analyzer-config  -Xclang  eagerly-assume=false   -Xclang  -analyzer-checker=core,alpha.security.taint,debug.ExprInspection,debug.TaintTest  "
+# CLANG_ANALYZER = "clang --analyze -Xclang -analyzer-stats -Xclang -setup-static-analyzer -Xclang -analyzer-config -Xclang eagerly-assume=false -Xclang -analyzer-checker=core,alpha.security.taint,debug.ExprInspection,debug.TaintTest"
+
+CLANG_ANALYZER = "/usr/local/llvm-0407/bin/clang --analyze -Xclang -analyzer-stats -Xclang -setup-static-analyzer -Xclang -analyzer-config -Xclang eagerly-assume=false -Xclang -analyzer-checker=core,alpha.security.taint,debug.ExprInspection,debug.TaintTest -Xanalyzer -analyzer-config -Xanalyzer crosscheck-with-z3=true"
 
 TOOLING_EVAL = "/home/working-space/build-llvm-main/bin/tooling-sample"
 TOOLING_CFE = "/home/working-space/build-llvm-main/bin/cfe_preprocess"
