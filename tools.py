@@ -748,7 +748,7 @@ def run_reduce_eval(args: argparse.Namespace):
 
         f.write("\n\nNot Reduced files:\n")
         for i in not_reduced_list:
-            f.write(i + ": " + not_reduced_list[i] + "\n")
+            f.write(i + ": " + str(not_reduced_list[i]) + "\n")
 
 
 
@@ -1009,6 +1009,9 @@ def handle_args():
         "-n", "--num", type=int, required=True, help="the number of fuzzing")
 
     parser_create.set_defaults(func=create)
+
+    # add subcommand find
+
 
     # add subcommand checknpd
     parser_checknpd = subparsers.add_parser(
