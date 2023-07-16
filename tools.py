@@ -82,6 +82,22 @@ def fuzz_eval(args: argparse.Namespace):
 
 
 
+    print("fuzz thread_num %s" % thread_num)
+    iter_times = args.num
+    script_path = "/home/working-space/scripts/fuzz_sa_eval.py"
+    fuzzing_working_dir = create_fuzzing_place(
+        fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
+    
+    os.chdir(fuzzing_working_dir)
+
+    for i in range(0, thread_num):
+        os.chdir('fuzz_%s' % i)
+        subprocess.Popen(['python3', 'fuzz_sa_eval.py', analyzer, '-o='+str(opt),
+                         str(iter_times)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        os.chdir("..")
+
+
+
 def create(args: argparse.Namespace):
     fuzzing_par_dir = args.path
     num = args.num
@@ -687,6 +703,16 @@ def gen_reduce(args: argparse.Namespace):
         print("file nums: " + str(len(files)))
 
         for file in files:
+            if file.endswith(".c") and not file.startswith("instrument"):
+                cfile_name = get_short_name(file)
+                gen_reduce_script(
+                    template_abspath, cfile_name, opt_level, args)
+    else:
+        target_dir_abspath = os.getcwd()
+        files = os.listdir(target_dir_abspath)
+        print("file nums: " + str(len(files)))
+
+        for file in files:
             if file.endswith(".c"):
                 cfile_name = get_short_name(file)
                 gen_reduce_script(
@@ -1068,6 +1094,9 @@ def handle_args():
         "-n", "--num", type=int, required=True, help="the number of fuzzing")
 
     parser_create.set_defaults(func=create)
+
+    # add subcommand find
+
 
     # add subcommand find
 
