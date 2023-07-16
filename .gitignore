@@ -1,2 +1,9 @@
 __pycache__/
-tmp/
+tmp_gcc/
+hwg_place
+instrument_cases
+tmp_clang
+tmp_clang
+gcc_tmp
+gcc-tmp
+clang-tmp 

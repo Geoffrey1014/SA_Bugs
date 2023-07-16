@@ -22,9 +22,11 @@ COMPILER_TIMEOUT = 120
 # kill a compiler's output after this many seconds
 PROG_TIMEOUT = 8
 
-CSMITH_USER_OPTIONS = " --no-arrays --max-pointer-depth 2 "
-# CSMITH_USER_OPTIONS = " --no-global-variables --max-pointer-depth 2 "
-# CSMITH_USER_OPTIONS = " --no-global-variables --max-funcs 1 --no-safe-math "
+# These options are more important and need to be singled out
+CSMITH_USER_OPTIONS = " --no-global-variables --max-pointer-depth 2"
+# CSMITH_USER_OPTIONS = " --no-global-variables --max-funcs 1"
+# CSMITH_USER_OPTIONS = " --no-global-variables --max-funcs 2 --no-safe-math"
+# CSMITH_USER_OPTIONS = " --no-bitfields --packed-struct --no-global-variables --max-pointer-depth 2 "
 
 ##############################
 # end user-configurable stuff
@@ -96,6 +98,7 @@ def analyze_with_gcc(num, optimization_level, args):
         clean_gcc_products(num, args.saveProducts)
         return None
 
+    # the results of gcc analysis are written to report_file
     return report_file
 
 
@@ -254,7 +257,8 @@ def run_npd(cfile, optimize):
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
     print(run_ret)
 
-    # segmentation fault
+    # segmentation fault 
+    # 内存访问越界 也会导致 segmentation fault (core dumped)， 这里抓的不准确
     if run_ret.stderr.count("the monitored command dumped core") >= 1:
         print("the monitored command dumped core")
         return True
@@ -263,6 +267,7 @@ def run_npd(cfile, optimize):
         return False
 
 
+# 有可能运行的 case 的那个 segmentfault 不是 SA 找出来的那个
 def gcc_test_one(num, args):
     '''
     generate a test case with csmith,
@@ -275,6 +280,7 @@ def gcc_test_one(num, args):
     if cfile:
         TESTCASE_NUM += 1
         ret = run_npd(cfile, str(args.optimize))
+        # segmentation fault exists
         if ret:
             RUN_DUMP_NUM += 1
             report_file = analyze_with_gcc(num, str(args.optimize), args)

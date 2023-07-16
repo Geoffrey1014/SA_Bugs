@@ -1,0 +1,17 @@
+{
+    "files.associations": {
+        "csmith.h": "c",
+        "stdint.h": "c",
+        "stdio.h": "c",
+        "stdbool.h": "c",
+        "float.h": "c",
+        "math.h": "c",
+        "types.h": "c",
+        "limits.h": "c",
+        "csmith_minimal.h": "c",
+        "random_inc.h": "c",
+        "atomic": "c",
+        "cstdint": "c"
+    },
+    "python.formatting.provider": "yapf"
+}
