@@ -24,8 +24,10 @@ COMPILER_TIMEOUT = 120
 
 # kill compiler's output after this many seconds
 PROG_TIMEOUT = 8
+# GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -Wno-analyzer-double-fclose -Wno-analyzer-double-free -Wno-analyzer-exposure-through-output-file -Wno-analyzer-file-leak -Wno-analyzer-free-of-non-heap -Wno-analyzer-malloc-leak -Wno-analyzer-mismatching-deallocation -Wno-analyzer-null-argument -Wno-analyzer-possible-null-argument -Wno-analyzer-possible-null-dereference -Wno-analyzer-shift-count-negative -Wno-analyzer-shift-count-overflow -Wno-analyzer-stale-setjmp-buffer -Wno-analyzer-unsafe-call-within-signal-handler -Wno-analyzer-use-after-free -Wno-analyzer-use-of-pointer-in-stale-stack-frame -Wno-analyzer-use-of-uninitialized-value -Wno-analyzer-write-to-const -Wno-analyzer-write-to-string-literal -fdiagnostics-plain-output -fdiagnostics-format=text "
+GCC_ANALYZER = "/usr/local/gcc-13-9533/bin/gcc -fanalyzer -fanalyzer-call-summaries -Wno-analyzer-null-dereference -Wno-analyzer-double-fclose -Wno-analyzer-double-free -Wno-analyzer-exposure-through-output-file -Wno-analyzer-file-leak -Wno-analyzer-free-of-non-heap -Wno-analyzer-malloc-leak -Wno-analyzer-mismatching-deallocation -Wno-analyzer-null-argument -Wno-analyzer-possible-null-argument -Wno-analyzer-possible-null-dereference -Wno-analyzer-shift-count-negative -Wno-analyzer-shift-count-overflow -Wno-analyzer-stale-setjmp-buffer -Wno-analyzer-unsafe-call-within-signal-handler -Wno-analyzer-use-after-free -Wno-analyzer-use-of-pointer-in-stale-stack-frame -Wno-analyzer-use-of-uninitialized-value -Wno-analyzer-write-to-const -Wno-analyzer-write-to-string-literal -fdiagnostics-plain-output -fdiagnostics-format=text "
 
-GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -Wno-analyzer-double-fclose -Wno-analyzer-double-free -Wno-analyzer-exposure-through-output-file -Wno-analyzer-file-leak -Wno-analyzer-free-of-non-heap -Wno-analyzer-malloc-leak -Wno-analyzer-mismatching-deallocation -Wno-analyzer-null-argument -Wno-analyzer-possible-null-argument -Wno-analyzer-possible-null-dereference -Wno-analyzer-shift-count-negative -Wno-analyzer-shift-count-overflow -Wno-analyzer-stale-setjmp-buffer -Wno-analyzer-unsafe-call-within-signal-handler -Wno-analyzer-use-after-free -Wno-analyzer-use-of-pointer-in-stale-stack-frame -Wno-analyzer-use-of-uninitialized-value -Wno-analyzer-write-to-const -Wno-analyzer-write-to-string-literal -fdiagnostics-plain-output -fdiagnostics-format=text "
+# TODO: it is not necessary to use sccan-build, we can use clang directly
 CLANG_ANALYZER = "scan-build -disable-checker core.CallAndMessage -disable-checker core.DivideZero -disable-checker core.NonNullParamChecker -disable-checker core.StackAddressEscape -disable-checker core.UndefinedBinaryOperatorResult -disable-checker core.VLASize -disable-checker core.uninitialized.ArraySubscript -disable-checker core.uninitialized.Assign -disable-checker core.uninitialized.Branch -disable-checker core.uninitialized.CapturedBlockVariable -disable-checker core.uninitialized.UndefReturn -disable-checker cplusplus.InnerPointer -disable-checker cplusplus.Move -disable-checker cplusplus.NewDelete -disable-checker cplusplus.NewDeleteLeaks -disable-checker cplusplus.PlacementNew -disable-checker cplusplus.PureVirtualCall -disable-checker deadcode.DeadStores -disable-checker nullability.NullPassedToNonnull -disable-checker nullability.NullReturnedFromNonnull -disable-checker security.insecureAPI.gets -disable-checker security.insecureAPI.mkstemp -disable-checker security.insecureAPI.mktemp -disable-checker security.insecureAPI.vfork -disable-checker unix.API -disable-checker unix.Malloc -disable-checker unix.MallocSizeof -disable-checker unix.MismatchedDeallocator -disable-checker unix.Vfork -disable-checker unix.cstring.BadSizeArg -disable-checker unix.cstring.NullArg "
 CLANG_OPTIONS = "-Wno-literal-conversion -Wno-bool-operation -Wno-pointer-sign -Wno-tautological-compare -Wno-incompatible-pointer-types -Wno-tautological-constant-out-of-range-compare -Wno-compare-distinct-pointer-types -Wno-implicit-const-int-float-conversion -Wno-constant-logical-operand -Wno-parentheses-equality -Wno-constant-conversion -Wno-unused-value -Xclang -analyzer-config -Xclang widen-loops=true "
 
@@ -40,6 +42,7 @@ CSMITH_USER_OPTIONS = " --no-global-variables --max-pointer-depth 2 "
 
 CRASH_NUM = 0
 NPD_NUM = 0
+OOB_NUM = 0
 TIMEOUT_NUM = 0
 
 ANALYZER_TIMEOUT = "timeout 60 "
@@ -72,6 +75,7 @@ def save_crashing_file(num):
 def generate_code(num, ctrl_max):
     '''
     generate wanted-size code with csmith
+    generated test cases are saved in test_*.c
     '''
     cfile = "test_%s.c" % num
     os.system("rm -f %s" % cfile)
@@ -135,19 +139,19 @@ def analyze_with_gcc(num, optimization_level, args):
     cfile = "test_%s.c" % num
 
     ret = os.system(ANALYZER_TIMEOUT + GCC_ANALYZER + " -O" + optimization_level +
-                    "  -msse4.2 -c -I " + CSMITH_HEADER + " " + cfile + " > " + report_file + " 2>&1")
+                    " -c -I " + CSMITH_HEADER + " " + cfile + " > " + report_file + " 2>&1")
     ret >>= 8
-
-    print("gcc static analyzer ret: " + str(ret))
+    if args.verbose:
+        print("gcc static analyzer ret: " + str(ret))
 
     if ret == 124:
         TIMEOUT_NUM += 1
         print(ANALYZER_TIMEOUT)
         clean_gcc_products(num, args.saveProducts)
         return None
-    elif ret != 0:
+    elif ret == 1:
         # TODO: Is there a problem with the logic there?
-        # Is the return value neither 0 nor 124 necessarily an analyzer crash?
+        # I have seen a crash case, the return code is 1. But I am not sure what the other return codes (e.g. 2, 3) mean.
         save_crashing_file(num)
         clean_gcc_products(num, args.saveProducts)
         return None
@@ -159,7 +163,7 @@ def analyze_with_clang(num, report_html, optimization_level, args):
     '''
     use clang to analyze csmith-generated c program
     '''
-    global TIMEOUT_NUM
+    global TIMEOUT_NUM, CRASH_NUM
     report_file = "test_%s.txt" % num
     cfile = "test_%s.c" % num
 
@@ -179,6 +183,7 @@ def analyze_with_clang(num, report_html, optimization_level, args):
         # Is the return value neither 0 nor 124 necessarily an analyzer crash?？
         save_crashing_file(num)
         clean_clang_products(num, report_html, args.saveProducts)
+        CRASH_NUM += 1
         return None
 
     return report_file
@@ -188,7 +193,7 @@ def process_gcc_report(num, report_file, args):
     '''
     check whether the given report contains the target CWE (NPD)
     '''
-    global NPD_NUM
+    global NPD_NUM, OOB_NUM
     save_products_flag = args.saveProducts
 
     if not os.path.exists(report_file):
@@ -197,14 +202,24 @@ def process_gcc_report(num, report_file, args):
         return
 
     # TODO: optimization
-    check_cmd = 'grep "\[CWE\-476\]"'
-    ret = os.system(check_cmd + " < " + report_file)
-    ret >>= 8
+    if args.checker == "npd":
+        check_cmd = 'grep "\[CWE\-476\]"'
+        ret = os.system(check_cmd + " < " + report_file)
+        ret >>= 8
 
-    if ret == 0:
-        os.system("mv test*.c npd%s.c " % (NPD_NUM))
-        os.system("mv test*.txt npd%s.txt " % (NPD_NUM))
-        NPD_NUM += 1
+        if ret == 0:
+            os.system("mv test*.c npd%s.c " % (NPD_NUM))
+            os.system("mv test*.txt npd%s.txt " % (NPD_NUM))
+            NPD_NUM += 1
+    elif args.checker == "oob":
+        check_cmd = 'grep "\[CWE\-122\]"'
+        ret = os.system(check_cmd + " < " + report_file)
+        ret >>= 8
+
+        if ret == 0:
+            os.system("mv test*.c oob%s.c " % (OOB_NUM))
+            os.system("mv test*.txt oob%s.txt " % (OOB_NUM))
+            OOB_NUM += 1
 
     clean_gcc_products(num, save_products_flag)
 
@@ -260,13 +275,16 @@ def write_script_run_args(args):
             f.write("\n\nanalyzer options:\n" + CLANG_OPTIONS)
 
 
-def write_fuzzing_result(stop_message):
+def write_fuzzing_result(checker, stop_message):
     '''
     write down short statistic of fuzzing
     '''
     with open('fuzzing_result.txt', 'w') as f:
         f.write("STOP: %s\n" % stop_message)
-        f.write("NPD_NUM: %s\n" % NPD_NUM)
+        if checker == "npd":
+            f.write("NPD_NUM: %s\n" % NPD_NUM)
+        elif checker == "oob":
+            f.write("OOB_NUM: %s\n" % OOB_NUM)
         f.write("\nTIMEOUT_NUM: %s\n" % TIMEOUT_NUM)
         f.write("\nCRASH_NUM: %s\n" % CRASH_NUM)
 
@@ -275,9 +293,10 @@ def handle_args():
     parser = argparse.ArgumentParser(
         description="fuzz static analyzer with csmith-generated c program")
     group = parser.add_mutually_exclusive_group()
-    group.add_argument("-v", "--verbose", action="store_true")
-    group.add_argument("-q", "--quiet", action="store_true")
+    group.add_argument("-v", "--verbose", default= False,action="store_true")
+    group.add_argument("-q", "--quiet", default=True, action="store_true")
     parser.add_argument('compiler', type=str, help='choose a compiler')
+    parser.add_argument('checker', type=str, default='npd',help='choose a checker')
     parser.add_argument("-o", '--optimize', type=int,
                         choices={0, 1, 2, 3}, default=0, help='choose an optimize level')
     parser.add_argument('num', type=int, help='number of generated c programs')
@@ -301,14 +320,20 @@ def bye(signum, frame):
 
 def main():
     args = handle_args()
-    print(args)
+    if args.verbose:
+        print(args)
     write_script_run_args(args)
     target_analyzer = args.compiler
     num = args.num
+    checker = args.checker
 
     signal.signal(signal.SIGINT, bye)
     signal.signal(signal.SIGTERM, bye)
     # signal.signal(signal.SIGKILL, bye)
+    if checker not in ["npd", "oob"]:
+        print("checker: %s is not supported!" % args.checker)
+        exit(0)
+
 
     if target_analyzer == "gcc":
         for i in range(int(num)):
@@ -323,8 +348,9 @@ def main():
             clang_test_one(i, "report_html", args)
     else:
         print("target analyzer: %s is not supported!" % target_analyzer)
+        exit(0)
 
-    write_fuzzing_result("OVER!")
+    write_fuzzing_result(checker,"OVER!")
 
 
 if __name__ == "__main__":
