@@ -26,7 +26,7 @@ def fuzz_fp(args: argparse.Namespace):
     print("fuzz thread_num %s" % thread_num)
 
     iter_times = args.num
-    script_path = "/home/working_space/scripts/fuzz_sa_fp.py"
+    script_path = "/home/working-space/scripts/fuzz_sa_fp.py"
     fuzzing_working_dir = create_fuzzing_place(
         fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
 
@@ -34,8 +34,8 @@ def fuzz_fp(args: argparse.Namespace):
 
     for i in range(0, thread_num):
         os.chdir('fuzz_%s' % i)
-        subprocess.Popen(['python3', 'fuzz_sa_fp.py', analyzer, '-o='+str(opt),
-                         str(iter_times)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.Popen(['python3', 'fuzz_sa_fp.py', analyzer, args.checker,
+                         str(iter_times),'-o='+str(opt)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         os.chdir("..")
 
 
@@ -48,7 +48,7 @@ def fuzz_fn(args: argparse.Namespace):
     print("fuzz thread_num %s" % thread_num)
 
     iter_times = args.num
-    script_path = "/home/working_space/scripts/fuzz_sa_fn.py"
+    script_path = "/home/working-space/scripts/fuzz_sa_fn.py"
     fuzzing_working_dir = create_fuzzing_place(
         fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
 
@@ -707,16 +707,6 @@ def gen_reduce(args: argparse.Namespace):
                 cfile_name = get_short_name(file)
                 gen_reduce_script(
                     template_abspath, cfile_name, opt_level, args)
-    else:
-        target_dir_abspath = os.getcwd()
-        files = os.listdir(target_dir_abspath)
-        print("file nums: " + str(len(files)))
-
-        for file in files:
-            if file.endswith(".c"):
-                cfile_name = get_short_name(file)
-                gen_reduce_script(
-                    template_abspath, cfile_name, opt_level, args)
 
 
 def get_instrument_npd_serial_num(name):
@@ -1040,6 +1030,8 @@ def handle_args():
         "path", help="given a parent dir of fuzzing working dir")
     parser_fuzz.add_argument("analyzer", type=str, choices={
         'gcc', 'clang'}, help="give a analyzer")
+    parser_fuzz.add_argument("checker", type=str, choices={
+        'npd', 'oob'}, help="give a checker")
     parser_fuzz.add_argument("optimize", type=int, choices={
         0, 1, 2, 3}, default=0, help="optimization level ( if clang, ...")
     parser_fuzz.add_argument(
