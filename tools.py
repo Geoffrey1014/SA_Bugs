@@ -5,12 +5,12 @@ import re
 import shlex
 import subprocess
 import time
+import myutils
+from config import *
+### 这些配置文件应该只需要配置一次
 
-CSMITH_HEADER = "/usr/include/csmith"
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -Wno-analyzer-double-fclose -Wno-analyzer-double-free -Wno-analyzer-exposure-through-output-file -Wno-analyzer-file-leak -Wno-analyzer-free-of-non-heap -Wno-analyzer-malloc-leak -Wno-analyzer-mismatching-deallocation -Wno-analyzer-null-argument -Wno-analyzer-possible-null-argument -Wno-analyzer-possible-null-dereference -Wno-analyzer-shift-count-negative -Wno-analyzer-shift-count-overflow -Wno-analyzer-stale-setjmp-buffer -Wno-analyzer-unsafe-call-within-signal-handler -Wno-analyzer-use-after-free -Wno-analyzer-use-of-pointer-in-stale-stack-frame -Wno-analyzer-use-of-uninitialized-value -Wno-analyzer-write-to-const -Wno-analyzer-write-to-string-literal -fdiagnostics-plain-output -fdiagnostics-format=text -msse4.2 "
-CLANG_ANALYZER = "scan-build -disable-checker core.CallAndMessage -disable-checker core.DivideZero -disable-checker core.NonNullParamChecker -disable-checker core.StackAddressEscape -disable-checker core.UndefinedBinaryOperatorResult -disable-checker core.VLASize -disable-checker core.uninitialized.ArraySubscript -disable-checker core.uninitialized.Assign -disable-checker core.uninitialized.Branch -disable-checker core.uninitialized.CapturedBlockVariable -disable-checker core.uninitialized.UndefReturn -disable-checker cplusplus.InnerPointer -disable-checker cplusplus.Move -disable-checker cplusplus.NewDelete -disable-checker cplusplus.NewDeleteLeaks -disable-checker cplusplus.PlacementNew -disable-checker cplusplus.PureVirtualCall -disable-checker deadcode.DeadStores -disable-checker nullability.NullPassedToNonnull -disable-checker nullability.NullReturnedFromNonnull -disable-checker security.insecureAPI.gets -disable-checker security.insecureAPI.mkstemp -disable-checker security.insecureAPI.mktemp -disable-checker security.insecureAPI.vfork -disable-checker unix.API -disable-checker unix.Malloc -disable-checker unix.MallocSizeof -disable-checker unix.MismatchedDeallocator -disable-checker unix.Vfork -disable-checker unix.cstring.BadSizeArg -disable-checker unix.cstring.NullArg "
-CLANG_OPTIONS = "-Wno-literal-conversion -Wno-bool-operation -Wno-pointer-sign -Wno-tautological-compare -Wno-incompatible-pointer-types -Wno-tautological-constant-out-of-range-compare -Wno-compare-distinct-pointer-types -Wno-implicit-const-int-float-conversion -Wno-constant-logical-operand -Wno-parentheses-equality -Wno-constant-conversion -Wno-unused-value -Xclang -analyzer-config -Xclang widen-loops=true "
 
 REACHABLE_DIR = "reachable"
 NPD_DISAPPEAR = "NPD_FLAG disappear"
@@ -18,15 +18,15 @@ UB_STRING = "Undefined behavior"
 
 
 def fuzz_fp(args: argparse.Namespace):
+    script_path = ROOT_DIR + "/fuzz_sa_fp.py"
+
     fuzzing_par_dir = args.path
-    analyzer = args.analyzer
     opt = args.optimize
     thread_num = args.thread
-
-    print("fuzz thread_num %s" % thread_num)
-
+    analyzer = args.analyzer
     iter_times = args.num
-    script_path = "/home/working-space/scripts/fuzz_sa_fp.py"
+    print("fuzz thread_num %s" % thread_num)
+    
     fuzzing_working_dir = create_fuzzing_place(
         fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
 
@@ -40,15 +40,15 @@ def fuzz_fp(args: argparse.Namespace):
 
 
 def fuzz_fn(args: argparse.Namespace):
+    script_path = ROOT_DIR + "/fuzz_sa_fn.py"
+
     fuzzing_par_dir = args.path
     analyzer = args.analyzer
     opt = args.optimize
     thread_num = args.thread
-
-    print("fuzz thread_num %s" % thread_num)
-
     iter_times = args.num
-    script_path = "/home/working-space/scripts/fuzz_sa_fn.py"
+    print("fuzz thread_num %s" % thread_num)
+    
     fuzzing_working_dir = create_fuzzing_place(
         fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
 
@@ -61,30 +61,15 @@ def fuzz_fn(args: argparse.Namespace):
         os.chdir("..")
 
 def fuzz_eval(args: argparse.Namespace):
+    script_path = ROOT_DIR + "/fuzz_sa_eval.py"
+
     fuzzing_par_dir = args.path
     analyzer = args.analyzer
     opt = args.optimize
     thread_num = args.thread
-
-    print("fuzz thread_num %s" % thread_num)
     iter_times = args.num
-    script_path = "/home/working-space/scripts/fuzz_sa_eval.py"
-    fuzzing_working_dir = create_fuzzing_place(
-        fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
+    print("fuzz thread_num %s" % thread_num)
     
-    os.chdir(fuzzing_working_dir)
-
-    for i in range(0, thread_num):
-        os.chdir('fuzz_%s' % i)
-        subprocess.Popen(['python3', 'fuzz_sa_eval.py', analyzer, '-o='+str(opt),
-                         str(iter_times)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        os.chdir("..")
-
-
-
-    print("fuzz thread_num %s" % thread_num)
-    iter_times = args.num
-    script_path = "/home/working-space/scripts/fuzz_sa_eval.py"
     fuzzing_working_dir = create_fuzzing_place(
         fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
     
@@ -106,7 +91,6 @@ def create(args: argparse.Namespace):
 
     create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, 'not', num)
 
-
 def create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, opt_level, dir_num):
     '''
     create $dir_num dirctories in fuzzing_par_dir
@@ -121,9 +105,18 @@ def create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, opt_level, dir_
     abs_script_path = os.path.abspath(script_path)
 
     time_now = time.strftime("%Y_%m_%d_%H_%M_%S", time.localtime())
-    ret = subprocess.run([analyzer, '-dumpversion'],
-                         stderr=subprocess.DEVNULL, stdout=subprocess.PIPE, encoding="utf-8")
-    print(analyzer + ": " + ret.stdout.strip())
+
+    if analyzer == "gcc":
+        cc = GCC
+    elif analyzer == "clang":
+        cc = CLANG
+    try:
+        ret = subprocess.run([cc, '-dumpversion'],
+                             stderr=subprocess.DEVNULL, stdout=subprocess.PIPE, encoding="utf-8", check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error: {e}")
+        exit(1)
+    
     abs_working_path = abs_par_path + '/' + analyzer + \
         '_' + ret.stdout.strip() + '_O' + opt_level + '_' + time_now
 
@@ -138,22 +131,10 @@ def create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, opt_level, dir_
         os.mkdir(fuzz_i)
 
         subprocess.run(['cp', abs_script_path, fuzz_i])
-        subprocess.run(['chmod', '+x', fuzz_i + '/' +
-                       os.path.basename(abs_script_path)])
+        subprocess.run(['chmod', '+x', fuzz_i + '/' + os.path.basename(abs_script_path)])
 
     print(abs_working_path)
     return abs_working_path
-
-
-def get_short_name(full_name: str) -> str:
-    '''
-    input: abs_path
-    return: basename without suffix
-    '''
-    basename = os.path.basename(full_name)
-    name, *_ = basename.split(".")
-
-    return name
 
 
 def get_analyzer_version(analyzer):
@@ -167,7 +148,7 @@ def analyze_with_gcc(optimization_level, cfile):
     '''
     use gcc to analyze csmith-generated c program
     '''
-    short_name = get_short_name(cfile)
+    short_name = myutils.get_short_name(cfile)
     report_file = short_name + '.txt'
     object_file = short_name + '.o'
 
@@ -197,7 +178,7 @@ def analyze_with_clang(cfile):
     '''
     use clang to analyze csmith-generated c program
     '''
-    short_name = get_short_name(cfile)
+    short_name = myutils.get_short_name(cfile)
     report_file = short_name + '.txt'
     object_file = short_name + '.o'
 
@@ -235,7 +216,7 @@ def process_gcc_report(report_file, args):
     '''
     check whether the given report contains the target CWE(NPD)
     '''
-    name = get_short_name(report_file)
+    name = myutils.get_short_name(report_file)
 
     if not os.path.exists(report_file):
         print("report does not exist: " + str(report_file))
@@ -261,7 +242,7 @@ def process_clang_report(report_file, args):
     '''
     check whether the given report contains the target CWE(NPD)
     '''
-    name = get_short_name(report_file)
+    name = myutils.get_short_name(report_file)
 
     if not os.path.exists(report_file):
         print("report does not exist: " + str(report_file))
@@ -354,17 +335,14 @@ def check_dir(args: argparse.Namespace):
             f.write(i + "\n")
 
 
-def check_npd(args: argparse.Namespace):
-    if args.file and args.dir:
-        print('cannot give both "-file" and "-dir" options')
-        exit(-1)
-
+def check_fp(args: argparse.Namespace):
     if args.file:
         check_one(args)
     elif args.dir:
         check_dir(args)
     else:
         print("there is no target file/dir !")
+        exit(-1)
 
 
 def grep_npd(run_out_file):
@@ -489,7 +467,7 @@ def check_cfile_npd_line_reachable(args: argparse.Namespace):
     par_dir, cfile = os.path.split(cfile_abspath)
 
     # handle report_file path
-    short_name = get_short_name(cfile)
+    short_name = myutils.get_short_name(cfile)
     report_file = short_name + ".txt"
     report_abspath = os.path.join(par_dir, report_file)
 
@@ -557,7 +535,7 @@ def check_dir_npd_line_reachable(args: argparse.Namespace):
             # handle file pathes
             cfile = file
             cfile_abspath = os.path.join(target_dir_abspath, file)
-            short_name = get_short_name(cfile)
+            short_name = myutils.get_short_name(cfile)
             report_file = short_name + ".txt"
             report_abspath = os.path.join(target_dir_abspath, report_file)
             print("report: " + report_abspath)
@@ -677,7 +655,7 @@ def gen_reduce(args: argparse.Namespace):
             print("cfile_path does not exist: " + cfile_abspath)
             exit(-1)
 
-        cfile_name = get_short_name(cfile_abspath)
+        cfile_name = myutils.get_short_name(cfile_abspath)
         gen_reduce_script(template_abspath, cfile_name, opt_level, args)
 
     elif args.dir:
@@ -694,7 +672,7 @@ def gen_reduce(args: argparse.Namespace):
 
         for file in files:
             if file.endswith(".c") and not file.startswith("instrument"):
-                cfile_name = get_short_name(file)
+                cfile_name = myutils.get_short_name(file)
                 gen_reduce_script(
                     template_abspath, cfile_name, opt_level, args)
     else:
@@ -704,7 +682,7 @@ def gen_reduce(args: argparse.Namespace):
 
         for file in files:
             if file.endswith(".c") and not file.startswith("instrument"):
-                cfile_name = get_short_name(file)
+                cfile_name = myutils.get_short_name(file)
                 gen_reduce_script(
                     template_abspath, cfile_name, opt_level, args)
 
@@ -930,7 +908,7 @@ def do_preprocess(abs_file_path, analyzer):
     with open(abs_file_path, "w") as f:
         f.writelines(new_lines)   
 
-    short_name = get_short_name(abs_file_path)
+    short_name = myutils.get_short_name(abs_file_path)
     pat_path, _ = os.path.split(abs_file_path)
 
     if analyzer == "gcc":
@@ -1024,54 +1002,54 @@ def handle_args():
     parser_run_reduce_eval.set_defaults(func=run_reduce_eval)
 
     # add subcommand fuzz-fp
-    parser_fuzz = subparsers.add_parser(
+    parser_fuzz_fp = subparsers.add_parser(
         "fuzz-fp", help="fuzzing static analyzer in a given dir")
-    parser_fuzz.add_argument(
+    parser_fuzz_fp.add_argument(
         "path", help="given a parent dir of fuzzing working dir")
-    parser_fuzz.add_argument("analyzer", type=str, choices={
+    parser_fuzz_fp.add_argument("analyzer", type=str, choices={
         'gcc', 'clang'}, help="give a analyzer")
-    parser_fuzz.add_argument("checker", type=str, choices={
+    parser_fuzz_fp.add_argument("checker", type=str, choices={
         'npd', 'oob'}, help="give a checker")
-    parser_fuzz.add_argument("optimize", type=int, choices={
+    parser_fuzz_fp.add_argument("optimize", type=int, choices={
         0, 1, 2, 3}, default=0, help="optimization level ( if clang, ...")
-    parser_fuzz.add_argument(
+    parser_fuzz_fp.add_argument(
         "thread", type=int, default=1, help="specify the thread num for fuzzing")
-    parser_fuzz.add_argument(
+    parser_fuzz_fp.add_argument(
         "num", type=int, default=1, help="the iteration times of fuzzing")
 
-    parser_fuzz.set_defaults(func=fuzz_fp)
+    parser_fuzz_fp.set_defaults(func=fuzz_fp)
 
     # add subcommand fuzz-fn
-    parser_fuzz = subparsers.add_parser(
+    parser_fuzz_fn = subparsers.add_parser(
         "fuzz-fn", help="fuzzing static analyzer in a given dir")
-    parser_fuzz.add_argument(
+    parser_fuzz_fn.add_argument(
         "path", help="given a parent dir of fuzzing working dir")
-    parser_fuzz.add_argument("analyzer", type=str, choices={
+    parser_fuzz_fn.add_argument("analyzer", type=str, choices={
         'gcc', 'clang'}, help="give a analyzer")
-    parser_fuzz.add_argument("optimize", type=int, choices={
+    parser_fuzz_fn.add_argument("optimize", type=int, choices={
         0, 1, 2, 3}, default=0, help="optimization level ( if clang, ...")
-    parser_fuzz.add_argument(
+    parser_fuzz_fn.add_argument(
         "thread", type=int, default=1, help="specify the thread num for fuzzing")
-    parser_fuzz.add_argument(
+    parser_fuzz_fn.add_argument(
         "num", type=int, default=1, help="the iteration times of fuzzing")
 
-    parser_fuzz.set_defaults(func=fuzz_fn)
+    parser_fuzz_fn.set_defaults(func=fuzz_fn)
 
      # add subcommand fuzz-eval
-    parser_fuzz = subparsers.add_parser(
+    parser_fuzz_eval = subparsers.add_parser(
         "fuzz-eval", help="fuzzing static analyzer in a given dir")
-    parser_fuzz.add_argument(
+    parser_fuzz_eval.add_argument(
         "path", help="given a parent dir of fuzzing working dir")
-    parser_fuzz.add_argument("analyzer", type=str, choices={
+    parser_fuzz_eval.add_argument("analyzer", type=str, choices={
         'gcc', 'clang'}, help="give a analyzer")
-    parser_fuzz.add_argument("optimize", type=int, choices={
+    parser_fuzz_eval.add_argument("optimize", type=int, choices={
         0, 1, 2, 3}, default=0, help="optimization level")
-    parser_fuzz.add_argument(
+    parser_fuzz_eval.add_argument(
         "thread", type=int, default=1, help="specify the thread num for fuzzing")
-    parser_fuzz.add_argument(
+    parser_fuzz_eval.add_argument(
         "num", type=int, default=1, help="the iteration times of fuzzing")
 
-    parser_fuzz.set_defaults(func=fuzz_eval)
+    parser_fuzz_eval.set_defaults(func=fuzz_eval)
 
 
     # add subcommand create fuzzing working dir
@@ -1087,34 +1065,30 @@ def handle_args():
 
     parser_create.set_defaults(func=create)
 
-    # add subcommand find
 
-
-    # add subcommand find
-
-
-    # add subcommand check-npd
-    parser_checknpd = subparsers.add_parser(
-        "check-npd", help="check whether the given analyzer complain npd of the given c program (discarded)")
-    parser_checknpd.add_argument("analyzer", type=str, choices={
+    # add subcommand check-fp
+    parser_checkfp = subparsers.add_parser(
+        "check-fp", help="check whether the given analyzer complain the given warning for the given c program ")
+    parser_checkfp.add_argument("analyzer", type=str, choices={
                                  'gcc', 'clang'}, help="give a analyzer")
-    parser_checknpd.add_argument("-o", "--optimize", type=int,
+    parser_checkfp.add_argument("checker", type=str, choices={
+        'npd', 'oob'}, help="give a checker")
+    parser_checkfp.add_argument("-o", "--optimize", type=int,
                                  choices={0, 1, 2, 3}, default=0, help="optimization level")
-    parser_checknpd.add_argument(
+    parser_checkfp.add_argument(
         "-n", "--num", type=int, default=1, help="the times of checked for each file")
-    parser_checknpd.add_argument("-s", "--saveReport", action="store_true",
+    parser_checkfp.add_argument("-s", "--saveReport", action="store_true",
                                  help="do not delete generated files in analyzing process")
 
-    group_checknpd = parser_checknpd.add_mutually_exclusive_group()
-    group_checknpd.add_argument("-f", "--file", type=str, help="give a c file")
-    group_checknpd.add_argument(
-        "-d", "--dir", type=str, help="give a directory")
+    group_checkfp = parser_checkfp.add_mutually_exclusive_group()
+    group_checkfp.add_argument("-f", "--file", type=str, help="give a c file")
+    group_checkfp.add_argument("-d", "--dir", type=str, help="give a directory")
 
-    parser_checknpd.set_defaults(func=check_npd)
+    parser_checkfp.set_defaults(func=check_fp)
 
-    # add subcommand reach-npd
+    # add subcommand check-reach
     parser_reach_npd_lines = subparsers.add_parser(
-        "reach-npd", help="check whether the npd line complained by the given analyzer is reahable （discarded）")
+        "reach-npd", help="check whether the npd line complained by the given analyzer is reahable")
     parser_reach_npd_lines.add_argument("analyzer", type=str, choices={
                                         'gcc', 'clang'}, help="give a analyzer")
     parser_reach_npd_lines.add_argument(
@@ -1141,12 +1115,13 @@ def handle_args():
     parser_reach_npd_lines.set_defaults(func=check_npd_line_reachable)
 
     args = parser.parse_args()
-    print(args)
     return args
 
 
 def main():
     args = handle_args()
+    if args.verbose:
+        print(args)
     args.func(args)
 
 

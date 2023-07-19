@@ -1,144 +1,15 @@
 #!/usr/bin/python3
 import argparse
-import re
 import os
 import signal
-import subprocess
-import sys
 import time
-
-##########################
-# user-configurable stuff
-##########################
-
-CSMITH_HEADER = "/usr/include/csmith"
-
-MIN_PROGRAM_SIZE = 8000
-MAX_PROGRAM_SIZE = 8000
-
-# kill csmith after this many seconds
-CSMITH_TIMEOUT = 90
-
-# kill compiler after this many seconds
-COMPILER_TIMEOUT = 120
-
-# kill compiler's output after this many seconds
-PROG_TIMEOUT = 8
-
-# GCC_ANALYZER = "/usr/local/gcc-13-9533/bin/gcc -fanalyzer -fanalyzer-call-summaries -Wno-analyzer-null-dereference -Wno-analyzer-double-fclose -Wno-analyzer-double-free -Wno-analyzer-exposure-through-output-file -Wno-analyzer-file-leak -Wno-analyzer-free-of-non-heap -Wno-analyzer-malloc-leak -Wno-analyzer-mismatching-deallocation -Wno-analyzer-null-argument -Wno-analyzer-possible-null-argument -Wno-analyzer-possible-null-dereference -Wno-analyzer-shift-count-negative -Wno-analyzer-shift-count-overflow -Wno-analyzer-stale-setjmp-buffer -Wno-analyzer-unsafe-call-within-signal-handler -Wno-analyzer-use-after-free -Wno-analyzer-use-of-pointer-in-stale-stack-frame -Wno-analyzer-use-of-uninitialized-value -Wno-analyzer-write-to-const -Wno-analyzer-write-to-string-literal -fdiagnostics-plain-output -fdiagnostics-format=text "
-GCC = "/usr/local/gcc-13-9533/bin/gcc"
-GCC_OPTIONS = " -fanalyzer -fanalyzer-call-summaries -fdiagnostics-plain-output -fdiagnostics-format=text "
-GCC_ANALYZER = GCC + GCC_OPTIONS
-
-# CLANG_ANALYZER = "scan-build -disable-checker core.CallAndMessage -disable-checker core.DivideZero -disable-checker core.NonNullParamChecker -disable-checker core.StackAddressEscape -disable-checker core.UndefinedBinaryOperatorResult -disable-checker core.VLASize -disable-checker core.uninitialized.ArraySubscript -disable-checker core.uninitialized.Assign -disable-checker core.uninitialized.Branch -disable-checker core.uninitialized.CapturedBlockVariable -disable-checker core.uninitialized.UndefReturn -disable-checker cplusplus.InnerPointer -disable-checker cplusplus.Move -disable-checker cplusplus.NewDelete -disable-checker cplusplus.NewDeleteLeaks -disable-checker cplusplus.PlacementNew -disable-checker cplusplus.PureVirtualCall -disable-checker deadcode.DeadStores -disable-checker nullability.NullPassedToNonnull -disable-checker nullability.NullReturnedFromNonnull -disable-checker security.insecureAPI.gets -disable-checker security.insecureAPI.mkstemp -disable-checker security.insecureAPI.mktemp -disable-checker security.insecureAPI.vfork -disable-checker unix.API -disable-checker unix.Malloc -disable-checker unix.MallocSizeof -disable-checker unix.MismatchedDeallocator -disable-checker unix.Vfork -disable-checker unix.cstring.BadSizeArg -disable-checker unix.cstring.NullArg "
-# CLANG_OPTIONS = "-Wno-literal-conversion -Wno-bool-operation -Wno-pointer-sign -Wno-tautological-compare -Wno-incompatible-pointer-types -Wno-tautological-constant-out-of-range-compare -Wno-compare-distinct-pointer-types -Wno-implicit-const-int-float-conversion -Wno-constant-logical-operand -Wno-parentheses-equality -Wno-constant-conversion -Wno-unused-value -Xclang -analyzer-config -Xclang widen-loops=true "
-
-# TODO: can I disable more checkers?
-CLANG = "clang"
-CLANG_OPTIONS = " --analyze --analyzer-output text -Xclang  -analyzer-constraints=range -Xclang  -setup-static-analyzer  -Xclang -analyzer-config  -Xclang  eagerly-assume=false   -Xclang  -analyzer-checker=core,alpha.security "
-CLANG_ANALYZER = CLANG + CLANG_OPTIONS
-
-CSMITH_USER_OPTIONS = " --no-global-variables --max-pointer-depth 2 "
-# CSMITH_USER_OPTIONS = " --no-global-variables --max-funcs 1 "
-# CSMITH_USER_OPTIONS = " --no-global-variables --max-funcs 1 --no-safe-math "
-# CSMITH_USER_OPTIONS = " --no-bitfields --packed-struct --no-global-variables --max-pointer-depth 2 "
-
-##############################
-# end user-configurable stuff
-##############################
+from myutils import get_analyzer_version, generate_code
+from config import *
 
 CRASH_NUM = 0
 NPD_NUM = 0
 OOB_NUM = 0
 TIMEOUT_NUM = 0
-
-ANALYZER_TIMEOUT = "timeout 60 "
-
-#TODO: the analyzer should be configurable instead of hard-coded
-def get_analyzer_version(analyzer):
-    res = subprocess.run([analyzer, "-v"], stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE, encoding='utf-8')
-
-    return res.stderr
-
-def read_value_from_file(file, match):
-    '''
-    extra the group(1) of searched pattern
-    '''
-    with open(file, 'r') as f:
-        pattern = re.compile(r''+match)
-        for line in f.readlines():
-            seed = pattern.search(line)
-            if seed:
-                return seed.group(1)
-
-    return ""
-
-
-def save_crashing_file(num):
-    '''
-    save the cfile crashing analyzer
-    '''
-    global CRASH_NUM
-    os.system("mv test_%s.c crash%s.c " % (num, NPD_NUM))
-    os.system("mv test_%s.txt crash%s.txt " % (num, NPD_NUM))
-    CRASH_NUM += 1
-
-
-def generate_code(num, args):
-    '''
-    generate wanted-size code with csmith
-    generated test cases are saved in "test_%s.c" % num
-    '''
-    ctrl_max = args.max
-    cfile = "test_%s.c" % num
-    os.system("rm -f %s" % cfile)
-
-    while True:
-        cmd = "csmith %s --output %s" % (CSMITH_USER_OPTIONS, cfile)
-        os.system(cmd)
-        file_size = os.stat(cfile).st_size
-
-        if args.verbose:
-            seed = read_value_from_file(cfile, 'Seed:\s+(\d+)')
-            print("generated a file, Seed: " + seed)
-
-            if len(seed) <= 0:
-                print("random program %s has no seed information!\n" % cfile)
-                exit(2)
-
-        if ctrl_max:
-            if file_size < MAX_PROGRAM_SIZE:
-                if args.verbose:
-                    print("succ generated a file whose size is no more than %s: " % (
-                    MAX_PROGRAM_SIZE))
-                break
-        else:
-            if file_size > MIN_PROGRAM_SIZE:
-                if args.verbose:
-                    print("succ generated a file whose size is no less than %s: " % (
-                    MIN_PROGRAM_SIZE))
-                break
-    if args.verbose:
-        print(cfile + ' ' + seed)
-    return cfile
-
-
-def gcc_test_one(num, args):
-    cfile = generate_code(num, args)
-    report_file = analyze_with_gcc(num, str(args.optimize), args)
-
-    if report_file is not None:
-        process_gcc_report(num, report_file, args)
-
-
-def clang_test_one(num, args):
-    cfile = generate_code(num, args)
-    report_file = analyze_with_clang(num, args)
-
-    if report_file is not None:
-        process_clang_report(num, report_file, args)
-
 
 
 def analyze_with_gcc(num, optimization_level, args):
@@ -216,16 +87,16 @@ def process_gcc_report(num, report_file, args):
 
     # TODO: more checkers
     if args.checker == "npd":
-        check_cmd = 'grep "-Wanalyzer-null-dereference"'
+        check_cmd = 'grep "-Wanalyzer\-null\-dereference"'
         ret = os.system(check_cmd + " < " + report_file)
         ret >>= 8
-
+        
         if ret == 0:
             os.system("mv test_%s*.c npd%s.c " % (num, NPD_NUM))
             os.system("mv test_%s*.txt npd%s.txt " % (num, NPD_NUM))
             NPD_NUM += 1
     elif args.checker == "oob":
-        check_cmd = 'grep "-Wanalyzer-out-of-bounds"'
+        check_cmd = 'grep "\-Wanalyzer\-out\-of\-bounds"'
         ret = os.system(check_cmd + " < " + report_file)
         ret >>= 8
 
@@ -278,6 +149,31 @@ def process_clang_report(num, report_file, args):
     clean_analysis_products(num, save_products_flag)
 
 
+def save_crashing_file(num):
+    '''
+    save the cfile crashing analyzer
+    '''
+    global CRASH_NUM
+    os.system("mv test_%s.c crash%s.c " % (num, NPD_NUM))
+    os.system("mv test_%s.txt crash%s.txt " % (num, NPD_NUM))
+    CRASH_NUM += 1
+
+
+
+def gcc_test_one(num, args):
+    cfile = generate_code(num, CSMITH_USER_OPTIONS, args.max)
+    report_file = analyze_with_gcc(cfile, num, str(args.optimize), args)
+
+    if report_file is not None:
+        process_gcc_report(num, report_file, args)
+
+
+def clang_test_one(num, args):
+    cfile = generate_code(num, CSMITH_USER_OPTIONS, args.max)
+    report_file = analyze_with_clang(num, args)
+
+    if report_file is not None:
+        process_clang_report(num, report_file, args)
 
 
 def write_script_run_args(args):
@@ -356,7 +252,7 @@ def main():
     signal.signal(signal.SIGINT, bye)
     signal.signal(signal.SIGTERM, bye)
     # signal.signal(signal.SIGKILL, bye)
-    if checker not in ["npd", "oob"]:
+    if checker not in CHECKER_LIST:
         print("checker: %s is not supported!" % args.checker)
         exit(0)
 
