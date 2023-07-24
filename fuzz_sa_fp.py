@@ -87,7 +87,7 @@ def process_gcc_report(num, report_file, args):
 
     # TODO: more checkers
     if args.checker == "npd":
-        check_cmd = 'grep "-Wanalyzer\-null\-dereference"'
+        check_cmd = 'grep "\-Wanalyzer\-null\-dereference"'
         ret = os.system(check_cmd + " < " + report_file)
         ret >>= 8
         

@@ -5,9 +5,8 @@ import re
 import shlex
 import subprocess
 import time
-import myutils
+from myutils import *
 from config import *
-### 这些配置文件应该只需要配置一次
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -81,8 +80,6 @@ def fuzz_eval(args: argparse.Namespace):
                          str(iter_times)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         os.chdir("..")
 
-
-
 def create(args: argparse.Namespace):
     fuzzing_par_dir = args.path
     num = args.num
@@ -137,18 +134,12 @@ def create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, opt_level, dir_
     return abs_working_path
 
 
-def get_analyzer_version(analyzer):
-    res = subprocess.run([analyzer, "-v"], stdout=subprocess.PIPE,
-                         stderr=subprocess.STDOUT, encoding="utf-8")
-
-    return res.stdout
-
 
 def analyze_with_gcc(optimization_level, cfile):
     '''
     use gcc to analyze csmith-generated c program
     '''
-    short_name = myutils.get_short_name(cfile)
+    short_name = get_short_name(cfile)
     report_file = short_name + '.txt'
     object_file = short_name + '.o'
 
@@ -178,7 +169,7 @@ def analyze_with_clang(cfile):
     '''
     use clang to analyze csmith-generated c program
     '''
-    short_name = myutils.get_short_name(cfile)
+    short_name = get_short_name(cfile)
     report_file = short_name + '.txt'
     object_file = short_name + '.o'
 
@@ -216,7 +207,7 @@ def process_gcc_report(report_file, args):
     '''
     check whether the given report contains the target CWE(NPD)
     '''
-    name = myutils.get_short_name(report_file)
+    name = get_short_name(report_file)
 
     if not os.path.exists(report_file):
         print("report does not exist: " + str(report_file))
@@ -242,7 +233,7 @@ def process_clang_report(report_file, args):
     '''
     check whether the given report contains the target CWE(NPD)
     '''
-    name = myutils.get_short_name(report_file)
+    name = get_short_name(report_file)
 
     if not os.path.exists(report_file):
         print("report does not exist: " + str(report_file))
@@ -345,173 +336,65 @@ def check_fp(args: argparse.Namespace):
         exit(-1)
 
 
-def grep_npd(run_out_file):
-    grep_ret = subprocess.run(["grep", "NPD_FLAG", run_out_file],
-                              stdout=subprocess.PIPE, stderr=subprocess.STDOUT, encoding="utf-8")
-
-    if grep_ret.returncode == 0:
-        print("reach npd!")
-        return True
-    else:
-        print("cannot reach npd!")
-        return False
-
-
-def get_npd_lines(args: argparse.Namespace, report_abspath):
-    npd_lines = []
-
-    if args.analyzer == "gcc":
-        with open(report_abspath, "r") as f:
-            report_lines = f.readlines()
-
-            for line in report_lines:
-                if re.search("CWE-476", line):
-                    npd_info = re.split(":", line)
-                    # npd_info[1] is the npd report lineß
-                    npd_lines.append(npd_info.pop(1))
-
-            # print(npd_lines)
-
-    elif args.analyzer == "clang":
-        with open(report_abspath, "r") as f:
-            report_lines = f.readlines()
-
-            for line in report_lines:
-                if re.search("core.NullDereference", line):
-                    npd_info = re.split(":", line)
-                    # npd_info[1] is the npd report lineß
-                    npd_lines.append(npd_info.pop(1))
-
-            print(npd_lines)
-
-    # else args.analyzer == "pp":
-    #     pass
-
-    return npd_lines
-
-
-def instrument_cfile(cfile_abspath, npd_lines, instrumented_cfile):
-    print("instrument_cfile: %s" % cfile_abspath)
-    with open(cfile_abspath, "r") as f:
-        cfile_lines = f.readlines()
-
-        for num in npd_lines:
-            c_num = int(num)-1
-            print(c_num)
-            print(cfile_lines[c_num])
-            cfile_lines[c_num] = 'printf("NPD_FLAG\\n");' + cfile_lines[c_num]
-            print(cfile_lines[c_num])
-
-        with open(instrumented_cfile, "w") as f:
-            f.writelines(cfile_lines)
-
-    return instrumented_cfile
-
-
-def compile_and_run_instrument_cfile(args, instrumented_cfile, run_out_file):
-    try:
-        compile_ret = subprocess.run([args.analyzer, "-O" + str(args.optimize), "-msse4.2", "-I", CSMITH_HEADER,
-                                     instrumented_cfile], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, encoding="utf-8", check=True)
-    except subprocess.CalledProcessError as e:
-        print("compile error!")
-        print(e)
-        return False
-
-    try:
-        run_ret = subprocess.run(["timeout", "5s", "./a.out"], stdout=subprocess.PIPE,
-                                 stderr=subprocess.STDOUT, encoding="utf-8", check=True)
-    except subprocess.CalledProcessError as e:
-        if e.returncode == 124:
-            print("run timeout!")
-        print(e)
-        return False
-
-    try:
-        with open(run_out_file, "w") as f:
-            f.write(args.analyzer + ": version: \n" +
-                    get_analyzer_version(args.analyzer) + "\n")
-            f.write(run_ret.stdout)
-    except IOError:
-        print("cannot write to %s !" % run_out_file)
-        return False
-
-    return True
-
-
-def check_npd_line_reachable(args: argparse.Namespace):
-    if args.cfile:
+def check_reachable(args: argparse.Namespace):
+    if args.cfile and os.path.exists(args.cfile):
         print(args.cfile)
-        check_cfile_npd_line_reachable(args)
-    elif args.dir:
+        if check_cfile_warning_line_reachable(args):
+            print("warning line reachable!")
+        else:
+            print("warning line not reachable!")
+    elif args.dir and os.path.exists(args.dir):
         print(args.dir)
-        check_dir_npd_line_reachable(args)
-    elif args.logfile:
-        print(args.logfile)
-        # TODO
-        return
-    elif args.file_list:
-        print(args.file_list)
-        # TODO
-        return
+        check_dir_warning_line_reachable(args)
     else:
-        print("there is no such file/dir!")
+        print("please make sure the given file/dir exist!")
+        exit(-1)
 
 
-def check_cfile_npd_line_reachable(args: argparse.Namespace):
-    # print("check whether cfile npd line reachable according to the corresponding analysis report")
-    version = get_analyzer_version(args.analyzer)
-    print(args.analyzer + ": version: \n" + version)
+def check_cfile_warning_line_reachable(args: argparse.Namespace):
+    print("check whether the warning line reachable")
+    cc = get_compiler(args.analyzer)
+    if args.verbose:
+        version = get_analyzer_version(cc)
+        print(args.analyzer + ": version: \n" + version)
 
     # handle cfile path
     cfile_abspath = os.path.abspath(args.cfile)
     par_dir, cfile = os.path.split(cfile_abspath)
 
     # handle report_file path
-    short_name = myutils.get_short_name(cfile)
+    short_name = get_short_name(cfile)
     report_file = short_name + ".txt"
     report_abspath = os.path.join(par_dir, report_file)
 
     instrumented_cfile = "instrument_" + short_name + ".c"
     run_out_file = "instrument_" + short_name + ".out"
+    warning_exist = False
 
     if not os.path.exists(report_abspath):
+        #TODO: analyze the cfile and get the report
         print("report file does not exist!")
-        npd_exist = False
     else:
-        print("report file exist!")
-        npd_lines = get_npd_lines(args, report_abspath)
-        instrumented_cfile = instrument_cfile(
-            cfile_abspath, npd_lines, instrumented_cfile)
-        res = compile_and_run_instrument_cfile(
-            args, instrumented_cfile, run_out_file)
-        npd_exist = False
+        warning_lines = get_warning_lines(args.analyzer,args.checker, report_abspath)
+        if len(warning_lines) != 0:
+            if instrument_cfile(cfile_abspath, warning_lines, instrumented_cfile):
+                if compile_and_run_instrument_cfile(cc, str(args.optimize),instrumented_cfile, run_out_file):
+                    warning_exist = grep_flag(run_out_file)
+                else:
+                    print("compile_and_run_instrument_cfile fail!")
 
-        if res:
-            npd_exist = grep_npd(run_out_file)
-        else:
-            print("compile_and_run_instrument_cfile fail!")
-
-    clean_npd_check_input(args, cfile_abspath, report_abspath, npd_exist)
-    clean_npd_check_output(args, instrumented_cfile, run_out_file, npd_exist)
+    clean_check_reach_input(args.rmNonReachable, args.rmAllReachable, cfile_abspath, report_abspath, warning_exist)
+    clean_check_reach_output(args.saveOutput, instrumented_cfile, run_out_file, warning_exist)
+    return warning_exist
 
 
-def clean_npd_check_input(args, cfile_abspath, report_abspath, npd_exist):
-    if (not npd_exist and args.rmNonReachable) or args.rmAllReachable:
-        ret = subprocess.run(['rm', "-f", cfile_abspath, report_abspath],
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
 
-
-def clean_npd_check_output(args, instrumented_cfile, run_out_file, npd_exist):
-    if args.saveOutput or npd_exist:
-        return
-
-    subprocess.Popen(["rm", "-f", instrumented_cfile, run_out_file],
-                     stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
-
-
-def check_dir_npd_line_reachable(args: argparse.Namespace):
-    version = get_analyzer_version(args.analyzer)
-    print(args.analyzer + ": version: \n" + version)
+def check_dir_warning_line_reachable(args: argparse.Namespace):
+    cc = get_compiler(args.analyzer)
+    warning_type = args.checker
+    if args.verbose:
+        version = get_analyzer_version(args.analyzer)
+        print(args.analyzer + ": version: \n" + version)
 
     # handle dir pathes
     target_dir_abspath = os.path.abspath(args.dir)
@@ -531,83 +414,41 @@ def check_dir_npd_line_reachable(args: argparse.Namespace):
     res_compile_or_run_fail = []
 
     for file in files:
-        if file.endswith(".c") and file.count("npd") != 0:
+        if file.endswith(".c") and file.startswith(warning_type):
             # handle file pathes
             cfile = file
             cfile_abspath = os.path.join(target_dir_abspath, file)
-            short_name = myutils.get_short_name(cfile)
+            short_name = get_short_name(cfile)
             report_file = short_name + ".txt"
             report_abspath = os.path.join(target_dir_abspath, report_file)
-            print("report: " + report_abspath)
             instrumented_cfile = "instrument_" + short_name + ".c"
             run_out_file = "instrument_" + short_name + ".out"
+            warning_exist = False
 
             if not os.path.exists(report_abspath):
-                print("report file does not exist!")
+                if args.verbose:
+                    print("report file does not exist!")
                 res_report_not_exist.append(cfile_abspath)
-                npd_exist = False
             else:
-                print("report file exist!")
-                npd_lines = get_npd_lines(args, report_abspath)
-                instrumented_cfile = instrument_cfile(
-                    cfile_abspath, npd_lines, instrumented_cfile)
-                res = compile_and_run_instrument_cfile(
-                    args, instrumented_cfile, run_out_file)
-                npd_exist = False
+                warning_lines = get_warning_lines(args.analyzer,args.checker, report_abspath)
+                if warning_lines != 0:
+                    if instrument_cfile(cfile_abspath, warning_lines, instrumented_cfile):
+                        if compile_and_run_instrument_cfile(cc, str(args.optimize),instrumented_cfile, run_out_file):
+                            warning_exist = grep_flag(run_out_file)
+                            if warning_exist:
+                                res_reachable.append(cfile_abspath)
+                            else:
+                                res_not_reachable.append(cfile_abspath)
+                        else:
+                            if args.verbose:
+                                print("compile_and_run_instrument_cfile fail!")
+                            res_compile_or_run_fail.append(cfile_abspath)
+                        
+                clean_check_reach_input(args.rmNonReachable, args.rmAllReachable, cfile_abspath, report_abspath, warning_exist)
+                clean_check_reach_output(args.saveOutput, instrumented_cfile, run_out_file, warning_exist)
 
-                if res:
-                    npd_exist = grep_npd(run_out_file)
-                    if npd_exist:
-                        res_reachable.append(cfile_abspath)
-                    else:
-                        res_not_reachable.append(cfile_abspath)
-                else:
-                    res_compile_or_run_fail.append(cfile_abspath)
-
-                clean_npd_check_input(args, cfile_abspath,
-                                      report_abspath, npd_exist)
-                clean_npd_check_output(
-                    args, instrumented_cfile, run_out_file, npd_exist)
-
-    # write result to file
-    res_reachable.sort()
-    res_not_reachable.sort()
-    res_report_not_exist.sort()
-    res_compile_or_run_fail.sort()
-
-    reachable_report = "npd_reachable_report_" + \
-        str(time.strftime("%Y-%m-%d-%H-%M", time.localtime())) + ".txt"
-
-    with open(reachable_report, "w") as f:
-        f.write("%s: version: \n %s\n" %
-                (args.analyzer, get_analyzer_version(args.analyzer)))
-        f.write("\nnpd_reachable:\n")
-        print("\nnpd_reachable:\n")
-
-        for i in res_reachable:
-            print(i)
-            f.write(i + "\n")
-
-        f.write("\nnpd_not_reachable:\n")
-        print("\nnpd_not_reachable:\n")
-
-        for i in res_not_reachable:
-            print(i)
-            f.write(i + "\n")
-
-        f.write("\nres_report_not_exist:\n")
-        print("\nres_report_not_exist:\n")
-
-        for i in res_report_not_exist:
-            print(i)
-            f.write(i + "\n")
-
-        f.write("\nres_compile_or_run_fail:\n")
-        print("\nres_compile_or_run_fail:\n")
-
-        for i in res_compile_or_run_fail:
-            print(i)
-            f.write(i + "\n")
+    write_result_to_file(res_reachable, res_not_reachable, res_report_not_exist, res_compile_or_run_fail, args.analyzer)
+    
 
 
 def gen_reduce_script(template_abspath: str, cfile_name: str, opt_level: str, args: argparse.Namespace):
@@ -655,7 +496,7 @@ def gen_reduce(args: argparse.Namespace):
             print("cfile_path does not exist: " + cfile_abspath)
             exit(-1)
 
-        cfile_name = myutils.get_short_name(cfile_abspath)
+        cfile_name = get_short_name(cfile_abspath)
         gen_reduce_script(template_abspath, cfile_name, opt_level, args)
 
     elif args.dir:
@@ -672,7 +513,7 @@ def gen_reduce(args: argparse.Namespace):
 
         for file in files:
             if file.endswith(".c") and not file.startswith("instrument"):
-                cfile_name = myutils.get_short_name(file)
+                cfile_name = get_short_name(file)
                 gen_reduce_script(
                     template_abspath, cfile_name, opt_level, args)
     else:
@@ -682,7 +523,7 @@ def gen_reduce(args: argparse.Namespace):
 
         for file in files:
             if file.endswith(".c") and not file.startswith("instrument"):
-                cfile_name = myutils.get_short_name(file)
+                cfile_name = get_short_name(file)
                 gen_reduce_script(
                     template_abspath, cfile_name, opt_level, args)
 
@@ -890,7 +731,7 @@ def run_reduce(args: argparse.Namespace):
 
 
 def do_preprocess(abs_file_path, analyzer):
-    subprocess.run("/home/working-space/build-llvm-main/bin/cfe_preprocess %s -- -I /usr/include/csmith "%abs_file_path,
+    subprocess.run("%s %s -- -I %s "% (CFE, abs_file_path, CSMITH_HEADER),
                                stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True, check=True)
 
     new_lines = []
@@ -908,14 +749,14 @@ def do_preprocess(abs_file_path, analyzer):
     with open(abs_file_path, "w") as f:
         f.writelines(new_lines)   
 
-    short_name = myutils.get_short_name(abs_file_path)
+    short_name = get_short_name(abs_file_path)
     pat_path, _ = os.path.split(abs_file_path)
 
     if analyzer == "gcc":
-        subprocess.run("/home/working-space/build-llvm-main/bin/tooling-sample --analyzer=gcc %s -- -I /usr/include/csmith > %s"%(abs_file_path,pat_path+ "/instru_" + short_name + ".c"),
+        subprocess.run("%s --analyzer=gcc %s -- -I %s > %s"%(INSTRUMENT_TOOL, abs_file_path, CSMITH_HEADER,pat_path+ "/instru_" + short_name + ".c"),
                                stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True , check=True )
     elif analyzer == "clang":
-        subprocess.run("/home/working-space/build-llvm-main/bin/tooling-sample --analyzer=clang %s -- -I /usr/include/csmith > %s"%(abs_file_path,pat_path+ "/instru_" + short_name + ".c"),
+        subprocess.run("%s --analyzer=clang %s -- -I %s > %s"%(INSTRUMENT_TOOL, abs_file_path, CSMITH_HEADER ,pat_path+ "/instru_" + short_name + ".c"),
                                stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True , check=True )
 
 
@@ -1087,32 +928,30 @@ def handle_args():
     parser_checkfp.set_defaults(func=check_fp)
 
     # add subcommand check-reach
-    parser_reach_npd_lines = subparsers.add_parser(
-        "reach-npd", help="check whether the npd line complained by the given analyzer is reahable")
-    parser_reach_npd_lines.add_argument("analyzer", type=str, choices={
+    parser_reach_warning_lines = subparsers.add_parser(
+        "check-reach", help="check whether the warning line complained by the given analyzer is reachable")
+    parser_reach_warning_lines.add_argument("analyzer", type=str, choices={
                                         'gcc', 'clang'}, help="give a analyzer")
-    parser_reach_npd_lines.add_argument(
+    parser_reach_warning_lines.add_argument("checker", type=str, choices={
+        'npd', 'oob'}, help="give a checker")
+    parser_reach_warning_lines.add_argument(
         "-o", "--optimize", type=int, choices={0, 1, 2, 3}, default=0, help="optimization level")
-    parser_reach_npd_lines.add_argument(
+    parser_reach_warning_lines.add_argument(
         "-s", "--saveOutput", action="store_true", help="do not delete generated files in checking process")
 
-    group_rm_reach_npd_lines = parser_reach_npd_lines.add_mutually_exclusive_group()
-    group_rm_reach_npd_lines.add_argument(
-        "-mn", "--rmNonReachable", action="store_true", help="remove non-npd-line-reachable test c files")
-    group_rm_reach_npd_lines.add_argument(
-        "-ma", "--rmAllReachable", action="store_true", help="remove all-npd-line-reachable test c files")
+    group_rm_reach_warning_lines = parser_reach_warning_lines.add_mutually_exclusive_group()
+    group_rm_reach_warning_lines.add_argument(
+        "-mn", "--rmNonReachable", action="store_true", help="remove non-warning-line-reachable test c files")
+    group_rm_reach_warning_lines.add_argument(
+        "-ma", "--rmAllReachable", action="store_true", help="remove all-warning-line-reachable test c files")
 
-    group_reach_npd_lines = parser_reach_npd_lines.add_mutually_exclusive_group()
-    group_reach_npd_lines.add_argument(
+    group_reach_warning_lines = parser_reach_warning_lines.add_mutually_exclusive_group()
+    group_reach_warning_lines.add_argument(
         "-cf", "--cfile", type=str, help="give a cfile")
-    group_reach_npd_lines.add_argument(
+    group_reach_warning_lines.add_argument(
         "-d", "--dir", type=str, help="give a directory")
-    group_reach_npd_lines.add_argument(
-        "-lf", "--file_list", type=str, help="give a cfile list")
-    group_reach_npd_lines.add_argument(
-        "-gf", "--logfile", type=str, help="give a log file of analyzing c programs")
 
-    parser_reach_npd_lines.set_defaults(func=check_npd_line_reachable)
+    parser_reach_warning_lines.set_defaults(func=check_reachable)
 
     args = parser.parse_args()
     return args

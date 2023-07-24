@@ -1,0 +1,910 @@
+oob0.c: In function 'func_1':
+oob0.c:80:23: warning: conversion from 'long unsigned int' to 'uint32_t' {aka 'unsigned int'} changes value from '18446744073709551615' to '4294967295' [-Woverflow]
+   80 |     uint32_t l_5108 = 18446744073709551615UL;
+      |                       ^~~~~~~~~~~~~~~~~~~~~~
+oob0.c: In function 'func_18':
+oob0.c:249:23: warning: conversion from 'long unsigned int' to 'uint32_t' {aka 'unsigned int'} changes value from '18446744073709551615' to '4294967295' [-Woverflow]
+  249 |     uint32_t l_4894 = 18446744073709551615UL;
+      |                       ^~~~~~~~~~~~~~~~~~~~~~
+oob0.c: In function 'func_27':
+oob0.c:326:23: warning: conversion from 'long unsigned int' to 'uint32_t' {aka 'unsigned int'} changes value from '18446744073709551606' to '4294967286' [-Woverflow]
+  326 |     uint32_t l_2907 = 18446744073709551606UL;
+      |                       ^~~~~~~~~~~~~~~~~~~~~~
+oob0.c: In function 'func_37':
+oob0.c:462:44: warning: conversion from 'long unsigned int' to 'unsigned int' changes value from '18446744073709551615' to '4294967295' [-Woverflow]
+  462 |     uint32_t l_1612[7][10] = {{0x05A79056L,18446744073709551615UL,0x78870A64L,0xB58DA691L,0xC6F87AAEL,0xB2CE98B2L,18446744073709551615UL,0xEDF6C28BL,0x98B4954EL,1UL},{0x0B1510F0L,0UL,0x78870A64L,0xC6F87AAEL,0UL,0xEDF6C28BL,0UL,0xEDF6C28BL,0UL,0xC6F87AAEL},{0x78870A64L,1UL,0x78870A64L,0x98B4954EL,0xB58DA691L,0x05A79056L,1UL,0xEDF6C28BL,1UL,0UL},{0xB2CE98B2L,0UL,0x78870A64L,0UL,0x98B4954EL,0x0B1510F0L,0UL,0xEDF6C28BL,0xB58DA691L,0xB58DA691L},{0xEDF6C28BL,18446744073709551614UL,0x78870A64L,1UL,1UL,0x78870A64L,18446744073709551614UL,0xEDF6C28BL,0xC6F87AAEL,0x98B4954EL},{0x05A79056L,18446744073709551615UL,0x78870A64L,0xB58DA691L,0xC6F87AAEL,0xB2CE98B2L,18446744073709551615UL,0xEDF6C28BL,0x98B4954EL,1UL},{0x0B1510F0L,0UL,0x78870A64L,0xC6F87AAEL,0UL,0xEDF6C28BL,0UL,0xEDF6C28BL,0UL,0xC6F87AAEL}};
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~
+oob0.c:462:115: warning: conversion from 'long unsigned int' to 'unsigned int' changes value from '18446744073709551615' to '4294967295' [-Woverflow]
+  462 |     uint32_t l_1612[7][10] = {{0x05A79056L,18446744073709551615UL,0x78870A64L,0xB58DA691L,0xC6F87AAEL,0xB2CE98B2L,18446744073709551615UL,0xEDF6C28BL,0x98B4954EL,1UL},{0x0B1510F0L,0UL,0x78870A64L,0xC6F87AAEL,0UL,0xEDF6C28BL,0UL,0xEDF6C28BL,0UL,0xC6F87AAEL},{0x78870A64L,1UL,0x78870A64L,0x98B4954EL,0xB58DA691L,0x05A79056L,1UL,0xEDF6C28BL,1UL,0UL},{0xB2CE98B2L,0UL,0x78870A64L,0UL,0x98B4954EL,0x0B1510F0L,0UL,0xEDF6C28BL,0xB58DA691L,0xB58DA691L},{0xEDF6C28BL,18446744073709551614UL,0x78870A64L,1UL,1UL,0x78870A64L,18446744073709551614UL,0xEDF6C28BL,0xC6F87AAEL,0x98B4954EL},{0x05A79056L,18446744073709551615UL,0x78870A64L,0xB58DA691L,0xC6F87AAEL,0xB2CE98B2L,18446744073709551615UL,0xEDF6C28BL,0x98B4954EL,1UL},{0x0B1510F0L,0UL,0x78870A64L,0xC6F87AAEL,0UL,0xEDF6C28BL,0UL,0xEDF6C28BL,0UL,0xC6F87AAEL}};
+      |                                                                                                                   ^~~~~~~~~~~~~~~~~~~~~~
+oob0.c:462:458: warning: conversion from 'long unsigned int' to 'unsigned int' changes value from '18446744073709551614' to '4294967294' [-Woverflow]
+  462 |     uint32_t l_1612[7][10] = {{0x05A79056L,18446744073709551615UL,0x78870A64L,0xB58DA691L,0xC6F87AAEL,0xB2CE98B2L,18446744073709551615UL,0xEDF6C28BL,0x98B4954EL,1UL},{0x0B1510F0L,0UL,0x78870A64L,0xC6F87AAEL,0UL,0xEDF6C28BL,0UL,0xEDF6C28BL,0UL,0xC6F87AAEL},{0x78870A64L,1UL,0x78870A64L,0x98B4954EL,0xB58DA691L,0x05A79056L,1UL,0xEDF6C28BL,1UL,0UL},{0xB2CE98B2L,0UL,0x78870A64L,0UL,0x98B4954EL,0x0B1510F0L,0UL,0xEDF6C28BL,0xB58DA691L,0xB58DA691L},{0xEDF6C28BL,18446744073709551614UL,0x78870A64L,1UL,1UL,0x78870A64L,18446744073709551614UL,0xEDF6C28BL,0xC6F87AAEL,0x98B4954EL},{0x05A79056L,18446744073709551615UL,0x78870A64L,0xB58DA691L,0xC6F87AAEL,0xB2CE98B2L,18446744073709551615UL,0xEDF6C28BL,0x98B4954EL,1UL},{0x0B1510F0L,0UL,0x78870A64L,0xC6F87AAEL,0UL,0xEDF6C28BL,0UL,0xEDF6C28BL,0UL,0xC6F87AAEL}};
+      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ^~~~~~~~~~~~~~~~~~~~~~
+oob0.c:462:513: warning: conversion from 'long unsigned int' to 'unsigned int' changes value from '18446744073709551614' to '4294967294' [-Woverflow]
+  462 |     uint32_t l_1612[7][10] = {{0x05A79056L,18446744073709551615UL,0x78870A64L,0xB58DA691L,0xC6F87AAEL,0xB2CE98B2L,18446744073709551615UL,0xEDF6C28BL,0x98B4954EL,1UL},{0x0B1510F0L,0UL,0x78870A64L,0xC6F87AAEL,0UL,0xEDF6C28BL,0UL,0xEDF6C28BL,0UL,0xC6F87AAEL},{0x78870A64L,1UL,0x78870A64L,0x98B4954EL,0xB58DA691L,0x05A79056L,1UL,0xEDF6C28BL,1UL,0UL},{0xB2CE98B2L,0UL,0x78870A64L,0UL,0x98B4954EL,0x0B1510F0L,0UL,0xEDF6C28BL,0xB58DA691L,0xB58DA691L},{0xEDF6C28BL,18446744073709551614UL,0x78870A64L,1UL,1UL,0x78870A64L,18446744073709551614UL,0xEDF6C28BL,0xC6F87AAEL,0x98B4954EL},{0x05A79056L,18446744073709551615UL,0x78870A64L,0xB58DA691L,0xC6F87AAEL,0xB2CE98B2L,18446744073709551615UL,0xEDF6C28BL,0x98B4954EL,1UL},{0x0B1510F0L,0UL,0x78870A64L,0xC6F87AAEL,0UL,0xEDF6C28BL,0UL,0xEDF6C28BL,0UL,0xC6F87AAEL}};
+      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ^~~~~~~~~~~~~~~~~~~~~~
+oob0.c:462:586: warning: conversion from 'long unsigned int' to 'unsigned int' changes value from '18446744073709551615' to '4294967295' [-Woverflow]
+  462 |     uint32_t l_1612[7][10] = {{0x05A79056L,18446744073709551615UL,0x78870A64L,0xB58DA691L,0xC6F87AAEL,0xB2CE98B2L,18446744073709551615UL,0xEDF6C28BL,0x98B4954EL,1UL},{0x0B1510F0L,0UL,0x78870A64L,0xC6F87AAEL,0UL,0xEDF6C28BL,0UL,0xEDF6C28BL,0UL,0xC6F87AAEL},{0x78870A64L,1UL,0x78870A64L,0x98B4954EL,0xB58DA691L,0x05A79056L,1UL,0xEDF6C28BL,1UL,0UL},{0xB2CE98B2L,0UL,0x78870A64L,0UL,0x98B4954EL,0x0B1510F0L,0UL,0xEDF6C28BL,0xB58DA691L,0xB58DA691L},{0xEDF6C28BL,18446744073709551614UL,0x78870A64L,1UL,1UL,0x78870A64L,18446744073709551614UL,0xEDF6C28BL,0xC6F87AAEL,0x98B4954EL},{0x05A79056L,18446744073709551615UL,0x78870A64L,0xB58DA691L,0xC6F87AAEL,0xB2CE98B2L,18446744073709551615UL,0xEDF6C28BL,0x98B4954EL,1UL},{0x0B1510F0L,0UL,0x78870A64L,0xC6F87AAEL,0UL,0xEDF6C28BL,0UL,0xEDF6C28BL,0UL,0xC6F87AAEL}};
+      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ^~~~~~~~~~~~~~~~~~~~~~
+oob0.c:462:657: warning: conversion from 'long unsigned int' to 'unsigned int' changes value from '18446744073709551615' to '4294967295' [-Woverflow]
+  462 |     uint32_t l_1612[7][10] = {{0x05A79056L,18446744073709551615UL,0x78870A64L,0xB58DA691L,0xC6F87AAEL,0xB2CE98B2L,18446744073709551615UL,0xEDF6C28BL,0x98B4954EL,1UL},{0x0B1510F0L,0UL,0x78870A64L,0xC6F87AAEL,0UL,0xEDF6C28BL,0UL,0xEDF6C28BL,0UL,0xC6F87AAEL},{0x78870A64L,1UL,0x78870A64L,0x98B4954EL,0xB58DA691L,0x05A79056L,1UL,0xEDF6C28BL,1UL,0UL},{0xB2CE98B2L,0UL,0x78870A64L,0UL,0x98B4954EL,0x0B1510F0L,0UL,0xEDF6C28BL,0xB58DA691L,0xB58DA691L},{0xEDF6C28BL,18446744073709551614UL,0x78870A64L,1UL,1UL,0x78870A64L,18446744073709551614UL,0xEDF6C28BL,0xC6F87AAEL,0x98B4954EL},{0x05A79056L,18446744073709551615UL,0x78870A64L,0xB58DA691L,0xC6F87AAEL,0xB2CE98B2L,18446744073709551615UL,0xEDF6C28BL,0x98B4954EL,1UL},{0x0B1510F0L,0UL,0x78870A64L,0xC6F87AAEL,0UL,0xEDF6C28BL,0UL,0xEDF6C28BL,0UL,0xC6F87AAEL}};
+      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 ^~~~~~~~~~~~~~~~~~~~~~
+oob0.c: In function 'func_56':
+oob0.c:650:129: warning: overflow in conversion from 'uint32_t' {aka 'unsigned int'} to 'int32_t' {aka 'int'} changes value from '*l_1022 = 4294967289' to '-7' [-Woverflow]
+  650 |             if ((1UL == (safe_lshift_func_uint8_t_u_u((0xBB53L <= (((safe_add_func_int32_t_s_s(((void*)0 == l_1013), ((*l_1022) = 4294967289UL))) , 7UL) <= (safe_add_func_uint32_t_u_u(((safe_add_func_int64_t_s_s(((*l_1029) &= (l_79 , (safe_lshift_func_uint8_t_u_s(p_58, (((p_58 <= p_58) && p_58) <= 0xB42EL))))), l_477.f6)) != l_477.f8), p_58)))), l_477.f7))))
+      |                                                                                                                      ~~~~~~~~~~~^~~~~~~~~~~~~~~
+oob0.c:674:154: warning: comparison of distinct pointer types lacks a cast
+  674 |                         l_475.f0 &= (func_77(((((*l_1049) &= (safe_sub_func_int32_t_s_s(((safe_sub_func_uint64_t_u_u((safe_add_func_uint64_t_u_u((l_1043 != l_1045), 1L)), (l_1014[p_57][p_57] | l_1047))) || (((p_58 | (+(0xB21C2A34993486A9LL == (l_1047 <= p_58)))) < 1L) != p_57)), p_57))) , (void*)0) == &l_1033[(l_79 + 3)][l_79][p_57])) , p_57);
+      |                                                                                                                                                          ^~
+oob0.c:679:43: warning: conversion from 'long unsigned int' to 'uint32_t' {aka 'unsigned int'} changes value from '18446744073709551613' to '4294967293' [-Woverflow]
+  679 |                         uint32_t l_1061 = 18446744073709551613UL;
+      |                                           ^~~~~~~~~~~~~~~~~~~~~~
+oob0.c:683:146: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
+  683 |                         l_475.f5 |= (safe_sub_func_uint8_t_u_u((safe_div_func_int64_t_s_s((safe_rshift_func_int8_t_s_u(l_1047, 1)), ((((*l_1059) = l_1057) != l_1057) ^ ((safe_add_func_uint16_t_u_u((((((safe_lshift_func_int8_t_s_s((l_479 < ((((p_58 >= (safe_mod_func_int32_t_s_s(((l_1069 = ((**l_1036) , l_1068)) == (void*)0), p_58))) || 18446744073709551609UL) || l_475.f0) , l_1070)), l_479)) ^ 0L) >= p_57) != l_477.f9) & 0xCE2D9DF9E72E3CE3LL), l_79)) & 1L)))), 9UL));
+      |                                                                                                                                                  ^
+oob0.c:697:79: warning: comparison of distinct pointer types lacks a cast
+  697 |                         (*l_1071) ^= (l_478[p_57][(p_57 + 2)][(l_477.f4 + 1)] == ((*l_1045) = l_478[p_57][(p_57 + 2)][(l_477.f4 + 1)]));
+      |                                                                               ^~
+oob0.c:863:37: warning: comparison of distinct pointer types lacks a cast
+  863 |                 (*l_1071) = (l_1303 == &l_1057);
+      |                                     ^~
+oob0.c: In function 'func_71':
+oob0.c:915:144: warning: conversion from 'long unsigned int' to 'unsigned int' changes value from '18446744073709551611' to '4294967291' [-Woverflow]
+  915 |         uint32_t l_631[3][9] = {{0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L},{18446744073709551611UL,1UL,18446744073709551611UL,1UL,18446744073709551611UL,1UL,18446744073709551611UL,1UL,18446744073709551611UL},{0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L}};
+      |                                                                                                                                                ^~~~~~~~~~~~~~~~~~~~~~
+oob0.c:915:171: warning: conversion from 'long unsigned int' to 'unsigned int' changes value from '18446744073709551611' to '4294967291' [-Woverflow]
+  915 |         uint32_t l_631[3][9] = {{0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L},{18446744073709551611UL,1UL,18446744073709551611UL,1UL,18446744073709551611UL,1UL,18446744073709551611UL,1UL,18446744073709551611UL},{0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L}};
+      |                                                                                                                                                                           ^~~~~~~~~~~~~~~~~~~~~~
+oob0.c:915:198: warning: conversion from 'long unsigned int' to 'unsigned int' changes value from '18446744073709551611' to '4294967291' [-Woverflow]
+  915 |         uint32_t l_631[3][9] = {{0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L},{18446744073709551611UL,1UL,18446744073709551611UL,1UL,18446744073709551611UL,1UL,18446744073709551611UL,1UL,18446744073709551611UL},{0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L}};
+      |                                                                                                                                                                                                      ^~~~~~~~~~~~~~~~~~~~~~
+oob0.c:915:225: warning: conversion from 'long unsigned int' to 'unsigned int' changes value from '18446744073709551611' to '4294967291' [-Woverflow]
+  915 |         uint32_t l_631[3][9] = {{0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L},{18446744073709551611UL,1UL,18446744073709551611UL,1UL,18446744073709551611UL,1UL,18446744073709551611UL,1UL,18446744073709551611UL},{0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L}};
+      |                                                                                                                                                                                                                                 ^~~~~~~~~~~~~~~~~~~~~~
+oob0.c:915:252: warning: conversion from 'long unsigned int' to 'unsigned int' changes value from '18446744073709551611' to '4294967291' [-Woverflow]
+  915 |         uint32_t l_631[3][9] = {{0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L},{18446744073709551611UL,1UL,18446744073709551611UL,1UL,18446744073709551611UL,1UL,18446744073709551611UL,1UL,18446744073709551611UL},{0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L,0x77AA3415L}};
+      |                                                                                                                                                                                                                                                            ^~~~~~~~~~~~~~~~~~~~~~
+oob0.c: In function 'func_88':
+oob0.c:1094:38: warning: comparison of distinct pointer types lacks a cast
+ 1094 |         l_143 &= ((*l_139) = ((l_115 != l_118[2][0]) > (safe_sub_func_int16_t_s_s((safe_div_func_int32_t_s_s(((safe_lshift_func_uint16_t_u_s(l_126, 1)) | ((l_117.f0 ^= 1L) != (safe_mod_func_int16_t_s_s((l_131 = p_92), (safe_div_func_int32_t_s_s(l_134, l_128)))))), ((*p_90) = (safe_mod_func_uint16_t_u_u(((0x60B144ECL && (safe_mod_func_uint32_t_u_u(l_134, (-1L)))) ^ l_126), 65535UL))))), 0xE4EDL))));
+      |                                      ^~
+oob0.c:1108:238: warning: overflow in conversion from 'long unsigned int' to 'int8_t' {aka 'signed char'} changes value from '18446744073709551610' to '-6' [-Woverflow]
+ 1108 |     (*p_90) ^= (safe_unary_minus_func_int64_t_s((4294967295UL != ((safe_mod_func_uint64_t_u_u((1UL <= (p_92 , p_92)), 1L)) >= (safe_mul_func_int8_t_s_s((safe_mul_func_uint8_t_u_u(0xD9L, (safe_div_func_int32_t_s_s(0x07D7E8CBL, l_134)))), (+18446744073709551610UL)))))));
+      |                                                                                                                                                                                                                                              ^~~~~~~~~~~~~~~~~~~~~~~~~
+oob0.c: In function 'func_94':
+oob0.c:1153:22: warning: conversion from 'long unsigned int' to 'uint32_t' {aka 'unsigned int'} changes value from '18446744073709551615' to '4294967295' [-Woverflow]
+ 1153 |     uint32_t l_104 = 18446744073709551615UL;
+      |                      ^~~~~~~~~~~~~~~~~~~~~~
+oob0.c: In function 'func_1':
+oob0.c:107:19: warning: stack-based buffer overflow [CWE-121] [-Wanalyzer-out-of-bounds]
+  107 |         struct S0 l_45 = {9,-0,2003,4,0x536DL,-296,228,-30,37,321};
+      |                   ^~~~
+  'func_1': events 1-4
+    |
+    |   96 |     for (l_3[1][0] = 2; (l_3[1][0] >= 0); l_3[1][0] -= 1)
+    |      |                         ~~~~~~~~~~~~~~~~
+    |      |                                    |
+    |      |                                    (2) following 'true' branch...
+    |   97 |     { /* block id: 3 */
+    |   98 |         uint64_t l_4 = 18446744073709551607UL;
+    |      |                  ~~~
+    |      |                  |
+    |      |                  (3) ...to here
+    |......
+    |  107 |         struct S0 l_45 = {9,-0,2003,4,0x536DL,-296,228,-30,37,321};
+    |      |                   ^~~~
+    |      |                   |
+    |      |                   (1) capacity is 19 bytes
+    |      |                   (4) out-of-bounds write at byte 19 but 'l_45' ends at byte 19
+    |
+oob0.c:107:19: note: write is 1 bytes past the end of 'l_45'
+  107 |         struct S0 l_45 = {9,-0,2003,4,0x536DL,-296,228,-30,37,321};
+      |                   ^~~~
+oob0.c:107:19: warning: stack-based buffer overflow [CWE-121] [-Wanalyzer-out-of-bounds]
+  'main': events 1-2
+    |
+    | 1175 | int main (int argc, char* argv[])
+    |      |     ^~~~
+    |      |     |
+    |      |     (1) entry to 'main'
+    |......
+    | 1180 |     crc32_gentab();
+    |      |     ~~~~~~~~~~~~~~
+    |      |     |
+    |      |     (2) calling 'crc32_gentab' from 'main'
+    |
+    +--> 'crc32_gentab': events 3-9
+           |
+           |/usr/include/csmith/csmith.h:51:1:
+           |   51 | crc32_gentab (void)
+           |      | ^~~~~~~~~~~~
+           |      | |
+           |      | (3) entry to 'crc32_gentab'
+           |......
+           |   57 |         for (i = 0; i < 256; i++) {
+           |      |                     ~~~~~~~
+           |      |                       |
+           |      |                       (4) following 'true' branch (when 'i <= 255')...
+           |   58 |                 crc = i;
+           |      |                 ~~~~~~~
+           |      |                     |
+           |      |                     (5) ...to here
+           |   59 |                 for (j = 8; j > 0; j--) {
+           |      |                             ~~~~~
+           |      |                               |
+           |      |                               (6) following 'true' branch (when 'j > 0')...
+           |   60 |                         if (crc & 1) {
+           |      |                            ~~~~~~~~
+           |      |                            |    |
+           |      |                            |    (7) ...to here
+           |      |                            (8) following 'false' branch...
+           |......
+           |   63 |                                 crc >>= 1;
+           |      |                                 ~~~~~~~~~
+           |      |                                     |
+           |      |                                     (9) ...to here
+           |
+    <------+
+    |
+  'main': events 10-11
+    |
+    |oob0.c:1180:5:
+    | 1180 |     crc32_gentab();
+    |      |     ^~~~~~~~~~~~~~
+    |      |     |
+    |      |     (10) returning to 'main' from 'crc32_gentab'
+    | 1181 |     func_1();
+    |      |     ~~~~~~~~
+    |      |     |
+    |      |     (11) calling 'func_1' from 'main'
+    |
+    +--> 'func_1': events 12-16
+           |
+           |   68 | static int16_t  func_1(void)
+           |      |                 ^~~~~~
+           |      |                 |
+           |      |                 (12) entry to 'func_1'
+           |......
+           |   96 |     for (l_3[1][0] = 2; (l_3[1][0] >= 0); l_3[1][0] -= 1)
+           |      |                         ~~~~~~~~~~~~~~~~
+           |      |                                    |
+           |      |                                    (14) following 'true' branch...
+           |   97 |     { /* block id: 3 */
+           |   98 |         uint64_t l_4 = 18446744073709551607UL;
+           |      |                  ~~~
+           |      |                  |
+           |      |                  (15) ...to here
+           |......
+           |  107 |         struct S0 l_45 = {9,-0,2003,4,0x536DL,-296,228,-30,37,321};
+           |      |                   ~~~~
+           |      |                   |
+           |      |                   (13) capacity is 19 bytes
+           |      |                   (16) out-of-bounds write at byte 19 but 'l_45' ends at byte 19
+           |
+oob0.c:107:19: note: write is 1 bytes past the end of 'l_45'
+  107 |         struct S0 l_45 = {9,-0,2003,4,0x536DL,-296,228,-30,37,321};
+      |                   ^~~~
+oob0.c: In function 'func_18':
+oob0.c:208:15: warning: stack-based buffer overflow [CWE-121] [-Wanalyzer-out-of-bounds]
+  208 |     struct S0 l_4042 = {-350,-3,315,-5,-9L,-125,119,4,317,319};
+      |               ^~~~~~
+  'func_18': events 1-2
+    |
+    |  208 |     struct S0 l_4042 = {-350,-3,315,-5,-9L,-125,119,4,317,319};
+    |      |               ^~~~~~
+    |      |               |
+    |      |               (1) capacity is 19 bytes
+    |      |               (2) out-of-bounds write at byte 19 but 'l_4042' ends at byte 19
+    |
+oob0.c:208:15: note: write is 1 bytes past the end of 'l_4042'
+  208 |     struct S0 l_4042 = {-350,-3,315,-5,-9L,-125,119,4,317,319};
+      |               ^~~~~~
+oob0.c:214:15: warning: stack-based buffer overflow [CWE-121] [-Wanalyzer-out-of-bounds]
+  214 |     struct S0 l_4085 = {67,-3,1312,1,0x512FL,344,90,-28,204,189};
+      |               ^~~~~~
+  'func_18': events 1-2
+    |
+    |  214 |     struct S0 l_4085 = {67,-3,1312,1,0x512FL,344,90,-28,204,189};
+    |      |               ^~~~~~
+    |      |               |
+    |      |               (1) capacity is 19 bytes
+    |      |               (2) out-of-bounds write at byte 19 but 'l_4085' ends at byte 19
+    |
+oob0.c:214:15: note: write is 1 bytes past the end of 'l_4085'
+  214 |     struct S0 l_4085 = {67,-3,1312,1,0x512FL,344,90,-28,204,189};
+      |               ^~~~~~
+oob0.c: In function 'func_27':
+oob0.c:384:15: warning: stack-based buffer overflow [CWE-121] [-Wanalyzer-out-of-bounds]
+  384 |     struct S0 l_3511 = {192,0,919,-4,0L,-75,106,1,219,8};
+      |               ^~~~~~
+  'func_27': events 1-2
+    |
+    |  384 |     struct S0 l_3511 = {192,0,919,-4,0L,-75,106,1,219,8};
+    |      |               ^~~~~~
+    |      |               |
+    |      |               (1) capacity is 19 bytes
+    |      |               (2) out-of-bounds write at byte 19 but 'l_3511' ends at byte 19
+    |
+oob0.c:384:15: note: write is 1 bytes past the end of 'l_3511'
+  384 |     struct S0 l_3511 = {192,0,919,-4,0L,-75,106,1,219,8};
+      |               ^~~~~~
+oob0.c: In function 'func_37':
+oob0.c:460:15: warning: stack-based buffer overflow [CWE-121] [-Wanalyzer-out-of-bounds]
+  460 |     struct S0 l_1597 = {-61,-2,360,-6,0x19D3L,288,139,9,123,377};
+      |               ^~~~~~
+  'func_37': events 1-2
+    |
+    |  460 |     struct S0 l_1597 = {-61,-2,360,-6,0x19D3L,288,139,9,123,377};
+    |      |               ^~~~~~
+    |      |               |
+    |      |               (1) capacity is 19 bytes
+    |      |               (2) out-of-bounds write at byte 19 but 'l_1597' ends at byte 19
+    |
+oob0.c:460:15: note: write is 1 bytes past the end of 'l_1597'
+  460 |     struct S0 l_1597 = {-61,-2,360,-6,0x19D3L,288,139,9,123,377};
+      |               ^~~~~~
+oob0.c:530:16: warning: buffer overread [CWE-126] [-Wanalyzer-out-of-bounds]
+  530 |     return p_40.f9;
+      |            ~~~~^~~
+  'func_37': events 1-10
+    |
+    |  433 | static const int16_t  func_37(int32_t * p_38, int8_t  p_39, struct S0  p_40, union U3  p_41, int8_t  p_42)
+    |      |                                                             ~~~~~~~~~~~^~~~
+    |      |                                                                        |
+    |      |                                                                        (1) capacity is 19 bytes
+    |......
+    |  522 |     for (i = 0; i < 4; i++)
+    |      |                 ~~~~~                                                   
+    |      |                   |
+    |      |                   (2) following 'true' branch (when 'i <= 3')...
+    |  523 |         l_2058[i] = 5L;
+    |      |         ~~~~~~~~~~~~~~                                                  
+    |      |                   |
+    |      |                   (3) ...to here
+    |  524 |     for (i = 0; i < 1; i++)
+    |      |                 ~~~~~                                                   
+    |      |                   |
+    |      |                   (4) following 'true' branch (when 'i <= 0')...
+    |  525 |         l_2396[i] = &l_1819.f0;
+    |      |         ~~~~~~~~~~~~~~~~~~~~~~                                          
+    |      |                   |
+    |      |                   (5) ...to here
+    |  526 |     for (i = 0; i < 8; i++)
+    |      |                 ~~~~~                                                   
+    |      |                   |
+    |      |                   (6) following 'true' branch (when 'i <= 7')...
+    |  527 |         l_2450[i] = 0L;
+    |      |         ~~~~~~~~~~~~~~                                                  
+    |      |                   |
+    |      |                   (7) ...to here
+    |  528 |     for (i = 0; i < 3; i++)
+    |      |                 ~~~~~                                                   
+    |      |                   |
+    |      |                   (8) following 'true' branch (when 'i <= 2')...
+    |  529 |         l_2649[i] = 0x6CE861F53844E430LL;
+    |      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                                
+    |      |                   |
+    |      |                   (9) ...to here
+    |  530 |     return p_40.f9;
+    |      |            ~~~~~~~                                                      
+    |      |                |
+    |      |                (10) out-of-bounds read at byte 19 but 'p_40' ends at byte 19
+    |
+oob0.c:530:16: note: read is 1 bytes past the end of 'p_40'
+  530 |     return p_40.f9;
+      |            ~~~~^~~
+oob0.c: In function 'func_56':
+oob0.c:545:15: warning: stack-based buffer overflow [CWE-121] [-Wanalyzer-out-of-bounds]
+  545 |     struct S0 l_477 = {-74,-1,2763,2,0x3D63L,-249,23,14,60,133};
+      |               ^~~~~
+  'func_56': events 1-2
+    |
+    |  545 |     struct S0 l_477 = {-74,-1,2763,2,0x3D63L,-249,23,14,60,133};
+    |      |               ^~~~~
+    |      |               |
+    |      |               (1) capacity is 19 bytes
+    |      |               (2) out-of-bounds write at byte 19 but 'l_477' ends at byte 19
+    |
+oob0.c:545:15: note: write is 1 bytes past the end of 'l_477'
+  545 |     struct S0 l_477 = {-74,-1,2763,2,0x3D63L,-249,23,14,60,133};
+      |               ^~~~~
+oob0.c:559:15: warning: stack-based buffer overflow [CWE-121] [-Wanalyzer-out-of-bounds]
+  559 |     struct S0 l_1096 = {-282,0,2369,-7,0xC698L,-289,30,-4,243,361};
+      |               ^~~~~~
+  'func_56': events 1-2
+    |
+    |  559 |     struct S0 l_1096 = {-282,0,2369,-7,0xC698L,-289,30,-4,243,361};
+    |      |               ^~~~~~
+    |      |               |
+    |      |               (1) capacity is 19 bytes
+    |      |               (2) out-of-bounds write at byte 19 but 'l_1096' ends at byte 19
+    |
+oob0.c:559:15: note: write is 1 bytes past the end of 'l_1096'
+  559 |     struct S0 l_1096 = {-282,0,2369,-7,0xC698L,-289,30,-4,243,361};
+      |               ^~~~~~
+oob0.c:560:15: warning: stack-based buffer overflow [CWE-121] [-Wanalyzer-out-of-bounds]
+  560 |     struct S0 l_1112[10] = {{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483}};
+      |               ^~~~~~
+  'func_56': events 1-2
+    |
+    |  560 |     struct S0 l_1112[10] = {{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483}};
+    |      |               ^~~~~~
+    |      |               |
+    |      |               (1) capacity is 190 bytes
+    |      |               (2) out-of-bounds write at byte 190 but 'l_1112' ends at byte 190
+    |
+oob0.c:560:15: note: write is 1 bytes past the end of 'l_1112'
+  560 |     struct S0 l_1112[10] = {{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483},{292,-1,1041,0,1L,-164,143,22,353,483}};
+      |               ^~~~~~
+oob0.c:574:15: warning: stack-based buffer overflow [CWE-121] [-Wanalyzer-out-of-bounds]
+  574 |     struct S0 l_1385[10] = {{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193}};
+      |               ^~~~~~
+  'func_56': events 1-2
+    |
+    |  574 |     struct S0 l_1385[10] = {{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193}};
+    |      |               ^~~~~~
+    |      |               |
+    |      |               (1) capacity is 190 bytes
+    |      |               (2) out-of-bounds write at byte 190 but 'l_1385' ends at byte 190
+    |
+oob0.c:574:15: note: write is 1 bytes past the end of 'l_1385'
+  574 |     struct S0 l_1385[10] = {{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193},{-24,-3,57,0,-6L,260,134,-31,239,193}};
+      |               ^~~~~~
+oob0.c:621:23: warning: stack-based buffer overflow [CWE-121] [-Wanalyzer-out-of-bounds]
+  621 |             struct S0 l_475 = {110,-0,1712,-5,5L,342,221,-16,360,26};
+      |                       ^~~~~
+  'func_56': events 1-20
+    |
+    |  577 |     for (i = 0; i < 3; i++)
+    |      |                 ~~~~~  
+    |      |                   |
+    |      |                   (2) following 'true' branch (when 'i <= 2')...
+    |  578 |         l_476[i] = &l_477;
+    |      |         ~~~~~~~~~~~~~~~~~
+    |      |                  |
+    |      |                  (3) ...to here
+    |  579 |     for (i = 0; i < 2; i++)
+    |      |                 ~~~~~  
+    |      |                   |
+    |      |                   (4) following 'true' branch (when 'i <= 1')...
+    |  580 |     {
+    |  581 |         for (j = 0; j < 1; j++)
+    |      |              ~~~~~  ~~~~~
+    |      |                |      |
+    |      |                |      (6) following 'true' branch (when 'j <= 0')...
+    |      |                (5) ...to here
+    |  582 |             l_1014[i][j] = 0L;
+    |      |             ~~~~~~~~~~~~~~~~~
+    |      |                          |
+    |      |                          (7) ...to here
+    |  583 |     }
+    |  584 |     for (i = 0; i < 9; i++)
+    |      |                 ~~~~~  
+    |      |                   |
+    |      |                   (8) following 'true' branch (when 'i <= 8')...
+    |  585 |         l_1132[i] = 0L;
+    |      |         ~~~~~~~~~~~~~~ 
+    |      |                   |
+    |      |                   (9) ...to here
+    |  586 |     for (i = 0; i < 8; i++)
+    |      |                 ~~~~~  
+    |      |                   |
+    |      |                   (10) following 'true' branch (when 'i <= 7')...
+    |  587 |         l_1190[i] = &l_1191;
+    |      |         ~~~~~~~~~~~~~~~~~~~
+    |      |                   |
+    |      |                   (11) ...to here
+    |  588 |     for (i = 0; i < 4; i++)
+    |      |                 ~~~~~  
+    |      |                   |
+    |      |                   (12) following 'true' branch (when 'i <= 3')...
+    |  589 |         l_1382[i] = 0x39D99FAC0783D63BLL;
+    |      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    |      |                   |
+    |      |                   (13) ...to here
+    |  590 |     (*l_66) = l_64;
+    |  591 |     for (p_57 = 0; (p_57 <= 0); p_57 += 1)
+    |      |                    ~~~~~~~~~~~
+    |      |                          |
+    |      |                          (14) following 'true' branch (when 'p_57 == 0')...
+    |  592 |     { /* block id: 20 */
+    |  593 |         struct S1 **l_69 = &l_64;
+    |      |                     ~~~~
+    |      |                     |
+    |      |                     (15) ...to here
+    |......
+    |  604 |         for (i = 0; i < 2; i++)
+    |      |                     ~~~~~
+    |      |                       |
+    |      |                       (16) following 'true' branch (when 'i <= 1')...
+    |  605 |             l_1001[i] = &l_471;
+    |      |             ~~~~~~~~~~~~~~~~~~
+    |      |                       |
+    |      |                       (17) ...to here
+    |  606 |         for (p_58 = 0; (p_58 >= 0); p_58 -= 1)
+    |      |                        ~~~~~~~~~~~
+    |      |                              |
+    |      |                              (18) following 'true' branch (when 'p_58 >= 0')...
+    |  607 |         { /* block id: 23 */
+    |  608 |             int32_t l_68 = 0x730FA287L;
+    |      |                     ~~~~
+    |      |                     |
+    |      |                     (19) ...to here
+    |  609 |             if (l_65.f0)
+    |      |                ~       
+    |      |                |
+    |      |                (20) following 'true' branch...
+    |......
+    |  621 |             struct S0 l_475 = {110,-0,1712,-5,5L,342,221,-16,360,26};
+    |      |                       ^~~~~
+    |      |                       |
+    |      |                       (1) capacity is 19 bytes
+    |
+  'func_56': event 21
+    |
+    |cc1:
+    | (21): ...to here
+    |
+  'func_56': events 22-24
+    |
+    |  617 |         for (p_58 = 0; (p_58 <= 0); p_58 += 1)
+    |      |                        ~~~~~~^~~~~
+    |      |                              |
+    |      |                              (22) following 'true' branch (when 'p_58 <= 0')...
+    |  618 |         { /* block id: 34 */
+    |  619 |             int32_t l_79 = 0xAE1B46CBL;
+    |      |                     ~~~~      
+    |      |                     |
+    |      |                     (23) ...to here
+    |  620 |             struct S1 *l_460 = &l_65;
+    |  621 |             struct S0 l_475 = {110,-0,1712,-5,5L,342,221,-16,360,26};
+    |      |                       ~~~~~   
+    |      |                       |
+    |      |                       (24) out-of-bounds write at byte 19 but 'l_475' ends at byte 19
+    |
+oob0.c:621:23: note: write is 1 bytes past the end of 'l_475'
+  621 |             struct S0 l_475 = {110,-0,1712,-5,5L,342,221,-16,360,26};
+      |                       ^~~~~
+oob0.c: In function 'func_71':
+oob0.c:946:23: warning: stack-based buffer overflow [CWE-121] [-Wanalyzer-out-of-bounds]
+  946 |             struct S0 l_560[6][1] = {{{281,-1,157,6,0L,-109,76,-7,311,334}},{{281,-1,157,6,0L,-109,76,-7,311,334}},{{39,-3,405,1,0L,348,46,-10,47,151}},{{281,-1,157,6,0L,-109,76,-7,311,334}},{{281,-1,157,6,0L,-109,76,-7,311,334}},{{39,-3,405,1,0L,348,46,-10,47,151}}};
+      |                       ^~~~~
+  'func_71': events 1-3
+    |
+    |  877 | static union U2  func_71(struct S1  p_72, uint8_t  p_73, int32_t * p_74, const int32_t  p_75, union U3  p_76)
+    |      |                  ^~~~~~~
+    |      |                  |
+    |      |                  (1) entry to 'func_71'
+    |......
+    |  904 |     if ((safe_mod_func_int32_t_s_s((safe_lshift_func_int16_t_s_s(l_487, 7)), 0xBCAB1D74L)))
+    |      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    |      |                                     |
+    |      |                                     (3) calling 'safe_lshift_func_int16_t_s_s' from 'func_71'
+    |......
+    |  946 |             struct S0 l_560[6][1] = {{{281,-1,157,6,0L,-109,76,-7,311,334}},{{281,-1,157,6,0L,-109,76,-7,311,334}},{{39,-3,405,1,0L,348,46,-10,47,151}},{{281,-1,157,6,0L,-109,76,-7,311,334}},{{281,-1,157,6,0L,-109,76,-7,311,334}},{{39,-3,405,1,0L,348,46,-10,47,151}}};
+    |      |                       ~~~~~
+    |      |                       |
+    |      |                       (2) capacity is 114 bytes
+    |
+    +--> 'safe_lshift_func_int16_t_s_s': event 4
+           |
+           |/usr/include/csmith/random_inc.h:99:23:
+           |   99 | #define FUNC_NAME(x) (safe_##x)
+           |      |                       ^~~~~
+           |      |                       |
+           |      |                       (4) entry to 'safe_lshift_func_int16_t_s_s'
+/usr/include/csmith/safe_math.h:224:1: note: in expansion of macro 'FUNC_NAME'
+           |  224 | FUNC_NAME(lshift_func_int16_t_s_s)(int16_t left, int right LOG_INDEX)
+           |      | ^~~~~~~~~
+           |
+         'safe_lshift_func_int16_t_s_s': events 5-8
+           |
+           |  229 |     ((left < 0) || (((int)right) < 0) || (((int)right) >= 32) || (left > (INT16_MAX >> ((int)right)))) ?
+           |      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           |      |                 |
+           |      |                 (6) ...to here
+           |      |                 (7) following 'true' branch...
+           |  230 |     (UNDEFINED(left)) :
+           |      |     ~~~~~~~~~~~~~~~~~~^
+           |      |                       |
+           |      |                       (5) following 'true' branch (when 'left >= 0')...
+           |  231 | #endif
+           |      | ~~~~~~                 
+           |  232 |     (left << ((int)right));
+           |      |     ~~~~~~~~~~~~~~~~~~~~~~
+           |      |           |
+           |      |           (8) ...to here
+           |
+    <------+
+    |
+  'func_71': events 9-10
+    |
+    |oob0.c:904:37:
+    |  904 |     if ((safe_mod_func_int32_t_s_s((safe_lshift_func_int16_t_s_s(l_487, 7)), 0xBCAB1D74L)))
+    |      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    |      |          |                          |
+    |      |          |                          (9) returning to 'func_71' from 'safe_lshift_func_int16_t_s_s'
+    |      |          (10) calling 'safe_mod_func_int32_t_s_s' from 'func_71'
+    |
+    +--> 'safe_mod_func_int32_t_s_s': event 11
+           |
+           |/usr/include/csmith/random_inc.h:99:23:
+           |   99 | #define FUNC_NAME(x) (safe_##x)
+           |      |                       ^~~~~
+           |      |                       |
+           |      |                       (11) entry to 'safe_mod_func_int32_t_s_s'
+/usr/include/csmith/safe_math.h:330:1: note: in expansion of macro 'FUNC_NAME'
+           |  330 | FUNC_NAME(mod_func_int32_t_s_s)(int32_t si1, int32_t si2 LOG_INDEX)
+           |      | ^~~~~~~~~
+           |
+         'safe_mod_func_int32_t_s_s': events 12-15
+           |
+           |  335 |     ((si2 == 0) || ((si1 == INT32_MIN) && (si2 == (-1)))) ?
+           |      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           |      |                 |
+           |      |                 (13) ...to here
+           |      |                 (14) following 'true' branch (when 'si1 != -2147483648')...
+           |  336 |     (UNDEFINED(si1)) :
+           |      |     ~~~~~~~~~~~~~~~~~^
+           |      |                      |
+           |      |                      (12) following 'true' branch (when 'si2 != 0')...
+           |      |                      (15) ...to here
+           |  337 | #endif
+           |      | ~~~~~~                
+           |  338 |     (si1 % si2);
+           |      |     ~~~~~~~~~~~       
+           |
+    <------+
+    |
+  'func_71': events 16-21
+    |
+    |oob0.c:904:10:
+    |  904 |     if ((safe_mod_func_int32_t_s_s((safe_lshift_func_int16_t_s_s(l_487, 7)), 0xBCAB1D74L)))
+    |      |        ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    |      |        | |
+    |      |        | (16) returning to 'func_71' from 'safe_mod_func_int32_t_s_s'
+    |      |        (17) following 'true' branch...
+    |  905 |     { /* block id: 218 */
+    |  906 |         const int32_t l_490 = (-1L);
+    |      |                       ~~~~~
+    |      |                       |
+    |      |                       (18) ...to here
+    |......
+    |  930 |         for (i = 0; i < 8; i++)
+    |      |                     ~~~~~
+    |      |                       |
+    |      |                       (19) following 'true' branch (when 'i <= 7')...
+    |  931 |             l_676[i] = &l_555;
+    |      |             ~~~~~~~~~~~~~~~~~
+    |      |                      |
+    |      |                      (20) ...to here
+    |  932 |         if ((safe_div_func_int8_t_s_s(l_490, ((safe_div_func_uint64_t_u_u((l_490 , (!((--l_498) & (~0x0D7F2EA51787C06ELL)))), (safe_sub_func_int16_t_s_s((((safe_rshift_func_uint8_t_u_u(l_497[0][4], 4)) <= (p_73 >= ((*l_508) &= (safe_add_func_int8_t_s_s((l_496[7] , 1L), l_497[4][3]))))) != ((&p_72 != &p_72) , l_487)), p_75)))) & l_490))))
+    |      |                                                                                                                                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    |      |                                                                                                                                                             |
+    |      |                                                                                                                                                             (21) calling 'safe_rshift_func_uint8_t_u_u' from 'func_71'
+    |
+    +--> 'safe_rshift_func_uint8_t_u_u': event 22
+           |
+           |/usr/include/csmith/random_inc.h:99:23:
+           |   99 | #define FUNC_NAME(x) (safe_##x)
+           |      |                       ^~~~~
+           |      |                       |
+           |      |                       (22) entry to 'safe_rshift_func_uint8_t_u_u'
+/usr/include/csmith/safe_math.h:627:1: note: in expansion of macro 'FUNC_NAME'
+           |  627 | FUNC_NAME(rshift_func_uint8_t_u_u)(uint8_t left, unsigned int right LOG_INDEX)
+           |      | ^~~~~~~~~
+           |
+         'safe_rshift_func_uint8_t_u_u': events 23-24
+           |
+           |  632 |     (((unsigned int)right) >= 32) ?
+           |      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           |  633 |     (UNDEFINED(left)) :
+           |      |     ~~~~~~~~~~~~~~~~~~^
+           |      |                       |
+           |      |                       (23) following 'true' branch (when 'right <= 31')...
+           |  634 | #endif
+           |      | ~~~~~~                 
+           |  635 |     (left >> ((unsigned int)right));
+           |      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           |      |           |
+           |      |           (24) ...to here
+           |
+    <------+
+    |
+  'func_71': events 25-26
+    |
+    |oob0.c:932:157:
+    |  932 |         if ((safe_div_func_int8_t_s_s(l_490, ((safe_div_func_uint64_t_u_u((l_490 , (!((--l_498) & (~0x0D7F2EA51787C06ELL)))), (safe_sub_func_int16_t_s_s((((safe_rshift_func_uint8_t_u_u(l_497[0][4], 4)) <= (p_73 >= ((*l_508) &= (safe_add_func_int8_t_s_s((l_496[7] , 1L), l_497[4][3]))))) != ((&p_72 != &p_72) , l_487)), p_75)))) & l_490))))
+    |      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    |      |              |                                                                                                                                              |
+    |      |              (26) calling 'safe_div_func_int8_t_s_s' from 'func_71'                                                                                         (25) returning to 'func_71' from 'safe_rshift_func_uint8_t_u_u'
+    |
+    +--> 'safe_div_func_int8_t_s_s': event 27
+           |
+           |/usr/include/csmith/random_inc.h:99:23:
+           |   99 | #define FUNC_NAME(x) (safe_##x)
+           |      |                       ^~~~~
+           |      |                       |
+           |      |                       (27) entry to 'safe_div_func_int8_t_s_s'
+/usr/include/csmith/safe_math.h:82:1: note: in expansion of macro 'FUNC_NAME'
+           |   82 | FUNC_NAME(div_func_int8_t_s_s)(int8_t si1, int8_t si2 LOG_INDEX)
+           |      | ^~~~~~~~~
+           |
+         'safe_div_func_int8_t_s_s': events 28-29
+           |
+           |   87 |     ((si2 == 0) || ((si1 == INT8_MIN) && (si2 == (-1)))) ?
+           |      |     ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           |      |                 |
+           |      |                 (28) following 'true' branch (when 'si1 != -128')...
+           |......
+           |   90 |     (si1 / si2);
+           |      |     ~~~~~~~~~~~  
+           |      |          |
+           |      |          (29) ...to here
+           |
+    <------+
+    |
+  'func_71': events 30-33
+    |
+    |oob0.c:932:14:
+    |  932 |         if ((safe_div_func_int8_t_s_s(l_490, ((safe_div_func_uint64_t_u_u((l_490 , (!((--l_498) & (~0x0D7F2EA51787C06ELL)))), (safe_sub_func_int16_t_s_s((((safe_rshift_func_uint8_t_u_u(l_497[0][4], 4)) <= (p_73 >= ((*l_508) &= (safe_add_func_int8_t_s_s((l_496[7] , 1L), l_497[4][3]))))) != ((&p_72 != &p_72) , l_487)), p_75)))) & l_490))))
+    |      |            ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    |      |            | |
+    |      |            | (30) returning to 'func_71' from 'safe_div_func_int8_t_s_s'
+    |      |            (31) following 'false' branch...
+    |......
+    |  943 |             int64_t l_517 = (-1L);
+    |      |                     ~~~~~
+    |      |                     |
+    |      |                     (32) ...to here
+    |......
+    |  946 |             struct S0 l_560[6][1] = {{{281,-1,157,6,0L,-109,76,-7,311,334}},{{281,-1,157,6,0L,-109,76,-7,311,334}},{{39,-3,405,1,0L,348,46,-10,47,151}},{{281,-1,157,6,0L,-109,76,-7,311,334}},{{281,-1,157,6,0L,-109,76,-7,311,334}},{{39,-3,405,1,0L,348,46,-10,47,151}}};
+    |      |                       ~~~~~
+    |      |                       |
+    |      |                       (33) out-of-bounds write at byte 114 but 'l_560' ends at byte 114
+    |
+oob0.c:946:23: note: write is 1 bytes past the end of 'l_560'
+  946 |             struct S0 l_560[6][1] = {{{281,-1,157,6,0L,-109,76,-7,311,334}},{{281,-1,157,6,0L,-109,76,-7,311,334}},{{39,-3,405,1,0L,348,46,-10,47,151}},{{281,-1,157,6,0L,-109,76,-7,311,334}},{{281,-1,157,6,0L,-109,76,-7,311,334}},{{39,-3,405,1,0L,348,46,-10,47,151}}};
+      |                       ^~~~~
+oob0.c:985:19: warning: stack-based buffer overflow [CWE-121] [-Wanalyzer-out-of-bounds]
+  985 |         struct S0 l_958 = {-2,3,2158,-2,0x7BB3L,76,10,-12,343,175};
+      |                   ^~~~~
+  'func_71': events 1-3
+    |
+    |  877 | static union U2  func_71(struct S1  p_72, uint8_t  p_73, int32_t * p_74, const int32_t  p_75, union U3  p_76)
+    |      |                  ^~~~~~~
+    |      |                  |
+    |      |                  (1) entry to 'func_71'
+    |......
+    |  904 |     if ((safe_mod_func_int32_t_s_s((safe_lshift_func_int16_t_s_s(l_487, 7)), 0xBCAB1D74L)))
+    |      |                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    |      |                                     |
+    |      |                                     (3) calling 'safe_lshift_func_int16_t_s_s' from 'func_71'
+    |......
+    |  985 |         struct S0 l_958 = {-2,3,2158,-2,0x7BB3L,76,10,-12,343,175};
+    |      |                   ~~~~~
+    |      |                   |
+    |      |                   (2) capacity is 19 bytes
+    |
+    +--> 'safe_lshift_func_int16_t_s_s': event 4
+           |
+           |/usr/include/csmith/random_inc.h:99:23:
+           |   99 | #define FUNC_NAME(x) (safe_##x)
+           |      |                       ^~~~~
+           |      |                       |
+           |      |                       (4) entry to 'safe_lshift_func_int16_t_s_s'
+/usr/include/csmith/safe_math.h:224:1: note: in expansion of macro 'FUNC_NAME'
+           |  224 | FUNC_NAME(lshift_func_int16_t_s_s)(int16_t left, int right LOG_INDEX)
+           |      | ^~~~~~~~~
+           |
+         'safe_lshift_func_int16_t_s_s': events 5-8
+           |
+           |  229 |     ((left < 0) || (((int)right) < 0) || (((int)right) >= 32) || (left > (INT16_MAX >> ((int)right)))) ?
+           |      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           |      |                 |
+           |      |                 (6) ...to here
+           |      |                 (7) following 'true' branch...
+           |  230 |     (UNDEFINED(left)) :
+           |      |     ~~~~~~~~~~~~~~~~~~^
+           |      |                       |
+           |      |                       (5) following 'true' branch (when 'left >= 0')...
+           |  231 | #endif
+           |      | ~~~~~~                 
+           |  232 |     (left << ((int)right));
+           |      |     ~~~~~~~~~~~~~~~~~~~~~~
+           |      |           |
+           |      |           (8) ...to here
+           |
+    <------+
+    |
+  'func_71': events 9-10
+    |
+    |oob0.c:904:37:
+    |  904 |     if ((safe_mod_func_int32_t_s_s((safe_lshift_func_int16_t_s_s(l_487, 7)), 0xBCAB1D74L)))
+    |      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    |      |          |                          |
+    |      |          |                          (9) returning to 'func_71' from 'safe_lshift_func_int16_t_s_s'
+    |      |          (10) calling 'safe_mod_func_int32_t_s_s' from 'func_71'
+    |
+    +--> 'safe_mod_func_int32_t_s_s': event 11
+           |
+           |/usr/include/csmith/random_inc.h:99:23:
+           |   99 | #define FUNC_NAME(x) (safe_##x)
+           |      |                       ^~~~~
+           |      |                       |
+           |      |                       (11) entry to 'safe_mod_func_int32_t_s_s'
+/usr/include/csmith/safe_math.h:330:1: note: in expansion of macro 'FUNC_NAME'
+           |  330 | FUNC_NAME(mod_func_int32_t_s_s)(int32_t si1, int32_t si2 LOG_INDEX)
+           |      | ^~~~~~~~~
+           |
+         'safe_mod_func_int32_t_s_s': events 12-15
+           |
+           |  335 |     ((si2 == 0) || ((si1 == INT32_MIN) && (si2 == (-1)))) ?
+           |      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           |      |                 |
+           |      |                 (13) ...to here
+           |      |                 (14) following 'true' branch (when 'si1 != -2147483648')...
+           |  336 |     (UNDEFINED(si1)) :
+           |      |     ~~~~~~~~~~~~~~~~~^
+           |      |                      |
+           |      |                      (12) following 'true' branch (when 'si2 != 0')...
+           |      |                      (15) ...to here
+           |  337 | #endif
+           |      | ~~~~~~                
+           |  338 |     (si1 % si2);
+           |      |     ~~~~~~~~~~~       
+           |
+    <------+
+    |
+  'func_71': events 16-21
+    |
+    |oob0.c:904:10:
+    |  904 |     if ((safe_mod_func_int32_t_s_s((safe_lshift_func_int16_t_s_s(l_487, 7)), 0xBCAB1D74L)))
+    |      |        ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    |      |        | |
+    |      |        | (16) returning to 'func_71' from 'safe_mod_func_int32_t_s_s'
+    |      |        (17) following 'true' branch...
+    |  905 |     { /* block id: 218 */
+    |  906 |         const int32_t l_490 = (-1L);
+    |      |                       ~~~~~
+    |      |                       |
+    |      |                       (18) ...to here
+    |......
+    |  930 |         for (i = 0; i < 8; i++)
+    |      |                     ~~~~~
+    |      |                       |
+    |      |                       (19) following 'true' branch (when 'i <= 7')...
+    |  931 |             l_676[i] = &l_555;
+    |      |             ~~~~~~~~~~~~~~~~~
+    |      |                      |
+    |      |                      (20) ...to here
+    |  932 |         if ((safe_div_func_int8_t_s_s(l_490, ((safe_div_func_uint64_t_u_u((l_490 , (!((--l_498) & (~0x0D7F2EA51787C06ELL)))), (safe_sub_func_int16_t_s_s((((safe_rshift_func_uint8_t_u_u(l_497[0][4], 4)) <= (p_73 >= ((*l_508) &= (safe_add_func_int8_t_s_s((l_496[7] , 1L), l_497[4][3]))))) != ((&p_72 != &p_72) , l_487)), p_75)))) & l_490))))
+    |      |                                                                                                                                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    |      |                                                                                                                                                             |
+    |      |                                                                                                                                                             (21) calling 'safe_rshift_func_uint8_t_u_u' from 'func_71'
+    |
+    +--> 'safe_rshift_func_uint8_t_u_u': event 22
+           |
+           |/usr/include/csmith/random_inc.h:99:23:
+           |   99 | #define FUNC_NAME(x) (safe_##x)
+           |      |                       ^~~~~
+           |      |                       |
+           |      |                       (22) entry to 'safe_rshift_func_uint8_t_u_u'
+/usr/include/csmith/safe_math.h:627:1: note: in expansion of macro 'FUNC_NAME'
+           |  627 | FUNC_NAME(rshift_func_uint8_t_u_u)(uint8_t left, unsigned int right LOG_INDEX)
+           |      | ^~~~~~~~~
+           |
+         'safe_rshift_func_uint8_t_u_u': events 23-24
+           |
+           |  632 |     (((unsigned int)right) >= 32) ?
+           |      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           |  633 |     (UNDEFINED(left)) :
+           |      |     ~~~~~~~~~~~~~~~~~~^
+           |      |                       |
+           |      |                       (23) following 'true' branch (when 'right <= 31')...
+           |  634 | #endif
+           |      | ~~~~~~                 
+           |  635 |     (left >> ((unsigned int)right));
+           |      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           |      |           |
+           |      |           (24) ...to here
+           |
+    <------+
+    |
+  'func_71': events 25-26
+    |
+    |oob0.c:932:157:
+    |  932 |         if ((safe_div_func_int8_t_s_s(l_490, ((safe_div_func_uint64_t_u_u((l_490 , (!((--l_498) & (~0x0D7F2EA51787C06ELL)))), (safe_sub_func_int16_t_s_s((((safe_rshift_func_uint8_t_u_u(l_497[0][4], 4)) <= (p_73 >= ((*l_508) &= (safe_add_func_int8_t_s_s((l_496[7] , 1L), l_497[4][3]))))) != ((&p_72 != &p_72) , l_487)), p_75)))) & l_490))))
+    |      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    |      |              |                                                                                                                                              |
+    |      |              (26) calling 'safe_div_func_int8_t_s_s' from 'func_71'                                                                                         (25) returning to 'func_71' from 'safe_rshift_func_uint8_t_u_u'
+    |
+    +--> 'safe_div_func_int8_t_s_s': event 27
+           |
+           |/usr/include/csmith/random_inc.h:99:23:
+           |   99 | #define FUNC_NAME(x) (safe_##x)
+           |      |                       ^~~~~
+           |      |                       |
+           |      |                       (27) entry to 'safe_div_func_int8_t_s_s'
+/usr/include/csmith/safe_math.h:82:1: note: in expansion of macro 'FUNC_NAME'
+           |   82 | FUNC_NAME(div_func_int8_t_s_s)(int8_t si1, int8_t si2 LOG_INDEX)
+           |      | ^~~~~~~~~
+           |
+         'safe_div_func_int8_t_s_s': events 28-29
+           |
+           |   87 |     ((si2 == 0) || ((si1 == INT8_MIN) && (si2 == (-1)))) ?
+           |      |     ~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+           |      |                 |
+           |      |                 (28) following 'true' branch (when 'si1 != -128')...
+           |......
+           |   90 |     (si1 / si2);
+           |      |     ~~~~~~~~~~~  
+           |      |          |
+           |      |          (29) ...to here
+           |
+    <------+
+    |
+  'func_71': events 30-43
+    |
+    |oob0.c:932:14:
+    |  932 |         if ((safe_div_func_int8_t_s_s(l_490, ((safe_div_func_uint64_t_u_u((l_490 , (!((--l_498) & (~0x0D7F2EA51787C06ELL)))), (safe_sub_func_int16_t_s_s((((safe_rshift_func_uint8_t_u_u(l_497[0][4], 4)) <= (p_73 >= ((*l_508) &= (safe_add_func_int8_t_s_s((l_496[7] , 1L), l_497[4][3]))))) != ((&p_72 != &p_72) , l_487)), p_75)))) & l_490))))
+    |      |            ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    |      |            | |
+    |      |            | (30) returning to 'func_71' from 'safe_div_func_int8_t_s_s'
+    |      |            (31) following 'false' branch...
+    |......
+    |  943 |             int64_t l_517 = (-1L);
+    |      |                     ~~~~~
+    |      |                     |
+    |      |                     (32) ...to here
+    |......
+    |  964 |             for (i = 0; i < 6; i++)
+    |      |                         ~~~~~
+    |      |                           |
+    |      |                           (33) following 'true' branch (when 'i <= 5')...
+    |  965 |             {
+    |  966 |                 for (j = 0; j < 4; j++)
+    |      |                      ~~~~~  ~~~~~
+    |      |                        |      |
+    |      |                        |      (35) following 'true' branch (when 'j <= 3')...
+    |      |                        (34) ...to here
+    |  967 |                     l_597[i][j] = &l_598;
+    |      |                     ~~~~~~~~~~~~~~~~~~~~
+    |      |                                 |
+    |      |                                 (36) ...to here
+    |  968 |             }
+    |  969 |             for (i = 0; i < 1; i++)
+    |      |                         ~~~~~
+    |      |                           |
+    |      |                           (37) following 'true' branch (when 'i <= 0')...
+    |  970 |                 l_673[i] = &l_512;
+    |      |                 ~~~~~~~~~~~~~~~~~
+    |      |                          |
+    |      |                          (38) ...to here
+    |  971 |             for (i = 0; i < 5; i++)
+    |      |                         ~~~~~
+    |      |                           |
+    |      |                           (39) following 'true' branch (when 'i <= 4')...
+    |  972 |                 l_776[i] = 5UL;
+    |      |                 ~~~~~~~~~~~~~~
+    |      |                          |
+    |      |                          (40) ...to here
+    |......
+    |  980 |     for (l_885 = 0; (l_885 != (-9)); l_885 = safe_sub_func_uint8_t_u_u(l_885, 9))
+    |      |                     ~~~~~~~~~~~~~~~
+    |      |                            |
+    |      |                            (41) following 'true' branch...
+    |  981 |     { /* block id: 434 */
+    |  982 |         int32_t *l_956 = &l_497[2][6];
+    |      |                  ~~~~~
+    |      |                  |
+    |      |                  (42) ...to here
+    |......
+    |  985 |         struct S0 l_958 = {-2,3,2158,-2,0x7BB3L,76,10,-12,343,175};
+    |      |                   ~~~~~
+    |      |                   |
+    |      |                   (43) out-of-bounds write at byte 19 but 'l_958' ends at byte 19
+    |
+oob0.c:985:19: note: write is 1 bytes past the end of 'l_958'
+  985 |         struct S0 l_958 = {-2,3,2158,-2,0x7BB3L,76,10,-12,343,175};
+      |                   ^~~~~
