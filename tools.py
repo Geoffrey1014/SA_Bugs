@@ -37,7 +37,6 @@ def fuzz_fp(args: argparse.Namespace):
                          str(iter_times),'-o='+str(opt)], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         os.chdir("..")
 
-
 def fuzz_fn(args: argparse.Namespace):
     script_path = ROOT_DIR + "/fuzz_sa_fn.py"
 
@@ -362,6 +361,8 @@ def check_cfile_warning_line_reachable(args: argparse.Namespace):
     cfile_abspath = os.path.abspath(args.cfile)
     par_dir, cfile = os.path.split(cfile_abspath)
 
+    os.chdir(par_dir)
+
     # handle report_file path
     short_name = get_short_name(cfile)
     report_file = short_name + ".txt"
@@ -374,6 +375,7 @@ def check_cfile_warning_line_reachable(args: argparse.Namespace):
     if not os.path.exists(report_abspath):
         #TODO: analyze the cfile and get the report
         print("report file does not exist!")
+        exit(-1)
     else:
         warning_lines = get_warning_lines(args.analyzer,args.checker, report_abspath)
         if len(warning_lines) != 0:
@@ -382,10 +384,9 @@ def check_cfile_warning_line_reachable(args: argparse.Namespace):
                     warning_exist = grep_flag(run_out_file)
                 else:
                     print("compile_and_run_instrument_cfile fail!")
-
-    clean_check_reach_input(args.rmNonReachable, args.rmAllReachable, cfile_abspath, report_abspath, warning_exist)
-    clean_check_reach_output(args.saveOutput, instrumented_cfile, run_out_file, warning_exist)
-    return warning_exist
+                clean_check_reach_output(args.saveOutput, instrumented_cfile, run_out_file, warning_exist)
+        clean_check_reach_input(args.rmNonReachable, args.rmAllReachable, cfile_abspath, report_abspath, warning_exist)
+        return warning_exist
 
 
 
@@ -400,13 +401,14 @@ def check_dir_warning_line_reachable(args: argparse.Namespace):
     target_dir_abspath = os.path.abspath(args.dir)
     os.chdir(target_dir_abspath)
 
+    files = os.listdir(target_dir_abspath)
+    print("file nums: " + str(len(files)))
+
     # create the reachable dir
     if not os.path.exists(REACHABLE_DIR):
         os.mkdir(REACHABLE_DIR)
     os.chdir(REACHABLE_DIR)
 
-    files = os.listdir(target_dir_abspath)
-    print("file nums: " + str(len(files)))
 
     res_reachable = []
     res_not_reachable = []
@@ -416,6 +418,8 @@ def check_dir_warning_line_reachable(args: argparse.Namespace):
     for file in files:
         if file.endswith(".c") and file.startswith(warning_type):
             # handle file pathes
+            if args.verbose:
+                print("handling file: " + file)
             cfile = file
             cfile_abspath = os.path.join(target_dir_abspath, file)
             short_name = get_short_name(cfile)
@@ -431,7 +435,7 @@ def check_dir_warning_line_reachable(args: argparse.Namespace):
                 res_report_not_exist.append(cfile_abspath)
             else:
                 warning_lines = get_warning_lines(args.analyzer,args.checker, report_abspath)
-                if warning_lines != 0:
+                if len(warning_lines) != 0:
                     if instrument_cfile(cfile_abspath, warning_lines, instrumented_cfile):
                         if compile_and_run_instrument_cfile(cc, str(args.optimize),instrumented_cfile, run_out_file):
                             warning_exist = grep_flag(run_out_file)
@@ -440,14 +444,11 @@ def check_dir_warning_line_reachable(args: argparse.Namespace):
                             else:
                                 res_not_reachable.append(cfile_abspath)
                         else:
-                            if args.verbose:
-                                print("compile_and_run_instrument_cfile fail!")
                             res_compile_or_run_fail.append(cfile_abspath)
-                        
-                clean_check_reach_input(args.rmNonReachable, args.rmAllReachable, cfile_abspath, report_abspath, warning_exist)
-                clean_check_reach_output(args.saveOutput, instrumented_cfile, run_out_file, warning_exist)
+                        clean_check_reach_output(args.saveOutput, instrumented_cfile, run_out_file, warning_exist)
+            clean_check_reach_input(args.rmNonReachable, args.rmAllReachable, cfile_abspath, report_abspath, warning_exist)
 
-    write_result_to_file(res_reachable, res_not_reachable, res_report_not_exist, res_compile_or_run_fail, args.analyzer)
+    write_result_to_file(res_reachable, res_not_reachable, res_report_not_exist, res_compile_or_run_fail, args.analyzer, warning_type)
     
 
 
@@ -517,15 +518,8 @@ def gen_reduce(args: argparse.Namespace):
                 gen_reduce_script(
                     template_abspath, cfile_name, opt_level, args)
     else:
-        target_dir_abspath = os.getcwd()
-        files = os.listdir(target_dir_abspath)
-        print("file nums: " + str(len(files)))
-
-        for file in files:
-            if file.endswith(".c") and not file.startswith("instrument"):
-                cfile_name = get_short_name(file)
-                gen_reduce_script(
-                    template_abspath, cfile_name, opt_level, args)
+        print("Please give a cfile of a dir !")
+        exit(-1)
 
 
 def get_instrument_npd_serial_num(name):
@@ -805,11 +799,11 @@ def handle_args():
         "template", type=str, help="specify reduce template")
     parser_gen_reduce.add_argument("analyzer", type=str, choices={
         'gcc', 'clang'}, help="give a analyzer")
+    parser_gen_reduce.add_argument("checker", type=str, choices=CHECKER_LIST, help="give a checker")
     parser_gen_reduce.add_argument("optimize", type=int, choices={
                                    0, 1, 2, 3}, help="optimization level")
     parser_gen_reduce.add_argument(
         "-t", "--script_path", type=str, help="specify script path")
-
     group_parser_gen_reduce = parser_gen_reduce.add_mutually_exclusive_group()
     group_parser_gen_reduce.add_argument(
         "-f", "--cfile", type=str, help="specify cfile")
@@ -849,8 +843,7 @@ def handle_args():
         "path", help="given a parent dir of fuzzing working dir")
     parser_fuzz_fp.add_argument("analyzer", type=str, choices={
         'gcc', 'clang'}, help="give a analyzer")
-    parser_fuzz_fp.add_argument("checker", type=str, choices={
-        'npd', 'oob'}, help="give a checker")
+    parser_fuzz_fp.add_argument("checker", type=str, choices=CHECKER_LIST, help="give a checker")
     parser_fuzz_fp.add_argument("optimize", type=int, choices={
         0, 1, 2, 3}, default=0, help="optimization level ( if clang, ...")
     parser_fuzz_fp.add_argument(
@@ -912,8 +905,7 @@ def handle_args():
         "check-fp", help="check whether the given analyzer complain the given warning for the given c program ")
     parser_checkfp.add_argument("analyzer", type=str, choices={
                                  'gcc', 'clang'}, help="give a analyzer")
-    parser_checkfp.add_argument("checker", type=str, choices={
-        'npd', 'oob'}, help="give a checker")
+    parser_checkfp.add_argument("checker", type=str, choices=CHECKER_LIST, help="give a checker")
     parser_checkfp.add_argument("-o", "--optimize", type=int,
                                  choices={0, 1, 2, 3}, default=0, help="optimization level")
     parser_checkfp.add_argument(
@@ -932,10 +924,8 @@ def handle_args():
         "check-reach", help="check whether the warning line complained by the given analyzer is reachable")
     parser_reach_warning_lines.add_argument("analyzer", type=str, choices={
                                         'gcc', 'clang'}, help="give a analyzer")
-    parser_reach_warning_lines.add_argument("checker", type=str, choices={
-        'npd', 'oob'}, help="give a checker")
-    parser_reach_warning_lines.add_argument(
-        "-o", "--optimize", type=int, choices={0, 1, 2, 3}, default=0, help="optimization level")
+    parser_reach_warning_lines.add_argument("checker", type=str, choices=CHECKER_LIST, help="give a checker")
+    parser_reach_warning_lines.add_argument("optimize", type=int, choices={0, 1, 2, 3}, default=0, help="optimization level")
     parser_reach_warning_lines.add_argument(
         "-s", "--saveOutput", action="store_true", help="do not delete generated files in checking process")
 

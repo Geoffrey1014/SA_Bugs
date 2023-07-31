@@ -42,13 +42,13 @@ class TestUtils(unittest.TestCase):
 
     def test_get_warning_line_2(self):            
         warning_lines = get_warning_line_from_file(self.test_file, "-Wanalyzer-out-of-bounds")
-        print(warning_lines)
+        # print(warning_lines)
         self.assertEqual(warning_lines, ["5"])
     
     def test_instrument_cfile(self):
         # Test case 1: Valid input
         cfile_abspath = "test_data/oob_0.c"
-        warning_lines = ["107"]
+        warning_lines = ['107', '107', '208', '214', '384', '460', '530', '545', '559', '560', '574', '621', '946', '985']
         instrumented_cfile = "test_data/oob_0_instrumented.c"
         assert instrument_cfile(cfile_abspath, warning_lines, instrumented_cfile) == True
         # os.remove(instrumented_cfile)

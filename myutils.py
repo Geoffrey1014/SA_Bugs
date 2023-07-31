@@ -175,7 +175,6 @@ def compile_and_run_instrument_cfile(cc, optimize, instrumented_cfile, run_out_f
         subprocess.run([cc, "-O" + str(optimize), "-I", CSMITH_HEADER,
                                      instrumented_cfile], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, encoding="utf-8", check=True)
     except subprocess.CalledProcessError as e:
-        print("compile error!")
         print(e)
         return False
 
@@ -183,8 +182,6 @@ def compile_and_run_instrument_cfile(cc, optimize, instrumented_cfile, run_out_f
         run_ret = subprocess.run(["timeout", "5s", "./a.out"], stdout=subprocess.PIPE,
                                  stderr=subprocess.STDOUT, encoding="utf-8", check=True)
     except subprocess.CalledProcessError as e:
-        if e.returncode == 124:
-            print("run timeout!")
         print(e)
         return False
     # os.remove("a.out")
@@ -237,7 +234,7 @@ def grep_flag(run_out_file):
         print(f"grep_flag: Failed to grep FLAG. Error: {e}")
         return False
 
-def write_result_to_file(res_reachable, res_not_reachable, res_report_not_exist, res_compile_or_run_fail, analyzer):
+def write_result_to_file(res_reachable, res_not_reachable, res_report_not_exist, res_compile_or_run_fail, analyzer,checker):
     '''
     Writes the results of the analysis to a file.
 
@@ -255,21 +252,21 @@ def write_result_to_file(res_reachable, res_not_reachable, res_report_not_exist,
     res_not_reachable.sort()
     res_report_not_exist.sort()
     res_compile_or_run_fail.sort()
-    reachable_report = "npd_reachable_report_" + \
+    reachable_report = checker + "_reachable_report_" + \
         str(time.strftime("%Y-%m-%d-%H-%M", time.localtime())) + ".txt"
     try:
         with open(reachable_report, "w") as f:
             f.write("%s: version: \n %s\n" %
                     (analyzer, get_analyzer_version(analyzer)))
-            f.write("\nnpd_reachable:\n")
-            print("\nnpd_reachable:\n")
+            f.write("\nreachable:\n")
+            print("\nreachable:\n")
 
             for i in res_reachable:
                 print(i)
                 f.write(i + "\n")
 
-            f.write("\nnpd_not_reachable:\n")
-            print("\nnpd_not_reachable:\n")
+            f.write("\nnot_reachable:\n")
+            print("\nnot_reachable:\n")
 
             for i in res_not_reachable:
                 print(i)
@@ -305,11 +302,15 @@ def clean_check_reach_input(rmNonReachable, rmAllReachable, cfile_abspath, repor
     warning_exist (bool): If True, there are warnings in the report file.
     """
     if (not warning_exist and rmNonReachable) or rmAllReachable:
-        os.remove(cfile_abspath)
-        os.remove(report_abspath)
+        if os.path.exists(cfile_abspath):
+            os.remove(cfile_abspath)
+        if os.path.exists(report_abspath):  
+            os.remove(report_abspath)
 
 def clean_check_reach_output(saveOutput, instrumented_cfile, run_out_file, warning_exist):
     if saveOutput or warning_exist:
         return
-    os.remove(instrumented_cfile)
-    os.remove(run_out_file)
+    if os.path.exists(instrumented_cfile):
+        os.remove(instrumented_cfile)
+    if os.path.exists(run_out_file):
+        os.remove(run_out_file)
