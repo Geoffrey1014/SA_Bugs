@@ -103,7 +103,7 @@ class TestUtils(unittest.TestCase):
     def test_gen_reduce_script(self):
         template_abspath = self.work_dir + '/interestness_template_gcc.py'
         cfile = self.test_data_dir + '/oob_0.c'
-        
+
         cfile_name = get_short_name(cfile)
         opt_level = '2'
         checker = 'oob'
@@ -126,6 +126,12 @@ class TestUtils(unittest.TestCase):
         # Clean up the reduce script
         os.remove(reduce_script)
         os.chdir(self.work_dir)
+    
+    def test_get_serial_num(self):
+        self.assertEqual(get_serial_num("instrument_npd123.c"), "123")
+        self.assertEqual(get_serial_num("file_abc456.c"), "456")
+        self.assertEqual(get_serial_num("test_789.c"), "789")
+        self.assertEqual(get_serial_num("no_serial_num.c"), None)
 
 if __name__ == '__main__':
     unittest.main()

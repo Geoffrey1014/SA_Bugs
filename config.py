@@ -29,4 +29,10 @@ MAX_PROGRAM_SIZE = 8000
 
 CHECKER_LIST = ["npd", "oob"]
 ANALYZER_TIMEOUT = "timeout 60 "
+
+GCC_NPD = "-Wanalyzer-null-dereference"
+GCC_OOB = "-Wanalyzer-out-of-bounds"
  
+RUN_TIMEOUT_NUM = "10s"
+FLAG_DIS_STR="FLAG disappear"
+UB_STR = "Undefined behavior"

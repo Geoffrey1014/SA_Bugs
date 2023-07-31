@@ -12,9 +12,6 @@ ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_FILE = ROOT_DIR + "/config.py"
 
 REACHABLE_DIR = "reachable"
-NPD_DISAPPEAR = "NPD_FLAG disappear"
-UB_STRING = "Undefined behavior"
-
 
 def fuzz_fp(args: argparse.Namespace):
     script_path = ROOT_DIR + "/fuzz_sa_fp.py"
@@ -500,18 +497,6 @@ def gen_reduce(args: argparse.Namespace):
         exit(-1)
 
 
-def get_instrument_npd_serial_num(name):
-    '''
-    get serial num of given name
-    example: input instrument_npd123.c ; retuen 123 ;
-    '''
-    res = re.search(r'instrument_npd(\w+)\..*', name)
-    print(res)
-
-    if res:
-        return res.group(1)
-    else:
-        return None
 
 
 def run_reduce_eval(args: argparse.Namespace):
@@ -627,78 +612,73 @@ def run_reduce(args: argparse.Namespace):
     then delete it, else reduce it
     '''
     thread_num = str(args.thread)
+    targer_dir_abspath = os.path.abspath(args.dir)
+    if not os.path.exists(targer_dir_abspath):
+        print("dir_abspath does not exist: " + targer_dir_abspath)
+        exit(-1)
 
-    if args.dir:
-        targer_dir_abspath = os.path.abspath(args.dir)
-        if not os.path.exists(targer_dir_abspath):
-            print("dir_abspath does not exist: " + targer_dir_abspath)
-            exit(-1)
+    # handle dir pathe
+    print(targer_dir_abspath)
+    os.chdir(targer_dir_abspath)
 
-        # handle dir pathe
-        print(targer_dir_abspath)
-        os.chdir(targer_dir_abspath)
+    # result list
+    ub_list = []
+    flag_disappear_list = []
+    other_error_list = []
+    reduce_list = []
 
-        # result list
-        ub_list = []
-        npd_disappear_list = []
-        reduce_list = []
+    if not os.path.exists("reduce"):
+        os.mkdir("reduce")
+        
+    # handle every reducing script
+    files = os.listdir(targer_dir_abspath)
+    print("file num: " + str(len(files)))
 
-        if not os.path.exists("reduce"):
-            subprocess.run(["mkdir", "reduce"],
-                           stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
+    for cfile in files:
+        if cfile.endswith(".c") and cfile.startswith("instrument"):
+            print(cfile)
+            short_name = get_short_name(cfile)
+            reduce_script = 'reduce_%s.py' % short_name
 
-        # handle every reducing script
-        files = os.listdir(targer_dir_abspath)
-        print("file num: " + str(len(files)))
+            # if the reduce script does not return 0, then this cfile is useless
+            res = subprocess.run(
+                ["./" + reduce_script], stderr=subprocess.DEVNULL, stdout=subprocess.PIPE, encoding="utf-8")
 
-        for file in files:
-            if file.endswith(".py"):
-                print(file)
-                serial_num = get_instrument_npd_serial_num(file)
-                print(serial_num)
-                res = subprocess.run(
-                    ["./" + file], stderr=subprocess.DEVNULL, stdout=subprocess.PIPE, encoding="utf-8")
+            # if the intended reduce file has undefine behavior, then delete it
+            if res.stdout.count(UB_STR) != 0:
+                print(UB_STR)
+                ub_list.append(os.path.abspath(reduce_script))
+                os.system("rm -rf %s %s %s.o" % (cfile, reduce_script, short_name))
+                continue
+            elif res.stdout.count(FLAG_DIS_STR) != 0:
+                print(FLAG_DIS_STR)
+                flag_disappear_list.append(os.path.abspath(reduce_script))
+                os.system("rm -rf %s %s %s.o" % (cfile, reduce_script, short_name))
+                continue
+            elif res.returncode != 0:
+                print(res.stdout)
+                other_error_list.append(os.path.abspath(reduce_script))
+                os.system("rm -rf %s %s %s.o" % (cfile, reduce_script, short_name))
+                continue
 
-                # if the intended reduce file has undefine behavior, then delete it
-                if res.stdout.count(UB_STRING) != 0:
-                    print(UB_STRING)
-                    ub_list.append(os.path.abspath(file))
-                    ret = subprocess.run("rm -f *instrument_npd%s*" % serial_num,
-                                         shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-                    continue
+            ret = subprocess.run(["creduce", cfile, reduce_script,
+                                    "--n", thread_num], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
 
-                elif res.stdout.count(NPD_DISAPPEAR) != 0:
-                    print(NPD_DISAPPEAR)
-                    npd_disappear_list.append(os.path.abspath(file))
-                    ret = subprocess.run("mv *instrument_npd%s reduce/" % serial_num,
-                                         shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-                    continue
+            if ret.returncode == 0:
+                reduce_list.append(os.path.abspath(cfile))
+                os.system("mv %s %s %s.out reduce/" % (cfile, reduce_script, short_name))
+                os.remove(short_name+".o")
 
-                ret = subprocess.run(["creduce", file, "instrument_npd%s.c" % serial_num,
-                                     "--n", thread_num], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
-
-                reduce_list.append(os.path.abspath(file))
-
-                ret = subprocess.run("mv instrument_npd%s.c* instrument_npd%s.out reduce_instrument_npd%s.py reduce/" % (
-                    serial_num, serial_num, serial_num), shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-
-                subprocess.run("rm -rf /tmp/instrument_npd%s*" % serial_num,
-                               shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
-                subprocess.run("rm -rf /tmp/compcert*",
-                               shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+            subprocess.run("rm -rf /tmp/%s*" % short_name,
+                            shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
+            subprocess.run("rm -rf /tmp/compcert*",
+                            shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 
     os.chdir("reduce")
     ub_list.sort()
     reduce_list.sort()
+    wirte_reduce_result(reduce_list, ub_list, flag_disappear_list, other_error_list)    
 
-    with open("reduce_result-%s.txt" % str(time.strftime("%Y-%m-%d-%H-%M", time.localtime())), "w") as f:
-        f.write("Undefined behavior:\n")
-        for i in ub_list:
-            f.write(i + "\n")
-
-        f.write("\nReduced files:\n")
-        for i in reduce_list:
-            f.write(i + "\n")
 
 
 

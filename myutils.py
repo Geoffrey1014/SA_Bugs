@@ -1,4 +1,4 @@
-import os,subprocess,re, shutil,time
+import os,subprocess,re, shutil,time, re
 from config import *
 
 def get_short_name(full_name:str) -> str:
@@ -348,3 +348,48 @@ def gen_reduce_script(template_abspath: str, cfile_name: str, opt_level: str, ch
         print("gen_reduce_script fail!")
         return None
     return reduce_script
+
+def get_serial_num(name):
+    '''
+    Returns the serial number of a given name.
+
+    Args:
+    name (str): The name to extract the serial number from.
+
+    Returns:
+    serial_num (str): The extracted serial number from the name.
+
+    Example:
+    input: instrument_npd123.c
+    output: 123
+    '''
+    res = re.search(r'[a-zA-Z_]+(\d+)\..*', name)
+    print(res)
+
+    if res:
+        return res.group(1)
+    else:
+        return None
+
+def wirte_reduce_result(reduce_list, ub_list, flag_disappear_list, other_error_list):
+    try:
+        with open("reduce_result-%s.txt" % str(time.strftime("%Y-%m-%d-%H-%M", time.localtime())), "w") as f:
+            f.write("\nReduced files:\n")
+            for i in reduce_list:
+                f.write(i + "\n")
+
+            f.write("Undefined behavior:\n")
+            for i in ub_list:
+                f.write(i + "\n")
+            
+            f.write("\nFlag disappear:\n")
+            for i in flag_disappear_list:   
+                f.write(i + "\n")
+
+            f.write("\nOther error:\n")
+            for i in other_error_list:
+                f.write(i + "\n")
+    except IOError:
+        print("cannot write to reduce_result.txt !")
+        return False
+    return True
