@@ -5,8 +5,8 @@ from config import *
 
 class TestUtils(unittest.TestCase):
     def setUp(self):
-        self.test_dir = os.path.dirname(os.path.abspath(__file__))
-        self.test_data_dir = os.path.join(self.test_dir, "test_data")
+        self.work_dir = os.path.dirname(os.path.abspath(__file__))
+        self.test_data_dir = os.path.join(self.work_dir, "test_data")
 
         self.test_file = os.path.join(self.test_data_dir, "test.txt")   
         with open(self.test_file, "w") as f:
@@ -99,6 +99,33 @@ class TestUtils(unittest.TestCase):
     def test_get_warning_lines(self):
         warning_lines = get_warning_lines("gcc", "oob", self.test_file)
         self.assertEqual(warning_lines, ['5'])
+    
+    def test_gen_reduce_script(self):
+        template_abspath = self.work_dir + '/interestness_template_gcc.py'
+        cfile = self.test_data_dir + '/oob_0.c'
+        
+        cfile_name = get_short_name(cfile)
+        opt_level = '2'
+        checker = 'oob'
+        os.chdir(self.test_data_dir)
+
+        # Generate the reduce script
+        reduce_script = gen_reduce_script(template_abspath, cfile_name, opt_level, checker)
+
+        # Check that the reduce script was generated successfully
+        assert reduce_script is not None
+        assert os.path.exists(reduce_script)
+
+        # Check that the contents of the reduce script are correct
+        with open(reduce_script, 'r') as f:
+            lines = f.readlines()
+            assert lines[4] == 'CFILE = "%s.c"\n' % cfile_name
+            assert lines[5] == 'OPT_LEVEL = "%s"\n' % opt_level
+            assert lines[6] == 'CHECKER = "%s"\n' % checker
+
+        # Clean up the reduce script
+        os.remove(reduce_script)
+        os.chdir(self.work_dir)
 
 if __name__ == '__main__':
     unittest.main()

@@ -9,7 +9,7 @@ from myutils import *
 from config import *
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
-
+CONFIG_FILE = ROOT_DIR + "/config.py"
 
 REACHABLE_DIR = "reachable"
 NPD_DISAPPEAR = "NPD_FLAG disappear"
@@ -452,35 +452,6 @@ def check_dir_warning_line_reachable(args: argparse.Namespace):
     
 
 
-def gen_reduce_script(template_abspath: str, cfile_name: str, opt_level: str, args: argparse.Namespace):
-    with open(template_abspath, "r") as f:
-        cfile_lines = f.readlines()
-
-        # TODO: change the hard coding
-        cfile_lines[4] = 'CFILE = "%s.c"\n' % cfile_name
-        print(cfile_lines[4])
-        
-        cfile_lines[5] = 'OPT_LEVEL = "%s"\n' % opt_level
-        print(cfile_lines[5])
-
-        if args.script_path and args.cfile:
-            script_abspath = os.path.abspath(args.script_path)
-            if os.path.dirname(script_abspath):
-                reduce_script = script_abspath
-            else:
-                print("path does not exist: " + args.script_path)
-                return
-        else:
-            reduce_script = 'reduce_%s.py' % cfile_name
-
-        with open(reduce_script, "w") as f:
-            f.writelines(cfile_lines)
-
-        print(reduce_script)
-        subprocess.run(['chmod', '+x', reduce_script])
-        return reduce_script
-
-
 def gen_reduce(args: argparse.Namespace):
     template_abspath = os.path.abspath(args.template)
     if not os.path.exists(template_abspath):
@@ -492,13 +463,17 @@ def gen_reduce(args: argparse.Namespace):
 
     if args.cfile:
         cfile_abspath = os.path.abspath(args.cfile)
-
         if not os.path.exists(cfile_abspath):
             print("cfile_path does not exist: " + cfile_abspath)
             exit(-1)
+        par_dir, _ = os.path.split(cfile_abspath)
+        os.chdir(par_dir)
+        shutil.copy(CONFIG_FILE, "config.py")
 
-        cfile_name = get_short_name(cfile_abspath)
-        gen_reduce_script(template_abspath, cfile_name, opt_level, args)
+        reduce_script = gen_reduce_script(template_abspath, get_short_name(cfile_abspath), opt_level, args.checker)
+        if not reduce_script:
+            print("gen_reduce_script fail!")
+            exit(-1)
 
     elif args.dir:
         target_dir_abspath = os.path.abspath(args.dir)
@@ -509,14 +484,17 @@ def gen_reduce(args: argparse.Namespace):
         # handle dir path
         print(target_dir_abspath)
         os.chdir(target_dir_abspath)
+        shutil.copy(CONFIG_FILE, "config.py")
+
         files = os.listdir(target_dir_abspath)
         print("file nums: " + str(len(files)))
 
         for file in files:
-            if file.endswith(".c") and not file.startswith("instrument"):
-                cfile_name = get_short_name(file)
-                gen_reduce_script(
-                    template_abspath, cfile_name, opt_level, args)
+            if file.endswith(".c") and file.startswith("instrument"):
+                reduce_script = gen_reduce_script(
+                    template_abspath, get_short_name(file), opt_level, args.checker)
+                if not reduce_script:
+                    print("gen_reduce_script fail!")
     else:
         print("Please give a cfile of a dir !")
         exit(-1)
@@ -802,8 +780,8 @@ def handle_args():
     parser_gen_reduce.add_argument("checker", type=str, choices=CHECKER_LIST, help="give a checker")
     parser_gen_reduce.add_argument("optimize", type=int, choices={
                                    0, 1, 2, 3}, help="optimization level")
-    parser_gen_reduce.add_argument(
-        "-t", "--script_path", type=str, help="specify script path")
+    # parser_gen_reduce.add_argument(
+        # "-t", "--script_path", type=str, help="specify script path")
     group_parser_gen_reduce = parser_gen_reduce.add_mutually_exclusive_group()
     group_parser_gen_reduce.add_argument(
         "-f", "--cfile", type=str, help="specify cfile")

@@ -1,16 +1,23 @@
 #!/usr/bin/python3
-import subprocess
-import shlex
+import subprocess,shlex
+from config import CSMITH_HEADER, GCC_ANALYZER, GCC 
 
-CFILE = " "
-OPT_LEVEL = " "
-CSMITH_HEADER = "/usr/include/csmith"
+CFILE = "instrument_oob11.c"
+OPT_LEVEL = "0"
+CHECKER = "oob"
 
-GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -Wno-analyzer-double-fclose -Wno-analyzer-double-free -Wno-analyzer-exposure-through-output-file -Wno-analyzer-file-leak -Wno-analyzer-free-of-non-heap -Wno-analyzer-malloc-leak -Wno-analyzer-mismatching-deallocation -Wno-analyzer-null-argument -Wno-analyzer-possible-null-argument -Wno-analyzer-possible-null-dereference -Wno-analyzer-shift-count-negative -Wno-analyzer-shift-count-overflow -Wno-analyzer-stale-setjmp-buffer -Wno-analyzer-unsafe-call-within-signal-handler -Wno-analyzer-use-after-free -Wno-analyzer-use-of-pointer-in-stale-stack-frame -Wno-analyzer-use-of-uninitialized-value -Wno-analyzer-write-to-const -Wno-analyzer-write-to-string-literal -fdiagnostics-plain-output -fdiagnostics-format=text "
+if CHECKER == "npd":
+    warning_name = "-Wanalyzer-null-dereference"
+elif CHECKER == "oob":
+    warning_name = "-Wanalyzer-out-of-bounds"
+else:
+    print("checker not found!")
+    exit(-1)
 
-compile_ret = subprocess.run(['gcc', '-O' + OPT_LEVEL, '-I', CSMITH_HEADER, CFILE],
+
+compile_ret = subprocess.run([GCC, '-O' + OPT_LEVEL, '-I', CSMITH_HEADER, CFILE],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
-# print(compile_ret.stderr)
+# print(compile_ret)
 
 # program cannot have compiler error
 if compile_ret.returncode != 0:
@@ -27,26 +34,27 @@ elif run_ret.returncode != 0:
     print("run failed!")  # cannot comment this line!
     exit(run_ret.returncode)
 
-count_npd_flag = run_ret.stdout.count("NPD_FLAG")
-print("count NPD_FLAG: %s" % count_npd_flag)
-# program run result has to keep output NPD_FLAG
-if count_npd_flag == 0:
-    print("NPD FLAG disappear")  # cannot comment this line!
+count_flag = run_ret.stdout.count("FLAG")
+print("count FLAG: %s" % count_flag)
+# program run result has to keep output FLAG
+if count_flag == 0:
+    print("FLAG disappear")  # cannot comment this line!
     exit(2)
 
-# analyzer has to keep npd warning
+# analyzer has to keep the warning
 analyzer_args_split = shlex.split(GCC_ANALYZER)
 analyzer_ret = subprocess.run(
     analyzer_args_split + ['-O' + OPT_LEVEL, '-c', '-I', CSMITH_HEADER, CFILE], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
-print(analyzer_ret.stderr)
+# print(analyzer_ret.stderr)
 
-if analyzer_ret.stderr.count("\-Wanalyzer\-null\-dereference") == 0:
-    print("NullDereference disappear!")  # cannot comment this line!
+if analyzer_ret.stderr.count(warning_name) == 0:
+    print("%s disappear!" % warning_name)  # cannot comment this line!
     exit(3)
 
 # use ccomp to check if there are undefined behaviors
 ccomp_ret = subprocess.run(['ccomp', '-I', CSMITH_HEADER, '-interp', '-fall', '-fstruct-passing',
                            CFILE], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
+print(ccomp_ret.stdout)
 
 if ccomp_ret.stdout.count("Undefined behavior") != 0:
     print("undefined behavior!")

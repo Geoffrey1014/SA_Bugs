@@ -314,3 +314,37 @@ def clean_check_reach_output(saveOutput, instrumented_cfile, run_out_file, warni
         os.remove(instrumented_cfile)
     if os.path.exists(run_out_file):
         os.remove(run_out_file)
+
+
+def gen_reduce_script(template_abspath: str, cfile_name: str, opt_level: str, checker: str) -> str:
+    """
+    Generates a reduce script from the specified template file.
+
+    Args:
+    template_abspath (str): Absolute path to the template file.
+    cfile_name (str): Name of the C file.
+    opt_level (str): Optimization level.
+    checker (str): Checker to use.
+
+    Returns:
+    reduce_script (str): Name of the generated reduce script.
+    """
+    reduce_script = 'reduce_%s.py' % cfile_name
+    try:
+        with open(template_abspath, "r") as f:
+            cfile_lines = f.readlines()
+
+            # TODO: change the hard coding
+            cfile_lines[4] = 'CFILE = "%s.c"\n' % cfile_name            
+            cfile_lines[5] = 'OPT_LEVEL = "%s"\n' % opt_level
+            cfile_lines[6] = 'CHECKER = "%s"\n' % checker
+            
+            with open(reduce_script, "w") as f:
+                f.writelines(cfile_lines)
+
+            subprocess.run(['chmod', '+x', reduce_script])
+    except Exception as e:
+        print(e)
+        print("gen_reduce_script fail!")
+        return None
+    return reduce_script
