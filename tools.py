@@ -10,6 +10,7 @@ from config import *
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_FILE = ROOT_DIR + "/config.py"
+MYUTILS_FILE = ROOT_DIR + "/myutils.py"
 
 REACHABLE_DIR = "reachable"
 
@@ -21,7 +22,7 @@ def fuzz_fp(args: argparse.Namespace):
     thread_num = args.thread
     analyzer = args.analyzer
     iter_times = args.num
-    print("fuzz thread_num %s" % thread_num)
+    print("fuzz-fp thread_num %s" % thread_num)
     
     fuzzing_working_dir = create_fuzzing_place(
         fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
@@ -42,7 +43,7 @@ def fuzz_fn(args: argparse.Namespace):
     opt = args.optimize
     thread_num = args.thread
     iter_times = args.num
-    print("fuzz thread_num %s" % thread_num)
+    print("fuzz-fn thread_num %s" % thread_num)
     
     fuzzing_working_dir = create_fuzzing_place(
         fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
@@ -63,7 +64,7 @@ def fuzz_eval(args: argparse.Namespace):
     opt = args.optimize
     thread_num = args.thread
     iter_times = args.num
-    print("fuzz thread_num %s" % thread_num)
+    print("fuzz-eval thread_num %s" % thread_num)
     
     fuzzing_working_dir = create_fuzzing_place(
         fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
@@ -89,6 +90,7 @@ def create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, opt_level, dir_
     create $dir_num dirctories in fuzzing_par_dir
     and copy script_path to those dirs
     '''
+    print("create_fuzzing_place")
     abs_par_path = os.path.abspath(fuzzing_par_dir)
 
     if not os.path.exists(script_path) or not os.path.isfile(script_path):
@@ -123,7 +125,7 @@ def create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, opt_level, dir_
             subprocess.run(['rm', '-rf', fuzz_i])
         os.mkdir(fuzz_i)
 
-        subprocess.run(['cp', abs_script_path, fuzz_i])
+        subprocess.run(['cp', abs_script_path,CONFIG_FILE,MYUTILS_FILE, fuzz_i])
         subprocess.run(['chmod', '+x', fuzz_i + '/' + os.path.basename(abs_script_path)])
 
     print(abs_working_path)
@@ -492,13 +494,14 @@ def gen_reduce(args: argparse.Namespace):
                     template_abspath, get_short_name(file), opt_level, args.checker)
                 if not reduce_script:
                     print("gen_reduce_script fail!")
+        print("gen reduce script done!")
     else:
         print("Please give a cfile of a dir !")
         exit(-1)
 
 
 
-
+# 需要重写
 def run_reduce_eval(args: argparse.Namespace):
     print("run reduce eval")
     thread_num = str(args.thread)

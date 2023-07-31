@@ -162,7 +162,7 @@ def save_crashing_file(num):
 
 def gcc_test_one(num, args):
     cfile = generate_code(num, CSMITH_USER_OPTIONS, args.max)
-    report_file = analyze_with_gcc(cfile, num, str(args.optimize), args)
+    report_file = analyze_with_gcc(num, str(args.optimize), args)
 
     if report_file is not None:
         process_gcc_report(num, report_file, args)
