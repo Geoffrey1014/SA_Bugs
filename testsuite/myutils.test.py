@@ -1,12 +1,15 @@
-import os
+import os, sys
 import unittest
+sys.path.append('../')
 from myutils import *
 from config import *
 
+
 class TestUtils(unittest.TestCase):
     def setUp(self):
-        self.work_dir = os.path.dirname(os.path.abspath(__file__))
-        self.test_data_dir = os.path.join(self.work_dir, "test_data")
+        self.test_dir = os.path.dirname(os.path.abspath(__file__))
+        self.root_dir = os.path.dirname(self.test_dir)  
+        self.test_data_dir = os.path.join(self.root_dir, "test_data")
 
         self.test_file = os.path.join(self.test_data_dir, "test.txt")   
         with open(self.test_file, "w") as f:
@@ -36,7 +39,7 @@ class TestUtils(unittest.TestCase):
         self.assertIn("clang version", version)
     
     def test_get_warning_line(self):
-        warning_lines = get_warning_line_from_file("test_data/oob_0.txt", "-Wanalyzer-out-of-bounds")
+        warning_lines = get_warning_line_from_file(os.path.join(self.root_dir, "test_data/oob_0.txt"), "-Wanalyzer-out-of-bounds")
         # print(warning_lines)
         self.assertIn("107", warning_lines)
 
@@ -47,11 +50,11 @@ class TestUtils(unittest.TestCase):
     
     def test_instrument_cfile(self):
         # Test case 1: Valid input
-        cfile_abspath = "test_data/oob_0.c"
+        cfile_abspath = os.path.join(self.root_dir,"test_data/oob_0.c")
         warning_lines = ['107', '107', '208', '214', '384', '460', '530', '545', '559', '560', '574', '621', '946', '985']
-        instrumented_cfile = "test_data/oob_0_instrumented.c"
+        instrumented_cfile = os.path.join(self.root_dir,"test_data/oob_0_instrumented.c")
         assert instrument_cfile(cfile_abspath, warning_lines, instrumented_cfile) == True
-        # os.remove(instrumented_cfile)
+        os.remove(instrumented_cfile)
 
         # Test case 2: Invalid cfile_abspath
         cfile_abspath = "nonexistent.c"
@@ -101,7 +104,7 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(warning_lines, ['5'])
     
     def test_gen_reduce_script(self):
-        template_abspath = self.work_dir + '/interestness_template_gcc.py'
+        template_abspath = self.root_dir + '/interestness_template_gcc.py'
         cfile = self.test_data_dir + '/oob_0.c'
 
         cfile_name = get_short_name(cfile)
@@ -125,7 +128,7 @@ class TestUtils(unittest.TestCase):
 
         # Clean up the reduce script
         os.remove(reduce_script)
-        os.chdir(self.work_dir)
+        os.chdir(self.test_dir)
     
     def test_get_serial_num(self):
         self.assertEqual(get_serial_num("instrument_npd123.c"), "123")
