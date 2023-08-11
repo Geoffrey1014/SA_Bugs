@@ -29,10 +29,10 @@ class TestUtils(unittest.TestCase):
     def test_read_value_from_file(self):
         self.assertEqual(read_value_from_file(self.test_file, 'Seed:\s+(\d+)'), "1234")
 
-    # def test_generate_code(self):
-    #     cfile = generate_code(1, "")
-    #     self.assertTrue(os.path.exists(cfile))
-    #     os.remove(cfile)
+    def test_generate_code(self):
+        cfile = generate_code(1, "")
+        self.assertTrue(os.path.exists(cfile))
+        os.remove(cfile)
 
     def test_get_analyzer_version(self):
         version = get_analyzer_version("clang")

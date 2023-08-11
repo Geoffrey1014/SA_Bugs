@@ -52,12 +52,12 @@ def generate_code(num, csmith_options, ctrl_max=False, verbose=False):
         file_size = os.stat(cfile).st_size
 
         if ctrl_max:
-            if file_size < MAX_PROGRAM_SIZE:
+            if file_size < int(MAX_PROGRAM_SIZE):
                 if verbose:
                     print(f"Successfully generated a file whose size is no more than {MAX_PROGRAM_SIZE}: {cfile}")
                 break
         else:
-            if file_size > MIN_PROGRAM_SIZE:
+            if file_size > int(MIN_PROGRAM_SIZE):
                 if verbose:
                     print(f"Successfully generated a file whose size is no less than {MIN_PROGRAM_SIZE}: {cfile}")
                 break
