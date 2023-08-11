@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import argparse
+import argparse,shutil
 import os
 import re
 import shlex
@@ -151,8 +151,9 @@ def check_cfile_warning_line_reachable(args: argparse.Namespace):
     print("check whether the warning line reachable")
     cc = get_compiler(args.analyzer)
     if args.verbose:
+        print("analyzer: " + cc)
         version = get_analyzer_version(cc)
-        print(args.analyzer + ": version: \n" + version)
+        print("version: \n" + version)
 
     # handle cfile path
     cfile_abspath = os.path.abspath(args.cfile)
@@ -191,8 +192,9 @@ def check_dir_warning_line_reachable(args: argparse.Namespace):
     cc = get_compiler(args.analyzer)
     warning_type = args.checker
     if args.verbose:
-        version = get_analyzer_version(args.analyzer)
-        print(args.analyzer + ": version: \n" + version)
+        print("analyzer: " + cc)
+        version = get_analyzer_version(cc)
+        print("version: \n" + version)
 
     # handle dir pathes
     target_dir_abspath = os.path.abspath(args.dir)
@@ -265,7 +267,6 @@ def gen_reduce(args: argparse.Namespace):
             exit(-1)
         par_dir, _ = os.path.split(cfile_abspath)
         os.chdir(par_dir)
-        shutil.copy(CONFIG_FILE, "config.py")
 
         reduce_script = gen_reduce_script(template_abspath, get_short_name(cfile_abspath), opt_level, args.checker)
         if not reduce_script:

@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import subprocess,shlex
+import subprocess,shlex,sys
 from config import *
 
 CFILE = "instrument_xxx.c"

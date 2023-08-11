@@ -1,6 +1,6 @@
 import os, sys
 import unittest
-sys.path.append('../')
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from myutils import *
 from config import *
 
@@ -127,7 +127,7 @@ class TestUtils(unittest.TestCase):
             assert lines[6] == 'CHECKER = "%s"\n' % checker
 
         # Clean up the reduce script
-        os.remove(reduce_script)
+        # os.remove(reduce_script)
         os.chdir(self.test_dir)
     
     def test_get_serial_num(self):

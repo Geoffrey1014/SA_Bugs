@@ -1,6 +1,13 @@
 import os,subprocess,re, shutil,time, re
 from config import *
 
+__all__ = [ "get_short_name", "get_analyzer_version", "read_value_from_file", 
+           "generate_code", "cleanup_files", "cleanup_directory", "get_warning_line_from_file","get_warning_lines",
+           "instrument_cfile", "get_compiler", "compile_and_run_instrument_cfile", "grep_flag",
+           "write_result_to_file", "clean_check_reach_input", "clean_check_reach_output", "gen_reduce_script",
+           "get_serial_num", "wirte_reduce_result"
+           ]
+
 def get_short_name(full_name:str) -> str:
     '''
     input: abs_path
@@ -29,7 +36,6 @@ def read_value_from_file(file, match):
                 return seed.group(1)
 
     return ""
-
 
 def generate_code(num, csmith_options, ctrl_max=False, verbose=False):
     '''
@@ -77,7 +83,6 @@ def cleanup_directory(directory):
     if os.path.exists(directory):
         shutil.rmtree(directory)
         os.mkdir(directory)
-
 
 def get_warning_line_from_file(report_file, warning):
     '''
@@ -131,7 +136,6 @@ def get_warning_lines(analyzer, checker, report_abspath):
         exit(-1)
     return warning_lines
 
-
 def instrument_cfile(cfile_abspath, warning_lines, instrumented_cfile):
     '''
     input: cfile_abspath, warning_lines, instrumented_cfile
@@ -156,7 +160,6 @@ def instrument_cfile(cfile_abspath, warning_lines, instrumented_cfile):
         return False
     return True
 
-
 def compile_and_run_instrument_cfile(cc, optimize, instrumented_cfile, run_out_file):
     '''
     Compiles and runs an instrumented C file using the specified compiler and optimization level.
@@ -179,7 +182,7 @@ def compile_and_run_instrument_cfile(cc, optimize, instrumented_cfile, run_out_f
         return False
 
     try:
-        run_ret = subprocess.run(["timeout", "5s", "./a.out"], stdout=subprocess.PIPE,
+        run_ret = subprocess.run(["timeout", RUN_TIMEOUT_NUM, "./a.out"], stdout=subprocess.PIPE,
                                  stderr=subprocess.STDOUT, encoding="utf-8", check=True)
     except subprocess.CalledProcessError as e:
         print(e)
@@ -334,7 +337,15 @@ def gen_reduce_script(template_abspath: str, cfile_name: str, opt_level: str, ch
         with open(template_abspath, "r") as f:
             cfile_lines = f.readlines()
 
-            # TODO: change the hard coding
+            config_values = ""
+            config_names = ""
+            g_vars = globals()
+            import config 
+            config_names = ','.join(config.__all__) + '='
+            config_values = '"'+'", "'.join(str(g_vars[i]) for i in config.__all__) + '"\n'
+            
+                        
+            cfile_lines[2] = config_names + config_values 
             cfile_lines[4] = 'CFILE = "%s.c"\n' % cfile_name            
             cfile_lines[5] = 'OPT_LEVEL = "%s"\n' % opt_level
             cfile_lines[6] = 'CHECKER = "%s"\n' % checker
