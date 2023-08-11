@@ -7,3 +7,6 @@ tmp_clang
 gcc_tmp
 gcc-tmp
 clang-tmp 
+.vscode/
+*.o
+*.out
