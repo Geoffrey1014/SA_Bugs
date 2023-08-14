@@ -140,8 +140,34 @@ def check_reachable(args: argparse.Namespace):
         else:
             print("warning line not reachable!")
     elif args.dir and os.path.exists(args.dir):
-        print(args.dir)
-        check_dir_warning_line_reachable(args)
+        cc, warning_type, opt, saveOutput, rmNonReachable, rmAllReachable,verbose = (
+            get_compiler(args.analyzer),
+            args.checker,
+            str(args.optimize),
+            args.saveOutput,
+            args.rmNonReachable,
+            args.rmAllReachable,
+            args.verbose
+        )
+        if verbose:
+            print("analyzer: " + cc)
+            version = get_analyzer_version(cc)
+            print("version: \n" + version)
+
+        # handle dir pathes
+        target_dir_abspath = os.path.abspath(args.dir)
+        print(target_dir_abspath)
+
+        par_dir, dir_name = os.path.split(target_dir_abspath)
+        if dir_name.startswith("fuzz"):
+            check_dir_warning_line_reachable(cc, args.analyzer, warning_type, target_dir_abspath, opt, saveOutput,rmNonReachable,rmAllReachable, verbose)
+        else:
+            files = os.listdir(target_dir_abspath)
+            for file in files: 
+                print(file)     
+                os.chdir(target_dir_abspath)          
+                if os.path.isdir(file) and file.startswith("fuzz"):
+                    check_dir_warning_line_reachable(cc, args.analyzer, warning_type, os.path.abspath(file), opt, saveOutput,rmNonReachable,rmAllReachable, verbose)
     else:
         print("please make sure the given file/dir exist!")
         exit(-1)
@@ -188,20 +214,13 @@ def check_cfile_warning_line_reachable(args: argparse.Namespace):
 
 
 
-def check_dir_warning_line_reachable(args: argparse.Namespace):
-    cc = get_compiler(args.analyzer)
-    warning_type = args.checker
-    if args.verbose:
-        print("analyzer: " + cc)
-        version = get_analyzer_version(cc)
-        print("version: \n" + version)
-
-    # handle dir pathes
-    target_dir_abspath = os.path.abspath(args.dir)
+def check_dir_warning_line_reachable(cc, analyzer, warning_type, target_dir_abspath, opt, saveOutput,rmNonReachable,rmAllReachable, verbose):
     os.chdir(target_dir_abspath)
 
     files = os.listdir(target_dir_abspath)
-    print("file nums: " + str(len(files)))
+    if verbose:
+        print("handling dir: " + target_dir_abspath)
+        print("file nums: " + str(len(files)))
 
     # create the reachable dir
     if not os.path.exists(REACHABLE_DIR):
@@ -217,7 +236,7 @@ def check_dir_warning_line_reachable(args: argparse.Namespace):
     for file in files:
         if file.endswith(".c") and file.startswith(warning_type):
             # handle file pathes
-            if args.verbose:
+            if verbose:
                 print("handling file: " + file)
             cfile = file
             cfile_abspath = os.path.join(target_dir_abspath, file)
@@ -229,14 +248,14 @@ def check_dir_warning_line_reachable(args: argparse.Namespace):
             warning_exist = False
 
             if not os.path.exists(report_abspath):
-                if args.verbose:
+                if verbose:
                     print("report file does not exist!")
                 res_report_not_exist.append(cfile_abspath)
             else:
-                warning_lines = get_warning_lines(args.analyzer,args.checker, report_abspath)
+                warning_lines = get_warning_lines(analyzer, warning_type, report_abspath)
                 if len(warning_lines) != 0:
                     if instrument_cfile(cfile_abspath, warning_lines, instrumented_cfile):
-                        if compile_and_run_instrument_cfile(cc, str(args.optimize),instrumented_cfile, run_out_file):
+                        if compile_and_run_instrument_cfile(cc, opt, instrumented_cfile, run_out_file):
                             warning_exist = grep_flag(run_out_file)
                             if warning_exist:
                                 res_reachable.append(cfile_abspath)
@@ -244,10 +263,10 @@ def check_dir_warning_line_reachable(args: argparse.Namespace):
                                 res_not_reachable.append(cfile_abspath)
                         else:
                             res_compile_or_run_fail.append(cfile_abspath)
-                        clean_check_reach_output(args.saveOutput, instrumented_cfile, run_out_file, warning_exist)
-            clean_check_reach_input(args.rmNonReachable, args.rmAllReachable, cfile_abspath, report_abspath, warning_exist)
+                        clean_check_reach_output(saveOutput, instrumented_cfile, run_out_file, warning_exist)
+            clean_check_reach_input(rmNonReachable, rmAllReachable, cfile_abspath, report_abspath, warning_exist)
 
-    write_result_to_file(res_reachable, res_not_reachable, res_report_not_exist, res_compile_or_run_fail, args.analyzer, warning_type)
+    write_result_to_file(res_reachable, res_not_reachable, res_report_not_exist, res_compile_or_run_fail, analyzer, warning_type)
     
 
 

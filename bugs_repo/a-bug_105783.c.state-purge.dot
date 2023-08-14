@@ -1,0 +1,576 @@
+digraph "supergraph" {
+  overlap=false;
+  compound=true;
+  subgraph "cluster_main" {
+style="dashed"; color="black"; label="main";
+    subgraph cluster_node_0 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 0 (bb: 0)";
+annotation_for_node_0 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 0 (NULL from-edge)
+
+needed here: {}
+not needed here: {'_1', '_2', '_8', 'ss'}
+
+after SN: 0
+
+needed here: {}
+not needed here: {'_1', '_2', '_8', 'ss'}
+
+"];
+
+      node_0 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD>ENTRY</TD></TR>
+</TABLE>>];
+
+    }
+    subgraph cluster_node_1 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 1 (bb: 2)";
+annotation_for_node_1 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 1 (from SN: 0 (bb: 0))
+
+needed here: {}
+not needed here: {'_1', '_2', '_8', 'ss'}
+
+after SN: 1
+
+needed here: {'ss'}
+not needed here: {'_1', '_2', '_8'}
+
+"];
+
+      node_1 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD ALIGN="LEFT">ss = ss_init ();</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'ss'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_8'}</TD></TR>
+
+</TABLE>>];
+
+    }
+    subgraph cluster_node_2 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 2 (bb: 2)";
+annotation_for_node_2 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 2 (NULL from-edge)
+
+needed here: {'ss'}
+not needed here: {'_1', '_2', '_8'}
+
+after SN: 2
+
+needed here: {'ss'}
+not needed here: {'_1', '_2', '_8'}
+
+"];
+
+      node_2 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD ALIGN="LEFT">returning call: </TD></TR><TR><TD ALIGN="LEFT">ss = ss_init ();</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'ss'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_8'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">_1 = ss.counting;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_1', 'ss'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_2', '_8'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">_2 = (int) _1;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_1', '_2', 'ss'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_8'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">__analyzer_describe (0, _2);</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_2', 'ss'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_8'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">ss_out (&amp;ss, 97);</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'ss'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_8'}</TD></TR>
+
+</TABLE>>];
+
+    }
+    subgraph cluster_node_3 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 3 (bb: 2)";
+annotation_for_node_3 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 3 (NULL from-edge)
+
+needed here: {'ss'}
+not needed here: {'_1', '_2', '_8'}
+
+after SN: 3
+
+needed here: {'_8', 'ss'}
+not needed here: {'_1', '_2'}
+
+"];
+
+      node_3 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD ALIGN="LEFT">returning call: </TD></TR><TR><TD ALIGN="LEFT">ss_out (&amp;ss, 97);</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'ss'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_8'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">ss ={v} {CLOBBER(eol)};</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'ss'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_8'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">_8 = 0;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_8', 'ss'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2'}</TD></TR>
+
+</TABLE>>];
+
+    }
+    subgraph cluster_node_4 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 4 (bb: 3)";
+annotation_for_node_4 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 4 (from SN: 3 (bb: 2))
+
+needed here: {'_8', 'ss'}
+not needed here: {'_1', '_2'}
+
+after SN: 4
+
+needed here: {'_8', 'ss'}
+not needed here: {'_1', '_2'}
+
+"];
+
+      node_4 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD ALIGN="LEFT">&lt;L0&gt;:</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_8', 'ss'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">return _8;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_8', 'ss'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2'}</TD></TR>
+
+</TABLE>>];
+
+    }
+    subgraph cluster_node_5 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 5 (bb: 1)";
+annotation_for_node_5 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 5 (from SN: 4 (bb: 3))
+
+needed here: {'ss'}
+not needed here: {'_1', '_2', '_8'}
+
+after SN: 5
+
+needed here: {'ss'}
+not needed here: {'_1', '_2', '_8'}
+
+"];
+
+      node_5 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD>EXIT</TD></TR>
+</TABLE>>];
+
+    }
+	node_0:s -> node_5:n [style="invis",constraint=true];
+  }
+  subgraph "cluster_ss_out" {
+style="dashed"; color="black"; label="ss_out";
+    subgraph cluster_node_6 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 6 (bb: 0)";
+annotation_for_node_6 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 6 (NULL from-edge)
+
+needed here: {'t_13(D)', 'cc_17(D)'}
+not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8', '_9', '_10'}
+
+after SN: 6
+
+needed here: {'t_13(D)', 'cc_17(D)'}
+not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8', '_9', '_10'}
+
+"];
+
+      node_6 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD>ENTRY</TD></TR>
+</TABLE>>];
+
+    }
+    subgraph cluster_node_7 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 7 (bb: 2)";
+annotation_for_node_7 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 7 (from SN: 6 (bb: 0))
+
+needed here: {'t_13(D)', 'cc_17(D)'}
+not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8', '_9', '_10'}
+
+after SN: 7
+
+needed here: {'_5', 't_13(D)', 'cc_17(D)'}
+not needed here: {'_1', '_2', '_3', '_4', '_6', '_7', '_8', '_9', '_10'}
+
+"];
+
+      node_7 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD ALIGN="LEFT">_1 = t_13(D)-&gt;counting;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_1', 't_13(D)', 'cc_17(D)'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_2', '_3', '_4', '_5', '_6', '_7', '_8', '_9', '_10'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">_2 = (int) _1;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_1', '_2', 't_13(D)', 'cc_17(D)'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_3', '_4', '_5', '_6', '_7', '_8', '_9', '_10'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">__analyzer_describe (0, _2);</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_2', 't_13(D)', 'cc_17(D)'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_3', '_4', '_5', '_6', '_7', '_8', '_9', '_10'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">_3 = t_13(D)-&gt;counting;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_3', 't_13(D)', 'cc_17(D)'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_4', '_5', '_6', '_7', '_8', '_9', '_10'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">_4 = ~_3;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_3', '_4', 't_13(D)', 'cc_17(D)'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_5', '_6', '_7', '_8', '_9', '_10'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">_5 = (int) _4;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_4', '_5', 't_13(D)', 'cc_17(D)'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_3', '_6', '_7', '_8', '_9', '_10'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">__analyzer_eval (_5);</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_5', 't_13(D)', 'cc_17(D)'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_3', '_4', '_6', '_7', '_8', '_9', '_10'}</TD></TR>
+
+</TABLE>>];
+
+    }
+    subgraph cluster_node_8 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 8 (bb: 2)";
+annotation_for_node_8 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 8 (NULL from-edge)
+
+needed here: {'t_13(D)', 'cc_17(D)'}
+not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8', '_9', '_10'}
+
+after SN: 8
+
+needed here: {'_7', 't_13(D)', 'cc_17(D)'}
+not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_8', '_9', '_10'}
+
+"];
+
+      node_8 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD ALIGN="LEFT">returning call: </TD></TR><TR><TD ALIGN="LEFT">__analyzer_eval (_5);</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_5', 't_13(D)', 'cc_17(D)'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_3', '_4', '_6', '_7', '_8', '_9', '_10'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">_6 = t_13(D)-&gt;counting;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_6', 't_13(D)', 'cc_17(D)'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_3', '_4', '_5', '_7', '_8', '_9', '_10'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">_7 = ~_6;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_6', '_7', 't_13(D)', 'cc_17(D)'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_3', '_4', '_5', '_8', '_9', '_10'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">if (_7 != 0)</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_7', 't_13(D)', 'cc_17(D)'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_8', '_9', '_10'}</TD></TR>
+
+</TABLE>>];
+
+    }
+    subgraph cluster_node_9 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 9 (bb: 3)";
+annotation_for_node_9 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 9 (from SN: 8 (bb: 2))
+
+needed here: {'t_13(D)', 'cc_17(D)'}
+not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8', '_9', '_10'}
+
+after SN: 9
+
+needed here: {'_9', 'cc_17(D)'}
+not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8', '_10', 't_13(D)'}
+
+"];
+
+      node_9 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD ALIGN="LEFT">_8 = t_13(D)-&gt;uu.newstr;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_8', 't_13(D)', 'cc_17(D)'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_7', '_9', '_10'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">_9 = _8;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_8', '_9', 't_13(D)', 'cc_17(D)'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_7', '_10'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">_10 = _9 + 1;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_9', '_10', 't_13(D)', 'cc_17(D)'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">t_13(D)-&gt;uu.newstr = _10;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_9', '_10', 't_13(D)', 'cc_17(D)'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">*_9 = cc_17(D);</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'_9', 'cc_17(D)'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8', '_10', 't_13(D)'}</TD></TR>
+
+</TABLE>>];
+
+    }
+    subgraph cluster_node_10 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 10 (bb: 4)";
+annotation_for_node_10 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 10 (from SN: 8 (bb: 2))
+.MEM_11 = PHI <.MEM_15(2), .MEM_18(3)>
+needed here: {}
+not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8', '_9', '_10', 't_13(D)', 'cc_17(D)'}
+
+before SN: 10 (from SN: 9 (bb: 3))
+.MEM_11 = PHI <.MEM_15(2), .MEM_18(3)>
+needed here: {}
+not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8', '_9', '_10', 't_13(D)', 'cc_17(D)'}
+
+after SN: 10
+
+needed here: {}
+not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8', '_9', '_10', 't_13(D)', 'cc_17(D)'}
+
+"];
+
+      node_10 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD ALIGN="LEFT">.MEM_11 = PHI &lt;.MEM_15(2), .MEM_18(3)&gt;</TD></TR>
+<TR><TD ALIGN="LEFT">return;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8', '_9', '_10', 't_13(D)', 'cc_17(D)'}</TD></TR>
+
+</TABLE>>];
+
+    }
+    subgraph cluster_node_11 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 11 (bb: 1)";
+annotation_for_node_11 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 11 (from SN: 10 (bb: 4))
+
+needed here: {}
+not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8', '_9', '_10', 't_13(D)', 'cc_17(D)'}
+
+after SN: 11
+
+needed here: {}
+not needed here: {'_1', '_2', '_3', '_4', '_5', '_6', '_7', '_8', '_9', '_10', 't_13(D)', 'cc_17(D)'}
+
+"];
+
+      node_11 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD>EXIT</TD></TR>
+</TABLE>>];
+
+    }
+	node_6:s -> node_11:n [style="invis",constraint=true];
+  }
+  subgraph "cluster_ss_init" {
+style="dashed"; color="black"; label="ss_init";
+    subgraph cluster_node_12 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 12 (bb: 0)";
+annotation_for_node_12 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 12 (NULL from-edge)
+
+needed here: {}
+not needed here: {'rr', '<anonymous>'}
+
+after SN: 12
+
+needed here: {}
+not needed here: {'rr', '<anonymous>'}
+
+"];
+
+      node_12 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD>ENTRY</TD></TR>
+</TABLE>>];
+
+    }
+    subgraph cluster_node_13 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 13 (bb: 2)";
+annotation_for_node_13 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 13 (from SN: 12 (bb: 0))
+
+needed here: {}
+not needed here: {'rr', '<anonymous>'}
+
+after SN: 13
+
+needed here: {'<anonymous>'}
+not needed here: {'rr'}
+
+"];
+
+      node_13 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD ALIGN="LEFT">rr = {};</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'rr'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'&lt;anonymous&gt;'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">rr.counting = 1;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'rr'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'&lt;anonymous&gt;'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">D.2757 = rr;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'rr', '&lt;anonymous&gt;'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {}</TD></TR>
+
+<TR><TD ALIGN="LEFT">rr ={v} {CLOBBER(eol)};</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'&lt;anonymous&gt;'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'rr'}</TD></TR>
+
+</TABLE>>];
+
+    }
+    subgraph cluster_node_14 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 14 (bb: 3)";
+annotation_for_node_14 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 14 (from SN: 13 (bb: 2))
+
+needed here: {'<anonymous>'}
+not needed here: {'rr'}
+
+after SN: 14
+
+needed here: {'<anonymous>'}
+not needed here: {'rr'}
+
+"];
+
+      node_14 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD ALIGN="LEFT">&lt;L1&gt;:</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'&lt;anonymous&gt;'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'rr'}</TD></TR>
+
+<TR><TD ALIGN="LEFT">return D.2757;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {'&lt;anonymous&gt;'}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {'rr'}</TD></TR>
+
+</TABLE>>];
+
+    }
+    subgraph cluster_node_15 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 15 (bb: 1)";
+annotation_for_node_15 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 15 (from SN: 14 (bb: 3))
+
+needed here: {}
+not needed here: {'rr', '<anonymous>'}
+
+after SN: 15
+
+needed here: {}
+not needed here: {'rr', '<anonymous>'}
+
+"];
+
+      node_15 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD>EXIT</TD></TR>
+</TABLE>>];
+
+    }
+	node_12:s -> node_15:n [style="invis",constraint=true];
+  }
+  subgraph "cluster___analyzer_eval" {
+style="dashed"; color="black"; label="__analyzer_eval";
+    subgraph cluster_node_16 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 16 (bb: 0)";
+annotation_for_node_16 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 16 (NULL from-edge)
+
+needed here: {}
+not needed here: {}
+
+after SN: 16
+
+needed here: {}
+not needed here: {}
+
+"];
+
+      node_16 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD>ENTRY</TD></TR>
+</TABLE>>];
+
+    }
+    subgraph cluster_node_17 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 17 (bb: 2)";
+annotation_for_node_17 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 17 (from SN: 16 (bb: 0))
+
+needed here: {}
+not needed here: {}
+
+after SN: 17
+
+needed here: {}
+not needed here: {}
+
+"];
+
+      node_17 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD ALIGN="LEFT">return;</TD></TR>
+<TR><TD ALIGN="LEFT">needed here: {}</TD></TR>
+<TR><TD ALIGN="LEFT">not needed here: {}</TD></TR>
+
+</TABLE>>];
+
+    }
+    subgraph cluster_node_18 {
+      style="solid";
+      color="black";
+      fillcolor="lightgrey";
+      label="sn: 18 (bb: 1)";
+annotation_for_node_18 [shape=none,margin=0,style=filled,fillcolor=lightblue,label="before SN: 18 (from SN: 17 (bb: 2))
+
+needed here: {}
+not needed here: {}
+
+after SN: 18
+
+needed here: {}
+not needed here: {}
+
+"];
+
+      node_18 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label=<<TABLE BORDER="0"><TR><TD>EXIT</TD></TR>
+</TABLE>>];
+
+    }
+	node_16:s -> node_18:n [style="invis",constraint=true];
+  }
+  node_0 -> node_1 [style="solid,bold", color=blue, weight=100, constraint=true, ltail="cluster_node_0", lhead="cluster_node_1" headlabel=" (flags FALLTHRU)"];
+  node_3 -> node_4 [style="solid,bold", color=blue, weight=100, constraint=true, ltail="cluster_node_3", lhead="cluster_node_4" headlabel=" (flags FALLTHRU)"];
+  node_4 -> node_5 [style="solid,bold", color=black, weight=10, constraint=true, ltail="cluster_node_4", lhead="cluster_node_5" headlabel=""];
+  node_6 -> node_7 [style="solid,bold", color=blue, weight=100, constraint=true, ltail="cluster_node_6", lhead="cluster_node_7" headlabel=" (flags FALLTHRU)"];
+  node_8 -> node_9 [style="solid,bold", color=black, weight=10, constraint=true, ltail="cluster_node_8", lhead="cluster_node_9" headlabel="true (flags TRUE_VALUE)"];
+  node_8 -> node_10 [style="solid,bold", color=black, weight=10, constraint=true, ltail="cluster_node_8", lhead="cluster_node_10" headlabel="false (flags FALSE_VALUE)"];
+  node_9 -> node_10 [style="solid,bold", color=blue, weight=100, constraint=true, ltail="cluster_node_9", lhead="cluster_node_10" headlabel=" (flags FALLTHRU)"];
+  node_10 -> node_11 [style="solid,bold", color=black, weight=10, constraint=true, ltail="cluster_node_10", lhead="cluster_node_11" headlabel=""];
+  node_12 -> node_13 [style="solid,bold", color=blue, weight=100, constraint=true, ltail="cluster_node_12", lhead="cluster_node_13" headlabel=" (flags FALLTHRU)"];
+  node_13 -> node_14 [style="solid,bold", color=blue, weight=100, constraint=true, ltail="cluster_node_13", lhead="cluster_node_14" headlabel=" (flags FALLTHRU)"];
+  node_14 -> node_15 [style="solid,bold", color=black, weight=10, constraint=true, ltail="cluster_node_14", lhead="cluster_node_15" headlabel=""];
+  node_16 -> node_17 [style="solid,bold", color=blue, weight=100, constraint=true, ltail="cluster_node_16", lhead="cluster_node_17" headlabel=" (flags FALLTHRU)"];
+  node_17 -> node_18 [style="solid,bold", color=black, weight=10, constraint=true, ltail="cluster_node_17", lhead="cluster_node_18" headlabel=""];
+  node_1 -> node_12 [style="solid,bold", color=red, weight=10, constraint=true, ltail="cluster_node_1", lhead="cluster_node_12" headlabel="call"];
+  node_2 -> node_6 [style="solid,bold", color=red, weight=10, constraint=true, ltail="cluster_node_2", lhead="cluster_node_6" headlabel="call"];
+  node_7 -> node_16 [style="solid,bold", color=red, weight=10, constraint=true, ltail="cluster_node_7", lhead="cluster_node_16" headlabel="call"];
+  node_15 -> node_2 [style="solid,bold", color=green, weight=10, constraint=true, ltail="cluster_node_15", lhead="cluster_node_2" headlabel="return"];
+  node_11 -> node_3 [style="solid,bold", color=green, weight=10, constraint=true, ltail="cluster_node_11", lhead="cluster_node_3" headlabel="return"];
+  node_18 -> node_8 [style="solid,bold", color=green, weight=10, constraint=true, ltail="cluster_node_18", lhead="cluster_node_8" headlabel="return"];
+  node_1 -> node_2 [style="dotted", color=black, weight=10, constraint=true, ltail="cluster_node_1", lhead="cluster_node_2" headlabel="intraproc link"];
+  node_2 -> node_3 [style="dotted", color=black, weight=10, constraint=true, ltail="cluster_node_2", lhead="cluster_node_3" headlabel="intraproc link"];
+  node_7 -> node_8 [style="dotted", color=black, weight=10, constraint=true, ltail="cluster_node_7", lhead="cluster_node_8" headlabel="intraproc link"];
+}

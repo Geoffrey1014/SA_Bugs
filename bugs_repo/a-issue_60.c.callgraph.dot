@@ -1,0 +1,14 @@
+digraph "base" {
+overlap=false;
+compound=true;
+vcg_0 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="VCG:\ 0:\ foo\l\
+supernodes:\ 5\l\
+\l\
+superedges:\ 5\l\
+\l\
+enodes:\ 14\l\
+\l\
+[]:\ 14\l\
+"];
+
+}

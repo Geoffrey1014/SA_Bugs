@@ -1,0 +1,1487 @@
+GNU C17 (GCC) version 13.0.1 20230215 (experimental) (x86_64-pc-linux-gnu)
+	compiled by GNU C version 13.0.1 20230215 (experimental), GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.1, isl version isl-0.24-GMP
+
+entering: void ana::stash_named_constants(logger*, const translation_unit&)
+ entering: maybe_stash_named_constant: name: 'O_ACCMODE'
+  'O_ACCMODE': not found
+ exiting: maybe_stash_named_constant
+ entering: maybe_stash_named_constant: name: 'O_RDONLY'
+  'O_RDONLY': not found
+ exiting: maybe_stash_named_constant
+ entering: maybe_stash_named_constant: name: 'O_WRONLY'
+  'O_WRONLY': not found
+ exiting: maybe_stash_named_constant
+ entering: maybe_stash_named_constant: name: 'SOCK_STREAM'
+  'SOCK_STREAM': not found
+ exiting: maybe_stash_named_constant
+ entering: maybe_stash_named_constant: name: 'SOCK_DGRAM'
+  'SOCK_DGRAM': not found
+ exiting: maybe_stash_named_constant
+exiting: void ana::stash_named_constants(logger*, const translation_unit&)
+ana::logger::~logger()
+GNU C17 (GCC) version 13.0.1 20230215 (experimental) (x86_64-pc-linux-gnu)
+	compiled by GNU C version 13.0.1 20230215 (experimental), GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.1, isl version isl-0.24-GMP
+
+entering: void ana::run_checkers()
+ entering: void ana::impl_run_checkers(logger*)
+  BITS_BIG_ENDIAN: 0
+  BYTES_BIG_ENDIAN: 0
+  WORDS_BIG_ENDIAN: 0
+  entering: void ana::log_stashed_constants(logger*)
+  exiting: void ana::log_stashed_constants(logger*)
+  entering: supergraph
+   SN: 0...4: function 'foo'
+  exiting: supergraph
+  entering: state_purge_map
+   function: foo
+   entering: state_purge_per_ssa_name
+    SSA name: '_1' within 'foo'
+    def stmt: _1 = a_9 > b_10;
+    used by stmt: _2 = (int) _1;
+    entering: add_to_worklist
+     point: 'before (SN: 2 stmt: 1):  _2 = (int) _1;' for worklist for '_1'
+     not seen; adding to worklist for '_1'
+    exiting: add_to_worklist
+    not last stmt in BB
+    entering: processing worklist
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 1):  _2 = (int) _1;' for '_1'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 0):  _1 = a_9 > b_10;' for worklist for '_1'
+       not seen; adding to worklist for '_1'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 0):  _1 = a_9 > b_10;' for '_1'
+      def stmt; terminating
+     exiting: process_point
+    exiting: processing worklist
+    '_1' in 'foo' is needed to process:
+      point: before (SN: 2 stmt: 0):  _1 = a_9 > b_10;
+      point: before (SN: 2 stmt: 1):  _2 = (int) _1;
+   exiting: state_purge_per_ssa_name
+   entering: state_purge_per_ssa_name
+    SSA name: '_2' within 'foo'
+    def stmt: _2 = (int) _1;
+    used by stmt: __analyzer_eval (_2);
+    entering: add_to_worklist
+     point: 'before (SN: 2 stmt: 2):  __analyzer_eval (_2);' for worklist for '_2'
+     not seen; adding to worklist for '_2'
+    exiting: add_to_worklist
+    not last stmt in BB
+    entering: processing worklist
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 2):  __analyzer_eval (_2);' for '_2'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 1):  _2 = (int) _1;' for worklist for '_2'
+       not seen; adding to worklist for '_2'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 1):  _2 = (int) _1;' for '_2'
+      def stmt; terminating
+     exiting: process_point
+    exiting: processing worklist
+    '_2' in 'foo' is needed to process:
+      point: before (SN: 2 stmt: 1):  _2 = (int) _1;
+      point: before (SN: 2 stmt: 2):  __analyzer_eval (_2);
+   exiting: state_purge_per_ssa_name
+   entering: state_purge_per_ssa_name
+    SSA name: '_3' within 'foo'
+    def stmt: _3 = b_10 < a_9;
+    used by stmt: _4 = (int) _3;
+    entering: add_to_worklist
+     point: 'before (SN: 2 stmt: 4):  _4 = (int) _3;' for worklist for '_3'
+     not seen; adding to worklist for '_3'
+    exiting: add_to_worklist
+    not last stmt in BB
+    entering: processing worklist
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 4):  _4 = (int) _3;' for '_3'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 3):  _3 = b_10 < a_9;' for worklist for '_3'
+       not seen; adding to worklist for '_3'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 3):  _3 = b_10 < a_9;' for '_3'
+      def stmt; terminating
+     exiting: process_point
+    exiting: processing worklist
+    '_3' in 'foo' is needed to process:
+      point: before (SN: 2 stmt: 3):  _3 = b_10 < a_9;
+      point: before (SN: 2 stmt: 4):  _4 = (int) _3;
+   exiting: state_purge_per_ssa_name
+   entering: state_purge_per_ssa_name
+    SSA name: '_4' within 'foo'
+    def stmt: _4 = (int) _3;
+    used by stmt: __analyzer_eval (_4);
+    entering: add_to_worklist
+     point: 'before (SN: 2 stmt: 5):  __analyzer_eval (_4);' for worklist for '_4'
+     not seen; adding to worklist for '_4'
+    exiting: add_to_worklist
+    not last stmt in BB
+    entering: processing worklist
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 5):  __analyzer_eval (_4);' for '_4'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 4):  _4 = (int) _3;' for worklist for '_4'
+       not seen; adding to worklist for '_4'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 4):  _4 = (int) _3;' for '_4'
+      def stmt; terminating
+     exiting: process_point
+    exiting: processing worklist
+    '_4' in 'foo' is needed to process:
+      point: before (SN: 2 stmt: 4):  _4 = (int) _3;
+      point: before (SN: 2 stmt: 5):  __analyzer_eval (_4);
+   exiting: state_purge_per_ssa_name
+   entering: state_purge_per_ssa_name
+    SSA name: '_5' within 'foo'
+    def stmt: _5 = b_10 > a_9;
+    used by stmt: _6 = (int) _5;
+    entering: add_to_worklist
+     point: 'before (SN: 2 stmt: 7):  _6 = (int) _5;' for worklist for '_5'
+     not seen; adding to worklist for '_5'
+    exiting: add_to_worklist
+    not last stmt in BB
+    entering: processing worklist
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 7):  _6 = (int) _5;' for '_5'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 6):  _5 = b_10 > a_9;' for worklist for '_5'
+       not seen; adding to worklist for '_5'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 6):  _5 = b_10 > a_9;' for '_5'
+      def stmt; terminating
+     exiting: process_point
+    exiting: processing worklist
+    '_5' in 'foo' is needed to process:
+      point: before (SN: 2 stmt: 6):  _5 = b_10 > a_9;
+      point: before (SN: 2 stmt: 7):  _6 = (int) _5;
+   exiting: state_purge_per_ssa_name
+   entering: state_purge_per_ssa_name
+    SSA name: '_6' within 'foo'
+    def stmt: _6 = (int) _5;
+    used by stmt: __analyzer_eval (_6);
+    entering: add_to_worklist
+     point: 'before (SN: 2 stmt: 8):  __analyzer_eval (_6);' for worklist for '_6'
+     not seen; adding to worklist for '_6'
+    exiting: add_to_worklist
+    last stmt in BB
+    entering: add_to_worklist
+     point: 'after SN: 2' for worklist for '_6'
+     not seen; adding to worklist for '_6'
+    exiting: add_to_worklist
+    entering: processing worklist
+     entering: process_point
+      considering point: 'after SN: 2' for '_6'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 8):  __analyzer_eval (_6);' for worklist for '_6'
+       already seen for '_6'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 8):  __analyzer_eval (_6);' for '_6'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 7):  _6 = (int) _5;' for worklist for '_6'
+       not seen; adding to worklist for '_6'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 7):  _6 = (int) _5;' for '_6'
+      def stmt; terminating
+     exiting: process_point
+    exiting: processing worklist
+    '_6' in 'foo' is needed to process:
+      point: before (SN: 2 stmt: 7):  _6 = (int) _5;
+      point: before (SN: 2 stmt: 8):  __analyzer_eval (_6);
+      point: after SN: 2
+   exiting: state_purge_per_ssa_name
+   entering: state_purge_per_ssa_name
+    SSA name: 'size_8(D)' within 'foo'
+    def stmt: GIMPLE_NOP
+    used by stmt: b_10 = size_8(D) + 1;
+    entering: add_to_worklist
+     point: 'before (SN: 1 stmt: 1):  b_10 = size_8(D) + 1;' for worklist for 'size_8(D)'
+     not seen; adding to worklist for 'size_8(D)'
+    exiting: add_to_worklist
+    not last stmt in BB
+    used by stmt: a_9 = size_8(D) + 2;
+    entering: add_to_worklist
+     point: 'before (SN: 1 stmt: 0):  a_9 = size_8(D) + 2;' for worklist for 'size_8(D)'
+     not seen; adding to worklist for 'size_8(D)'
+    exiting: add_to_worklist
+    not last stmt in BB
+    entering: processing worklist
+     entering: process_point
+      considering point: 'before (SN: 1 stmt: 0):  a_9 = size_8(D) + 2;' for 'size_8(D)'
+      entering: add_to_worklist
+       point: 'before SN: 1 (from SN: 0 (bb: 0)) ' for worklist for 'size_8(D)'
+       not seen; adding to worklist for 'size_8(D)'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before SN: 1 (from SN: 0 (bb: 0)) ' for 'size_8(D)'
+      entering: add_to_worklist
+       point: 'after SN: 0' for worklist for 'size_8(D)'
+       not seen; adding to worklist for 'size_8(D)'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'after SN: 0' for 'size_8(D)'
+      entering: add_to_worklist
+       point: 'before SN: 0 (NULL from-edge) ' for worklist for 'size_8(D)'
+       not seen; adding to worklist for 'size_8(D)'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before SN: 0 (NULL from-edge) ' for 'size_8(D)'
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 1 stmt: 1):  b_10 = size_8(D) + 1;' for 'size_8(D)'
+      entering: add_to_worklist
+       point: 'before (SN: 1 stmt: 0):  a_9 = size_8(D) + 2;' for worklist for 'size_8(D)'
+       already seen for 'size_8(D)'
+      exiting: add_to_worklist
+     exiting: process_point
+    exiting: processing worklist
+    'size_8(D)' in 'foo' is needed to process:
+      point: before SN: 0 (NULL from-edge) 
+      point: after SN: 0
+      point: before SN: 1 (from SN: 0 (bb: 0)) 
+      point: before (SN: 1 stmt: 0):  a_9 = size_8(D) + 2;
+      point: before (SN: 1 stmt: 1):  b_10 = size_8(D) + 1;
+   exiting: state_purge_per_ssa_name
+   entering: state_purge_per_ssa_name
+    SSA name: 'a_9' within 'foo'
+    def stmt: a_9 = size_8(D) + 2;
+    used by stmt: _5 = b_10 > a_9;
+    entering: add_to_worklist
+     point: 'before (SN: 2 stmt: 6):  _5 = b_10 > a_9;' for worklist for 'a_9'
+     not seen; adding to worklist for 'a_9'
+    exiting: add_to_worklist
+    not last stmt in BB
+    used by stmt: _3 = b_10 < a_9;
+    entering: add_to_worklist
+     point: 'before (SN: 2 stmt: 3):  _3 = b_10 < a_9;' for worklist for 'a_9'
+     not seen; adding to worklist for 'a_9'
+    exiting: add_to_worklist
+    not last stmt in BB
+    used by stmt: _1 = a_9 > b_10;
+    entering: add_to_worklist
+     point: 'before (SN: 2 stmt: 0):  _1 = a_9 > b_10;' for worklist for 'a_9'
+     not seen; adding to worklist for 'a_9'
+    exiting: add_to_worklist
+    not last stmt in BB
+    used by stmt: if (a_9 > b_10)
+    entering: add_to_worklist
+     point: 'before (SN: 1 stmt: 2):  if (a_9 > b_10)' for worklist for 'a_9'
+     not seen; adding to worklist for 'a_9'
+    exiting: add_to_worklist
+    last stmt in BB
+    entering: add_to_worklist
+     point: 'after SN: 1' for worklist for 'a_9'
+     not seen; adding to worklist for 'a_9'
+    exiting: add_to_worklist
+    entering: processing worklist
+     entering: process_point
+      considering point: 'after SN: 1' for 'a_9'
+      entering: add_to_worklist
+       point: 'before (SN: 1 stmt: 2):  if (a_9 > b_10)' for worklist for 'a_9'
+       already seen for 'a_9'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 1 stmt: 2):  if (a_9 > b_10)' for 'a_9'
+      entering: add_to_worklist
+       point: 'before (SN: 1 stmt: 1):  b_10 = size_8(D) + 1;' for worklist for 'a_9'
+       not seen; adding to worklist for 'a_9'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 1 stmt: 1):  b_10 = size_8(D) + 1;' for 'a_9'
+      entering: add_to_worklist
+       point: 'before (SN: 1 stmt: 0):  a_9 = size_8(D) + 2;' for worklist for 'a_9'
+       not seen; adding to worklist for 'a_9'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 1 stmt: 0):  a_9 = size_8(D) + 2;' for 'a_9'
+      def stmt; terminating
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 0):  _1 = a_9 > b_10;' for 'a_9'
+      entering: add_to_worklist
+       point: 'before SN: 2 (from SN: 1 (bb: 2)) ' for worklist for 'a_9'
+       not seen; adding to worklist for 'a_9'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before SN: 2 (from SN: 1 (bb: 2)) ' for 'a_9'
+      entering: add_to_worklist
+       point: 'after SN: 1' for worklist for 'a_9'
+       already seen for 'a_9'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 3):  _3 = b_10 < a_9;' for 'a_9'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 2):  __analyzer_eval (_2);' for worklist for 'a_9'
+       not seen; adding to worklist for 'a_9'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 2):  __analyzer_eval (_2);' for 'a_9'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 1):  _2 = (int) _1;' for worklist for 'a_9'
+       not seen; adding to worklist for 'a_9'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 1):  _2 = (int) _1;' for 'a_9'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 0):  _1 = a_9 > b_10;' for worklist for 'a_9'
+       already seen for 'a_9'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 6):  _5 = b_10 > a_9;' for 'a_9'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 5):  __analyzer_eval (_4);' for worklist for 'a_9'
+       not seen; adding to worklist for 'a_9'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 5):  __analyzer_eval (_4);' for 'a_9'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 4):  _4 = (int) _3;' for worklist for 'a_9'
+       not seen; adding to worklist for 'a_9'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 4):  _4 = (int) _3;' for 'a_9'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 3):  _3 = b_10 < a_9;' for worklist for 'a_9'
+       already seen for 'a_9'
+      exiting: add_to_worklist
+     exiting: process_point
+    exiting: processing worklist
+    'a_9' in 'foo' is needed to process:
+      point: before (SN: 1 stmt: 0):  a_9 = size_8(D) + 2;
+      point: before (SN: 1 stmt: 1):  b_10 = size_8(D) + 1;
+      point: before (SN: 1 stmt: 2):  if (a_9 > b_10)
+      point: after SN: 1
+      point: before SN: 2 (from SN: 1 (bb: 2)) 
+      point: before (SN: 2 stmt: 0):  _1 = a_9 > b_10;
+      point: before (SN: 2 stmt: 1):  _2 = (int) _1;
+      point: before (SN: 2 stmt: 2):  __analyzer_eval (_2);
+      point: before (SN: 2 stmt: 3):  _3 = b_10 < a_9;
+      point: before (SN: 2 stmt: 4):  _4 = (int) _3;
+      point: before (SN: 2 stmt: 5):  __analyzer_eval (_4);
+      point: before (SN: 2 stmt: 6):  _5 = b_10 > a_9;
+   exiting: state_purge_per_ssa_name
+   entering: state_purge_per_ssa_name
+    SSA name: 'b_10' within 'foo'
+    def stmt: b_10 = size_8(D) + 1;
+    used by stmt: _5 = b_10 > a_9;
+    entering: add_to_worklist
+     point: 'before (SN: 2 stmt: 6):  _5 = b_10 > a_9;' for worklist for 'b_10'
+     not seen; adding to worklist for 'b_10'
+    exiting: add_to_worklist
+    not last stmt in BB
+    used by stmt: _3 = b_10 < a_9;
+    entering: add_to_worklist
+     point: 'before (SN: 2 stmt: 3):  _3 = b_10 < a_9;' for worklist for 'b_10'
+     not seen; adding to worklist for 'b_10'
+    exiting: add_to_worklist
+    not last stmt in BB
+    used by stmt: _1 = a_9 > b_10;
+    entering: add_to_worklist
+     point: 'before (SN: 2 stmt: 0):  _1 = a_9 > b_10;' for worklist for 'b_10'
+     not seen; adding to worklist for 'b_10'
+    exiting: add_to_worklist
+    not last stmt in BB
+    used by stmt: if (a_9 > b_10)
+    entering: add_to_worklist
+     point: 'before (SN: 1 stmt: 2):  if (a_9 > b_10)' for worklist for 'b_10'
+     not seen; adding to worklist for 'b_10'
+    exiting: add_to_worklist
+    last stmt in BB
+    entering: add_to_worklist
+     point: 'after SN: 1' for worklist for 'b_10'
+     not seen; adding to worklist for 'b_10'
+    exiting: add_to_worklist
+    entering: processing worklist
+     entering: process_point
+      considering point: 'after SN: 1' for 'b_10'
+      entering: add_to_worklist
+       point: 'before (SN: 1 stmt: 2):  if (a_9 > b_10)' for worklist for 'b_10'
+       already seen for 'b_10'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 1 stmt: 2):  if (a_9 > b_10)' for 'b_10'
+      entering: add_to_worklist
+       point: 'before (SN: 1 stmt: 1):  b_10 = size_8(D) + 1;' for worklist for 'b_10'
+       not seen; adding to worklist for 'b_10'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 1 stmt: 1):  b_10 = size_8(D) + 1;' for 'b_10'
+      def stmt; terminating
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 0):  _1 = a_9 > b_10;' for 'b_10'
+      entering: add_to_worklist
+       point: 'before SN: 2 (from SN: 1 (bb: 2)) ' for worklist for 'b_10'
+       not seen; adding to worklist for 'b_10'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before SN: 2 (from SN: 1 (bb: 2)) ' for 'b_10'
+      entering: add_to_worklist
+       point: 'after SN: 1' for worklist for 'b_10'
+       already seen for 'b_10'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 3):  _3 = b_10 < a_9;' for 'b_10'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 2):  __analyzer_eval (_2);' for worklist for 'b_10'
+       not seen; adding to worklist for 'b_10'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 2):  __analyzer_eval (_2);' for 'b_10'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 1):  _2 = (int) _1;' for worklist for 'b_10'
+       not seen; adding to worklist for 'b_10'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 1):  _2 = (int) _1;' for 'b_10'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 0):  _1 = a_9 > b_10;' for worklist for 'b_10'
+       already seen for 'b_10'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 6):  _5 = b_10 > a_9;' for 'b_10'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 5):  __analyzer_eval (_4);' for worklist for 'b_10'
+       not seen; adding to worklist for 'b_10'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 5):  __analyzer_eval (_4);' for 'b_10'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 4):  _4 = (int) _3;' for worklist for 'b_10'
+       not seen; adding to worklist for 'b_10'
+      exiting: add_to_worklist
+     exiting: process_point
+     entering: process_point
+      considering point: 'before (SN: 2 stmt: 4):  _4 = (int) _3;' for 'b_10'
+      entering: add_to_worklist
+       point: 'before (SN: 2 stmt: 3):  _3 = b_10 < a_9;' for worklist for 'b_10'
+       already seen for 'b_10'
+      exiting: add_to_worklist
+     exiting: process_point
+    exiting: processing worklist
+    'b_10' in 'foo' is needed to process:
+      point: before (SN: 1 stmt: 1):  b_10 = size_8(D) + 1;
+      point: before (SN: 1 stmt: 2):  if (a_9 > b_10)
+      point: after SN: 1
+      point: before SN: 2 (from SN: 1 (bb: 2)) 
+      point: before (SN: 2 stmt: 0):  _1 = a_9 > b_10;
+      point: before (SN: 2 stmt: 1):  _2 = (int) _1;
+      point: before (SN: 2 stmt: 2):  __analyzer_eval (_2);
+      point: before (SN: 2 stmt: 3):  _3 = b_10 < a_9;
+      point: before (SN: 2 stmt: 4):  _4 = (int) _3;
+      point: before (SN: 2 stmt: 5):  __analyzer_eval (_4);
+      point: before (SN: 2 stmt: 6):  _5 = b_10 > a_9;
+   exiting: state_purge_per_ssa_name
+   SN: 0
+   SN: 1
+   SN: 2
+   SN: 3
+   SN: 4
+  exiting: state_purge_map
+  entering: add: registering __analyzer_break
+  exiting: add
+  entering: add: registering __analyzer_describe
+  exiting: add
+  entering: add: registering __analyzer_dump_capacity
+  exiting: add
+  entering: add: registering __analyzer_dump_escaped
+  exiting: add
+  entering: add: registering __analyzer_dump_exploded_nodes
+  exiting: add
+  entering: add: registering __analyzer_dump_named_constant
+  exiting: add
+  entering: add: registering __analyzer_dump_path
+  exiting: add
+  entering: add: registering __analyzer_dump_region_model
+  exiting: add
+  entering: add: registering __analyzer_eval
+  exiting: add
+  entering: add: registering __analyzer_get_unknown_ptr
+  exiting: add
+  entering: add: registering memset
+  exiting: add
+  entering: add: registering strdup
+  exiting: add
+  entering: add: registering strndup
+  exiting: add
+  entering: add: registering putenv
+  exiting: add
+  entering: add: registering accept
+  exiting: add
+  entering: add: registering bind
+  exiting: add
+  entering: add: registering connect
+  exiting: add
+  entering: add: registering isatty
+  exiting: add
+  entering: add: registering listen
+  exiting: add
+  entering: add: registering pipe
+  exiting: add
+  entering: add: registering pipe2
+  exiting: add
+  entering: add: registering read
+  exiting: add
+  entering: add: registering socket
+  exiting: add
+  entering: add: registering ferror
+  exiting: add
+  entering: add: registering fgets
+  exiting: add
+  entering: add: registering fgets_unlocked
+  exiting: add
+  entering: add: registering fileno
+  exiting: add
+  entering: add: registering fread
+  exiting: add
+  entering: add: registering getc
+  exiting: add
+  entering: add: registering getchar
+  exiting: add
+  entering: add: registering __errno_location
+  exiting: add
+  entering: add: registering error
+  exiting: add
+  entering: add: registering error_at_line
+  exiting: add
+  entering: add: registering ___errno
+  exiting: add
+  entering: add: registering __error
+  exiting: add
+  entering: add: registering operator new
+  exiting: add
+  entering: add: registering operator new []
+  exiting: add
+  entering: add: registering operator delete
+  exiting: add
+  entering: add: registering operator delete
+  exiting: add
+  entering: add: registering operator delete []
+  exiting: add
+  checkers[0]: malloc
+  checkers[1]: file
+  checkers[2]: file-descriptor
+  checkers[3]: sensitive
+  checkers[4]: signal
+  checkers[5]: va_list
+  entering: ana::analysis_plan::analysis_plan(const ana::supergraph&, ana::logger*)
+
+
+ ordered call graph: analysis_plan
+__analyzer_eval/1 (__analyzer_eval)
+  Type: function
+  Visibility: semantic_interposition external public
+  References: 
+  Referring: 
+  Availability: not_available
+  Function flags:
+  Called by: foo/0 foo/0 foo/0 
+  Calls: 
+foo/0 (foo)
+  Type: function definition analyzed
+  Visibility: force_output externally_visible semantic_interposition no_reorder public
+  References: 
+  Referring: 
+  Availability: available
+  Function flags: body
+  Called by: 
+  Calls: __analyzer_eval/1 __analyzer_eval/1 __analyzer_eval/1 
+
+  exiting: ana::analysis_plan::analysis_plan(const ana::supergraph&, ana::logger*)
+  entering: ana::strongly_connected_components::strongly_connected_components(const ana::supergraph&, ana::logger*)
+  exiting: ana::strongly_connected_components::strongly_connected_components(const ana::supergraph&, ana::logger*)
+  entering: get_or_create_node
+   point: callstring: [] origin
+   state: {rmodel: {stack depth: 0 {}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+   entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+   exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+   pruned_state: {rmodel: {stack depth: 0 {}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+   stack depth: 0 {}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}created EN: 0
+   point: callstring: [] origin
+   pruned_state: {rmodel: {stack depth: 0 {}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+  exiting: get_or_create_node
+  entering: void ana::exploded_graph::build_initial_worklist()
+   traversing 'foo' (all checks passed)
+   entering: get_or_create_node
+    point: callstring: [] before SN: 0 (NULL from-edge) 
+    state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}created EN: 1
+    point: callstring: [] before SN: 0 (NULL from-edge) 
+    pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+   exiting: get_or_create_node
+   creating edge EN: 0 -> EN: 1
+   created EN 1 for 'foo' entrypoint
+  exiting: void ana::exploded_graph::build_initial_worklist()
+  entering: void ana::exploded_graph::process_worklist()
+   next to process: EN: 0
+   entering: process_node: EN: 0
+    point: callstring: [] origin, state: {rmodel: {stack depth: 0 {}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+   exiting: process_node
+   next to process: EN: 1
+   entering: bool ana::exploded_graph::maybe_process_run_of_before_supernode_enodes(ana::exploded_node*)
+   exiting: bool ana::exploded_graph::maybe_process_run_of_before_supernode_enodes(ana::exploded_node*)
+   entering: process_node: EN: 1
+    point: callstring: [] before SN: 0 (NULL from-edge) , state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    entering: get_or_create_node
+     point: callstring: [] after SN: 0
+     state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}created EN: 2
+     point: callstring: [] after SN: 0
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    exiting: get_or_create_node
+    creating edge EN: 1 -> EN: 2
+   exiting: process_node
+   next to process: EN: 2
+   entering: process_node: EN: 2
+    point: callstring: [] after SN: 0, state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    considering SN: 0 -> SN: 1 ( (flags FALLTHRU))
+    entering: on_edge
+     entering: on_edge
+     exiting: on_edge
+     entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+      src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+      src_state known reachable svalues:
+      dest_state maybe reachable svalues:
+     exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    exiting: on_edge
+    entering: get_or_create_node
+     point: callstring: [] before SN: 1 (from SN: 0 (bb: 0)) 
+     state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}created EN: 3
+     point: callstring: [] before SN: 1 (from SN: 0 (bb: 0)) 
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    exiting: get_or_create_node
+    creating edge EN: 2 -> EN: 3
+   exiting: process_node
+   next to process: EN: 3
+   entering: bool ana::exploded_graph::maybe_process_run_of_before_supernode_enodes(ana::exploded_node*)
+   exiting: bool ana::exploded_graph::maybe_process_run_of_before_supernode_enodes(ana::exploded_node*)
+   entering: process_node: EN: 3
+    point: callstring: [] before SN: 1 (from SN: 0 (bb: 0)) , state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+     src_state known reachable svalues:
+     dest_state maybe reachable svalues:
+    exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    entering: get_or_create_node
+     point: callstring: [] before (SN: 1 stmt: 0):  a_9 = size_8(D) + 2;
+     state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}created EN: 4
+     point: callstring: [] before (SN: 1 stmt: 0):  a_9 = size_8(D) + 2;
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    exiting: get_or_create_node
+    creating edge EN: 3 -> EN: 4
+   exiting: process_node
+   next to process: EN: 4
+   entering: process_node: EN: 4  
+    point: callstring: [] before (SN: 1 stmt: 0):  a_9 = size_8(D) + 2;, state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    entering: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+     a_9 = size_8(D) + 2;
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::store::set_value(ana::store_manager*, const ana::region*, const ana::svalue*, ana::uncertainty_t*)
+     exiting: void ana::store::set_value(ana::store_manager*, const ana::region*, const ana::svalue*, ana::uncertainty_t*)
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+    exiting: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+    entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+     src_state known reachable svalues:
+     dest_state maybe reachable svalues:
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+    exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    entering: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+     b_10 = size_8(D) + 1;
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::store::set_value(ana::store_manager*, const ana::region*, const ana::svalue*, ana::uncertainty_t*)
+     exiting: void ana::store::set_value(ana::store_manager*, const ana::region*, const ana::svalue*, ana::uncertainty_t*)
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+    exiting: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+    entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+     src_state known reachable svalues:
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+     dest_state maybe reachable svalues:
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+    exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    entering: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+     if (a_9 > b_10)
+    exiting: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+    entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+     src_state known reachable svalues:
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+     dest_state maybe reachable svalues:
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+    exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    entering: get_or_create_node
+     point: callstring: [] after SN: 1
+     state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}created EN: 5
+     point: callstring: [] after SN: 1
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    exiting: get_or_create_node
+    creating edge EN: 4 -> EN: 5
+   exiting: process_node
+   next to process: EN: 5
+   entering: process_node: EN: 5
+    point: callstring: [] after SN: 1, state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    considering SN: 1 -> SN: 2 (true (flags TRUE_VALUE))
+    entering: on_edge
+     entering: on_edge
+     exiting: on_edge
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+      src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+      src_state known reachable svalues:
+       0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+       0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+      dest_state maybe reachable svalues:
+       0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+       0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+     exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    exiting: on_edge
+    entering: get_or_create_node
+     point: callstring: [] before SN: 2 (from SN: 1 (bb: 2)) 
+     state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}created EN: 6
+     point: callstring: [] before SN: 2 (from SN: 1 (bb: 2)) 
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    exiting: get_or_create_node
+    creating edge EN: 5 -> EN: 6
+    considering SN: 1 -> SN: 3 (false (flags FALSE_VALUE))
+    entering: on_edge
+     entering: on_edge
+     exiting: on_edge
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+      src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {ec0: {(INIT_VAL(size_8(D))+(size_t)2)}, ec1: {(INIT_VAL(size_8(D))+(size_t)1)}}constraints:{0: ec0: {(INIT_VAL(size_8(D))+(size_t)2)} <= ec1: {(INIT_VAL(size_8(D))+(size_t)1)}}}}}
+      uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+      src_state known reachable svalues:
+       0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+       0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+      dest_state maybe reachable svalues:
+       0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+       0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+     exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    exiting: on_edge
+    entering: get_or_create_node
+     point: callstring: [] before SN: 3 (from SN: 1 (bb: 2)) .MEM_7 = PHI <.MEM_11(D)(2), .MEM_14(3)>
+     state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {ec0: {(INIT_VAL(size_8(D))+(size_t)2)}, ec1: {(INIT_VAL(size_8(D))+(size_t)1)}}constraints:{0: ec0: {(INIT_VAL(size_8(D))+(size_t)2)} <= ec1: {(INIT_VAL(size_8(D))+(size_t)1)}}}}}
+     entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+      num_ssas_purged: 2
+      num_decl_purged: 0
+      entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+       src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {ec0: {(INIT_VAL(size_8(D))+(size_t)2)}, ec1: {(INIT_VAL(size_8(D))+(size_t)1)}}constraints:{0: ec0: {(INIT_VAL(size_8(D))+(size_t)2)} <= ec1: {(INIT_VAL(size_8(D))+(size_t)1)}}}}}
+       dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {ec0: {(INIT_VAL(size_8(D))+(size_t)2)}, ec1: {(INIT_VAL(size_8(D))+(size_t)1)}}constraints:{0: ec0: {(INIT_VAL(size_8(D))+(size_t)2)} <= ec1: {(INIT_VAL(size_8(D))+(size_t)1)}}}}}
+       uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+       src_state known reachable svalues:
+        0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+        0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+       dest_state maybe reachable svalues:
+      exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {ec0: {(INIT_VAL(size_8(D))+(size_t)1)}, ec1: {(INIT_VAL(size_8(D))+(size_t)2)}}constraints:{0: ec1: {(INIT_VAL(size_8(D))+(size_t)2)} <= ec0: {(INIT_VAL(size_8(D))+(size_t)1)}}}}}
+     stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {ec0: {(INIT_VAL(size_8(D))+(size_t)1)}, ec1: {(INIT_VAL(size_8(D))+(size_t)2)}}constraints:{0: ec1: {(INIT_VAL(size_8(D))+(size_t)2)} <= ec0: {(INIT_VAL(size_8(D))+(size_t)1)}}}created EN: 7
+     point: callstring: [] before SN: 3 (from SN: 1 (bb: 2)) .MEM_7 = PHI <.MEM_11(D)(2), .MEM_14(3)>
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {ec0: {(INIT_VAL(size_8(D))+(size_t)1)}, ec1: {(INIT_VAL(size_8(D))+(size_t)2)}}constraints:{0: ec1: {(INIT_VAL(size_8(D))+(size_t)2)} <= ec0: {(INIT_VAL(size_8(D))+(size_t)1)}}}}}
+    exiting: get_or_create_node
+    creating edge EN: 5 -> EN: 7
+   exiting: process_node
+   next to process: EN: 6
+   entering: bool ana::exploded_graph::maybe_process_run_of_before_supernode_enodes(ana::exploded_node*)
+   exiting: bool ana::exploded_graph::maybe_process_run_of_before_supernode_enodes(ana::exploded_node*)
+   peek worklist: EN: 7
+   entering: process_node: EN: 6
+    point: callstring: [] before SN: 2 (from SN: 1 (bb: 2)) , state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+     src_state known reachable svalues:
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+     dest_state maybe reachable svalues:
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+    exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    entering: get_or_create_node
+     point: callstring: [] before (SN: 2 stmt: 0):  _1 = a_9 > b_10;
+     state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}created EN: 8
+     point: callstring: [] before (SN: 2 stmt: 0):  _1 = a_9 > b_10;
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    exiting: get_or_create_node
+    creating edge EN: 6 -> EN: 8
+   exiting: process_node
+   next to process: EN: 8
+   peek worklist: EN: 7
+   entering: process_node: EN: 8
+    point: callstring: [] before (SN: 2 stmt: 0):  _1 = a_9 > b_10;, state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    entering: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+     _1 = a_9 > b_10;
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::store::set_value(ana::store_manager*, const ana::region*, const ana::svalue*, ana::uncertainty_t*)
+     exiting: void ana::store::set_value(ana::store_manager*, const ana::region*, const ana::svalue*, ana::uncertainty_t*)
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+    exiting: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+    entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_1, value: (_Bool)1}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+     src_state known reachable svalues:
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+     dest_state maybe reachable svalues:
+      0x43ffde0: constant_svalue('_Bool', 1)
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+    exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    entering: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+     _2 = (int) _1;
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::store::set_value(ana::store_manager*, const ana::region*, const ana::svalue*, ana::uncertainty_t*)
+     exiting: void ana::store::set_value(ana::store_manager*, const ana::region*, const ana::svalue*, ana::uncertainty_t*)
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+    exiting: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+    entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_1, value: (_Bool)1}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_1, value: (_Bool)1}, region: {_2, value: (int)1}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+     src_state known reachable svalues:
+      0x43ffde0: constant_svalue('_Bool', 1)
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+     dest_state maybe reachable svalues:
+      0x43ffd00: constant_svalue('int', 1)
+      0x43ffde0: constant_svalue('_Bool', 1)
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+    exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     num_ssas_purged: 1
+     num_decl_purged: 0
+     entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+      src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_1, value: (_Bool)1}, region: {_2, value: (int)1}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_2, value: (int)1}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+      src_state known reachable svalues:
+       0x43ffd00: constant_svalue('int', 1)
+       0x43ffde0: constant_svalue('_Bool', 1)
+       0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+       0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+      dest_state maybe reachable svalues:
+       0x43ffd00: constant_svalue('int', 1)
+       0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+       0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+     exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    entering: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+     __analyzer_eval (_2);
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+    exiting: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+    entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_2, value: (int)1}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_2, value: (int)1}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+     src_state known reachable svalues:
+      0x43ffd00: constant_svalue('int', 1)
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+     dest_state maybe reachable svalues:
+      0x43ffd00: constant_svalue('int', 1)
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+    exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     num_ssas_purged: 1
+     num_decl_purged: 0
+     entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+      src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_2, value: (int)1}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+      src_state known reachable svalues:
+       0x43ffd00: constant_svalue('int', 1)
+       0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+       0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+      dest_state maybe reachable svalues:
+       0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+       0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+     exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    entering: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+     _3 = b_10 < a_9;
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::store::set_value(ana::store_manager*, const ana::region*, const ana::svalue*, ana::uncertainty_t*)
+     exiting: void ana::store::set_value(ana::store_manager*, const ana::region*, const ana::svalue*, ana::uncertainty_t*)
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+    exiting: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+    entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_3, value: (_Bool)1}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+     src_state known reachable svalues:
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+     dest_state maybe reachable svalues:
+      0x43ffde0: constant_svalue('_Bool', 1)
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+    exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    entering: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+     _4 = (int) _3;
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::store::set_value(ana::store_manager*, const ana::region*, const ana::svalue*, ana::uncertainty_t*)
+     exiting: void ana::store::set_value(ana::store_manager*, const ana::region*, const ana::svalue*, ana::uncertainty_t*)
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+    exiting: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+    entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_3, value: (_Bool)1}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_3, value: (_Bool)1}, region: {_4, value: (int)1}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+     src_state known reachable svalues:
+      0x43ffde0: constant_svalue('_Bool', 1)
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+     dest_state maybe reachable svalues:
+      0x43ffd00: constant_svalue('int', 1)
+      0x43ffde0: constant_svalue('_Bool', 1)
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+    exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     num_ssas_purged: 1
+     num_decl_purged: 0
+     entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+      src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_3, value: (_Bool)1}, region: {_4, value: (int)1}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_4, value: (int)1}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+      src_state known reachable svalues:
+       0x43ffd00: constant_svalue('int', 1)
+       0x43ffde0: constant_svalue('_Bool', 1)
+       0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+       0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+      dest_state maybe reachable svalues:
+       0x43ffd00: constant_svalue('int', 1)
+       0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+       0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+     exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    entering: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+     __analyzer_eval (_4);
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+    exiting: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+    entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_4, value: (int)1}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_4, value: (int)1}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+     src_state known reachable svalues:
+      0x43ffd00: constant_svalue('int', 1)
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+     dest_state maybe reachable svalues:
+      0x43ffd00: constant_svalue('int', 1)
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+    exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     num_ssas_purged: 1
+     num_decl_purged: 0
+     entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+      src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_4, value: (int)1}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+      src_state known reachable svalues:
+       0x43ffd00: constant_svalue('int', 1)
+       0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+       0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+      dest_state maybe reachable svalues:
+       0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+       0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+     exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    entering: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+     _5 = b_10 > a_9;
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::store::set_value(ana::store_manager*, const ana::region*, const ana::svalue*, ana::uncertainty_t*)
+     exiting: void ana::store::set_value(ana::store_manager*, const ana::region*, const ana::svalue*, ana::uncertainty_t*)
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+    exiting: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+    entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_5, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+     src_state known reachable svalues:
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+     dest_state maybe reachable svalues:
+      0x4401cf0: binop_svalue (gt_expr, binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1)), binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2)))
+      0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+      0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+    exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     num_ssas_purged: 2
+     num_decl_purged: 0
+     entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+      src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {a_9, value: (INIT_VAL(size_8(D))+(size_t)2)}, region: {b_10, value: (INIT_VAL(size_8(D))+(size_t)1)}, region: {_5, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {_5, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+      src_state known reachable svalues:
+       0x4401cf0: binop_svalue (gt_expr, binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1)), binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2)))
+       0x436d960: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1))
+       0x4401c00: binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2))
+      dest_state maybe reachable svalues:
+       0x4401cf0: binop_svalue (gt_expr, binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1)), binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2)))
+     exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    entering: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+     _6 = (int) _5;
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::store::set_value(ana::store_manager*, const ana::region*, const ana::svalue*, ana::uncertainty_t*)
+     exiting: void ana::store::set_value(ana::store_manager*, const ana::region*, const ana::svalue*, ana::uncertainty_t*)
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+    exiting: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+    entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {_5, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {_5, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}, region: {_6, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+     src_state known reachable svalues:
+      0x4401cf0: binop_svalue (gt_expr, binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1)), binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2)))
+     dest_state maybe reachable svalues:
+      0x4401cf0: binop_svalue (gt_expr, binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1)), binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2)))
+    exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     num_ssas_purged: 1
+     num_decl_purged: 0
+     entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+      src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {_5, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}, region: {_6, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {_6, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+      src_state known reachable svalues:
+       0x4401cf0: binop_svalue (gt_expr, binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1)), binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2)))
+      dest_state maybe reachable svalues:
+       0x4401cf0: binop_svalue (gt_expr, binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1)), binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2)))
+     exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    entering: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+     __analyzer_eval (_6);
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     entering: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+     exiting: void ana::region_model::check_region_for_taint(const ana::region*, ana::access_direction, ana::region_model_context*) const
+    exiting: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+    entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {_6, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {_6, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+     src_state known reachable svalues:
+      0x4401cf0: binop_svalue (gt_expr, binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1)), binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2)))
+     dest_state maybe reachable svalues:
+      0x4401cf0: binop_svalue (gt_expr, binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1)), binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2)))
+    exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    entering: get_or_create_node
+     point: callstring: [] after SN: 2
+     state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {_6, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {_6, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {_6, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}created EN: 9
+     point: callstring: [] after SN: 2
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {_6, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    exiting: get_or_create_node
+    creating edge EN: 8 -> EN: 9
+   exiting: process_node
+   next to process: EN: 9
+   peek worklist: EN: 7
+   entering: process_node: EN: 9
+    point: callstring: [] after SN: 2, state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {_6, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    considering SN: 2 -> SN: 3 ( (flags FALLTHRU))
+    entering: on_edge
+     entering: on_edge
+     exiting: on_edge
+     entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+      src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {_6, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {_6, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+      src_state known reachable svalues:
+       0x4401cf0: binop_svalue (gt_expr, binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1)), binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2)))
+      dest_state maybe reachable svalues:
+       0x4401cf0: binop_svalue (gt_expr, binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1)), binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2)))
+     exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    exiting: on_edge
+    entering: get_or_create_node
+     point: callstring: [] before SN: 3 (from SN: 2 (bb: 3)) .MEM_7 = PHI <.MEM_11(D)(2), .MEM_14(3)>
+     state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {_6, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+      num_ssas_purged: 1
+      num_decl_purged: 0
+      entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+       src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {clusters within frame: 'foo'@1 {region: {_6, value: ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))}}m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+       dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+       uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+       src_state known reachable svalues:
+        0x4401cf0: binop_svalue (gt_expr, binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 1)), binop_svalue (plus_expr, initial_svalue('size_t', decl_region(frame_region('foo', index: 0, depth: 1), 'size_t', 'size_8(D)')), constant_svalue('size_t', 2)))
+       dest_state maybe reachable svalues:
+      exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}created EN: 10
+     point: callstring: [] before SN: 3 (from SN: 2 (bb: 3)) .MEM_7 = PHI <.MEM_11(D)(2), .MEM_14(3)>
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    exiting: get_or_create_node
+    creating edge EN: 9 -> EN: 10
+   exiting: process_node
+   next to process: EN: 7
+   entering: bool ana::exploded_graph::maybe_process_run_of_before_supernode_enodes(ana::exploded_node*)
+    got run of 2 enodes for SN: 3
+    using new merger state 0 for item 0 (EN: 7)
+    reusing merger state 0 for item 1 (EN: 10)
+    entering: get_or_create_node
+     point: callstring: [] before (SN: 3 stmt: 0):  return;
+     state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}created EN: 11
+     point: callstring: [] before (SN: 3 stmt: 0):  return;
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    exiting: get_or_create_node
+    using EN: 11 for merger state 0
+    creating edge EN: 7 -> EN: 11
+    creating edge EN: 10 -> EN: 11
+    merged 2 in-enodes into 1 out-enode(s) at SN: 3
+   exiting: bool ana::exploded_graph::maybe_process_run_of_before_supernode_enodes(ana::exploded_node*)
+   next to process: EN: 11
+   entering: process_node: EN: 11
+    point: callstring: [] before (SN: 3 stmt: 0):  return;, state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    entering: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+     return;
+    exiting: ana::exploded_node::on_stmt_flags ana::exploded_node::on_stmt(ana::exploded_graph&, const ana::supernode*, const gimple*, ana::program_state*, ana::uncertainty_t*, ana::path_context*)
+    entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+     src_state known reachable svalues:
+     dest_state maybe reachable svalues:
+    exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+    entering: get_or_create_node
+     point: callstring: [] after SN: 3
+     state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}created EN: 12
+     point: callstring: [] after SN: 3
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    exiting: get_or_create_node
+    creating edge EN: 11 -> EN: 12
+   exiting: process_node
+   next to process: EN: 12
+   entering: process_node: EN: 12
+    point: callstring: [] after SN: 3, state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    considering SN: 3 -> SN: 4 ()
+    entering: on_edge
+     entering: on_edge
+     exiting: on_edge
+     entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+      src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+      src_state known reachable svalues:
+      dest_state maybe reachable svalues:
+     exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    exiting: on_edge
+    entering: get_or_create_node
+     point: callstring: [] before SN: 4 (from SN: 3 (bb: 4)) 
+     state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}created EN: 13
+     point: callstring: [] before SN: 4 (from SN: 3 (bb: 4)) 
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    exiting: get_or_create_node
+    creating edge EN: 12 -> EN: 13
+   exiting: process_node
+   next to process: EN: 13
+   entering: bool ana::exploded_graph::maybe_process_run_of_before_supernode_enodes(ana::exploded_node*)
+   exiting: bool ana::exploded_graph::maybe_process_run_of_before_supernode_enodes(ana::exploded_node*)
+   entering: process_node: EN: 13
+    point: callstring: [] before SN: 4 (from SN: 3 (bb: 4)) , state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+     src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     dest_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+     src_state known reachable svalues:
+     dest_state maybe reachable svalues:
+    exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    entering: get_or_create_node
+     point: callstring: [] after SN: 4
+     state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     entering: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     exiting: ana::program_state ana::program_state::prune_for_point(ana::exploded_graph&, const ana::program_point&, ana::exploded_node*, ana::uncertainty_t*) const
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+     stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}created EN: 14
+     point: callstring: [] after SN: 4
+     pruned_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    exiting: get_or_create_node
+    creating edge EN: 13 -> EN: 14
+   exiting: process_node
+   next to process: EN: 14
+   entering: process_node: EN: 14
+    point: callstring: [] after SN: 4, state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+    entering: detect_leaks: EN: 14
+     entering: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+      src_state: {rmodel: {stack depth: 1 {frame (index 0): frame: 'foo'@1}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      dest_state: {rmodel: {stack depth: 0 {}, {m_called_unknown_fn: FALSE}constraint_manager: {equiv classes: {}constraints:{}}}}
+      uncertainty: {m_maybe_bound_svals: {}, m_mutable_at_unknown_call_svals: {}}
+      src_state known reachable svalues:
+      dest_state maybe reachable svalues:
+     exiting: static void ana::program_state::detect_leaks(const ana::program_state&, const ana::program_state&, const ana::svalue*, const ana::extrinsic_state&, ana::region_model_context*)
+    exiting: detect_leaks
+   exiting: process_node
+  exiting: void ana::exploded_graph::process_worklist()
+  entering: void ana::diagnostic_manager::emit_saved_diagnostics(const ana::exploded_graph&)
+   # saved diagnostics: 0
+   # disabled diagnostics: 0
+  exiting: void ana::diagnostic_manager::emit_saved_diagnostics(const ana::exploded_graph&)
+  entering: void ana::exploded_graph::log_stats() const
+   entering: void ana::region_model_manager::log_stats(ana::logger*, bool) const
+    call string consolidation
+    []
+    svalue consolidation
+      # constant_svalue: 11
+        (bitsizetype)8
+        (bitsizetype)32
+        (bitsizetype)64
+        (int)0
+        (int)1
+        (long unsigned int)1
+        (long unsigned int)4
+        (long unsigned int)8
+        (_Bool)1
+        (size_t)1
+        (size_t)2
+      # unknown_svalue: 0
+      # poisoned_svalue: 0
+      # setjmp_svalue: 0
+      # initial_svalue: 1
+        INIT_VAL(size_8(D))
+      # region_svalue: 1
+        &'__analyzer_eval'
+      # unaryop_svalue: 1
+        CAST(int, ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2)))
+      # binop_svalue: 3
+        ((INIT_VAL(size_8(D))+(size_t)1)>(INIT_VAL(size_8(D))+(size_t)2))
+        (INIT_VAL(size_8(D))+(size_t)1)
+        (INIT_VAL(size_8(D))+(size_t)2)
+      # sub_svalue: 0
+      # repeated_svalue: 0
+      # bits_within_svalue: 0
+      # unmergeable_svalue: 0
+      # widening_svalue: 0
+      # compound_svalue: 0
+      # conjured_svalue: 0
+      # asm_output_svalue: 0
+      # const_fn_result_svalue: 0
+    max accepted svalue num_nodes: 16
+    max accepted svalue max_depth: 8
+    region consolidation
+      next region id: 18
+      # function_region: 1
+        '__analyzer_eval'
+      # label_region: 0
+      # decl_region for globals: 0
+      # field_region: 0
+      # element_region: 0
+      # offset_region: 0
+      # sized_region: 0
+      # cast_region: 0
+      # frame_region: 1
+        frame: 'foo'@1 [with 9 region(s) for locals]
+      # symbolic_region: 0
+      # string_region: 0
+      # bit_range_region: 0
+      # var_arg_region: 0
+      # managed dynamic regions: 0
+    entering: void ana::store_manager::log_stats(ana::logger*, bool) const
+       # concrete_binding: 3
+         start: 0, size: 1, next: 1
+         bytes 0-3
+         bytes 0-7
+       # symbolic_binding: 1
+         region: frame: 'foo'@1
+    exiting: void ana::store_manager::log_stats(ana::logger*, bool) const
+    entering: void ana::bounded_ranges_manager::log_stats(ana::logger*, bool) const
+       # ranges: 0
+    exiting: void ana::bounded_ranges_manager::log_stats(ana::logger*, bool) const
+   exiting: void ana::region_model_manager::log_stats(ana::logger*, bool) const
+   m_sg.num_nodes (): 5
+   m_nodes.length (): 15
+   m_edges.length (): 15
+   remaining enodes in worklist: 0
+   global stats:
+   m_num_nodes[PK_ORIGIN]: 1
+   m_num_nodes[PK_BEFORE_SUPERNODE]: 6
+   m_num_nodes[PK_BEFORE_STMT]: 3
+   m_num_nodes[PK_AFTER_SUPERNODE]: 5
+   m_node_reuse_count: 0
+   m_node_reuse_after_merge_count: 0
+   entering: foo
+    m_num_nodes[PK_BEFORE_SUPERNODE]: 6
+    m_num_nodes[PK_BEFORE_STMT]: 3
+    m_num_nodes[PK_AFTER_SUPERNODE]: 5
+    m_node_reuse_count: 0
+    m_node_reuse_after_merge_count: 0
+   exiting: foo
+  enodes per function:
+foo: 14|##############|
+per-function enodes per supernode/BB:
+function: 'foo'
+sn 0 (bb 0): 2|##  |
+sn 1 (bb 2): 3|### |
+sn 2 (bb 3): 3|### |
+sn 3 (bb 4): 4|####|
+sn 4 (bb 1): 2|##  |
+exiting: void ana::exploded_graph::log_stats() const
+ exiting: void ana::impl_run_checkers(logger*)
+exiting: void ana::run_checkers()
+ana::logger::~logger()

@@ -118,8 +118,7 @@ def get_warning_lines(analyzer, checker, report_abspath):
         elif checker == "oob":
             warning_name = "-Wanalyzer-out-of-bounds"
         else:
-            print("please make sure the checker is npd or oob!")
-            exit(-1)
+            raise ValueError("please make sure the checker is npd or oob!")
         warning_lines = get_warning_line_from_file(report_abspath, warning_name)
         
     elif analyzer == "clang":
@@ -128,12 +127,10 @@ def get_warning_lines(analyzer, checker, report_abspath):
         elif checker == "oob":
             warning_name = "alpha.security.ArrayBound"
         else:
-            print("please make sure the checker is npd or oob!")
-            exit(-1)
+            raise ValueError("please make sure the checker is npd or oob!")
         warning_lines = get_warning_line_from_file(report_abspath, warning_name)
     else:
-        print("please make sure the analyzer is gcc or clang!")
-        exit(-1)
+        raise ValueError("Invalid analyzer specified: {}".format(analyzer))
     return warning_lines
 
 def instrument_cfile(cfile_abspath, warning_lines, instrumented_cfile):
@@ -215,8 +212,8 @@ def get_compiler(analyzer):
     elif analyzer == "clang":
         return CLANG
     else:
-        print("please make sure the analyzer is gcc or clang!")
-        exit(-1)
+        raise ValueError("Invalid analyzer specified: {}".format(analyzer))
+
 
 
 def grep_flag(run_out_file):

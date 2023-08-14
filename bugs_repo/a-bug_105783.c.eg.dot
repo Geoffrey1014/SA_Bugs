@@ -1,0 +1,2702 @@
+digraph "base" {
+overlap=false;
+compound=true;
+exploded_node_0 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 0\l\
+callstring:\ []\l\
+origin\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 0\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+  subgraph "cluster_function___analyzer_eval" {
+    label="call string: [(SN: 11 -> SN: 3 in main), (SN: 18 -> SN: 8 in ss_out)] function: __analyzer_eval ";
+    subgraph "cluster_supernode_17" {
+      style="dashed";
+      label="SN: 17 (bb: 2; scc: 17)";
+exploded_node_31 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 31\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main),\ (SN:\ 18\ -\>\ SN:\ 8\ in\ ss_out)]\l\
+after\ SN:\ 17\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 3\l\
+\ \ frame\ (index\ 2):\ frame:\ '__analyzer_eval'@3\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+clusters\ within\ frame:\ 'ss_out'@2\l\
+\ \ cluster\ for:\ t_13(D):\ &ss\l\
+\ \ cluster\ for:\ cc_17(D):\ (int)97\l\
+\ \ cluster\ for:\ _5:\ (int)0\l\
+clusters\ within\ frame:\ '__analyzer_eval'@3\l\
+\ \ cluster\ for:\ a:\ (int)0\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{&ss\}\l\
+\ \ \ \ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec0:\ \{&ss\}\ !=\ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function___analyzer_eval" {
+    label="call string: [(SN: 11 -> SN: 3 in main), (SN: 18 -> SN: 8 in ss_out)] function: __analyzer_eval ";
+    subgraph "cluster_supernode_17" {
+      style="dashed";
+      label="SN: 17 (bb: 2; scc: 17)";
+exploded_node_30 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 30\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main),\ (SN:\ 18\ -\>\ SN:\ 8\ in\ ss_out)]\l\
+before\ (SN:\ 17\ stmt:\ 0):\ \l\
+return;\l\
+1\ \|\ void\ __analyzer_eval(int\ a)\ \{\}\l\
+\ \ \|\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ^\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 3\l\
+\ \ frame\ (index\ 2):\ frame:\ '__analyzer_eval'@3\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+clusters\ within\ frame:\ 'ss_out'@2\l\
+\ \ cluster\ for:\ t_13(D):\ &ss\l\
+\ \ cluster\ for:\ cc_17(D):\ (int)97\l\
+\ \ cluster\ for:\ _5:\ (int)0\l\
+clusters\ within\ frame:\ '__analyzer_eval'@3\l\
+\ \ cluster\ for:\ a:\ (int)0\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{&ss\}\l\
+\ \ \ \ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec0:\ \{&ss\}\ !=\ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+stmts:\ 1\l\
+\ \ 0:\ return;\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function___analyzer_eval" {
+    label="call string: [(SN: 11 -> SN: 3 in main), (SN: 18 -> SN: 8 in ss_out)] function: __analyzer_eval ";
+    subgraph "cluster_supernode_18" {
+      style="dashed";
+      label="SN: 18 (bb: 1; scc: 18)";
+exploded_node_33 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 33\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main),\ (SN:\ 18\ -\>\ SN:\ 8\ in\ ss_out)]\l\
+after\ SN:\ 18\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 3\l\
+\ \ frame\ (index\ 2):\ frame:\ '__analyzer_eval'@3\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+clusters\ within\ frame:\ 'ss_out'@2\l\
+\ \ cluster\ for:\ t_13(D):\ &ss\l\
+\ \ cluster\ for:\ cc_17(D):\ (int)97\l\
+\ \ cluster\ for:\ _5:\ (int)0\l\
+clusters\ within\ frame:\ '__analyzer_eval'@3\l\
+\ \ cluster\ for:\ a:\ (int)0\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{&ss\}\l\
+\ \ \ \ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec0:\ \{&ss\}\ !=\ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function___analyzer_eval" {
+    label="call string: [(SN: 11 -> SN: 3 in main), (SN: 18 -> SN: 8 in ss_out)] function: __analyzer_eval ";
+    subgraph "cluster_supernode_17" {
+      style="dashed";
+      label="SN: 17 (bb: 2; scc: 17)";
+exploded_node_29 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 29\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main),\ (SN:\ 18\ -\>\ SN:\ 8\ in\ ss_out)]\l\
+before\ SN:\ 17\ (from\ SN:\ 16\ (bb:\ 0))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 3\l\
+\ \ frame\ (index\ 2):\ frame:\ '__analyzer_eval'@3\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+clusters\ within\ frame:\ 'ss_out'@2\l\
+\ \ cluster\ for:\ t_13(D):\ &ss\l\
+\ \ cluster\ for:\ cc_17(D):\ (int)97\l\
+\ \ cluster\ for:\ _5:\ (int)0\l\
+clusters\ within\ frame:\ '__analyzer_eval'@3\l\
+\ \ cluster\ for:\ a:\ (int)0\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{&ss\}\l\
+\ \ \ \ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec0:\ \{&ss\}\ !=\ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function___analyzer_eval" {
+    label="call string: [(SN: 11 -> SN: 3 in main), (SN: 18 -> SN: 8 in ss_out)] function: __analyzer_eval ";
+    subgraph "cluster_supernode_16" {
+      style="dashed";
+      label="SN: 16 (bb: 0; scc: 16)";
+exploded_node_28 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 28\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main),\ (SN:\ 18\ -\>\ SN:\ 8\ in\ ss_out)]\l\
+after\ SN:\ 16\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 3\l\
+\ \ frame\ (index\ 2):\ frame:\ '__analyzer_eval'@3\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+clusters\ within\ frame:\ 'ss_out'@2\l\
+\ \ cluster\ for:\ t_13(D):\ &ss\l\
+\ \ cluster\ for:\ cc_17(D):\ (int)97\l\
+\ \ cluster\ for:\ _5:\ (int)0\l\
+clusters\ within\ frame:\ '__analyzer_eval'@3\l\
+\ \ cluster\ for:\ a:\ (int)0\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{&ss\}\l\
+\ \ \ \ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec0:\ \{&ss\}\ !=\ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function___analyzer_eval" {
+    label="call string: [(SN: 11 -> SN: 3 in main), (SN: 18 -> SN: 8 in ss_out)] function: __analyzer_eval ";
+    subgraph "cluster_supernode_18" {
+      style="dashed";
+      label="SN: 18 (bb: 1; scc: 18)";
+exploded_node_32 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 32\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main),\ (SN:\ 18\ -\>\ SN:\ 8\ in\ ss_out)]\l\
+before\ SN:\ 18\ (from\ SN:\ 17\ (bb:\ 2))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 3\l\
+\ \ frame\ (index\ 2):\ frame:\ '__analyzer_eval'@3\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+clusters\ within\ frame:\ 'ss_out'@2\l\
+\ \ cluster\ for:\ t_13(D):\ &ss\l\
+\ \ cluster\ for:\ cc_17(D):\ (int)97\l\
+\ \ cluster\ for:\ _5:\ (int)0\l\
+clusters\ within\ frame:\ '__analyzer_eval'@3\l\
+\ \ cluster\ for:\ a:\ (int)0\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{&ss\}\l\
+\ \ \ \ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec0:\ \{&ss\}\ !=\ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function___analyzer_eval" {
+    label="call string: [(SN: 11 -> SN: 3 in main), (SN: 18 -> SN: 8 in ss_out)] function: __analyzer_eval ";
+    subgraph "cluster_supernode_16" {
+      style="dashed";
+      label="SN: 16 (bb: 0; scc: 16)";
+exploded_node_27 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 27\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main),\ (SN:\ 18\ -\>\ SN:\ 8\ in\ ss_out)]\l\
+before\ SN:\ 16\ (NULL\ from-edge)\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 3\l\
+\ \ frame\ (index\ 2):\ frame:\ '__analyzer_eval'@3\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+clusters\ within\ frame:\ 'ss_out'@2\l\
+\ \ cluster\ for:\ t_13(D):\ &ss\l\
+\ \ cluster\ for:\ cc_17(D):\ (int)97\l\
+\ \ cluster\ for:\ _5:\ (int)0\l\
+clusters\ within\ frame:\ '__analyzer_eval'@3\l\
+\ \ cluster\ for:\ a:\ (int)0\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{&ss\}\l\
+\ \ \ \ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec0:\ \{&ss\}\ !=\ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function___analyzer_eval" {
+    label="call string: [(SN: 18 -> SN: 8 in ss_out)] function: __analyzer_eval ";
+    subgraph "cluster_supernode_18" {
+      style="dashed";
+      label="SN: 18 (bb: 1; scc: 18)";
+exploded_node_61 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 61\l\
+callstring:\ [(SN:\ 18\ -\>\ SN:\ 8\ in\ ss_out)]\l\
+before\ SN:\ 18\ (from\ SN:\ 17\ (bb:\ 2))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ '__analyzer_eval'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+clusters\ within\ frame:\ 'ss_out'@1\l\
+\ \ cluster\ for:\ _5:\ (bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\l\
+clusters\ within\ frame:\ '__analyzer_eval'@2\l\
+\ \ cluster\ for:\ a:\ (bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec1:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec1:\ \{INIT_VAL(t_13(D))\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function___analyzer_eval" {
+    label="call string: [(SN: 18 -> SN: 8 in ss_out)] function: __analyzer_eval ";
+    subgraph "cluster_supernode_16" {
+      style="dashed";
+      label="SN: 16 (bb: 0; scc: 16)";
+exploded_node_56 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 56\l\
+callstring:\ [(SN:\ 18\ -\>\ SN:\ 8\ in\ ss_out)]\l\
+before\ SN:\ 16\ (NULL\ from-edge)\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ '__analyzer_eval'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+clusters\ within\ frame:\ 'ss_out'@1\l\
+\ \ cluster\ for:\ _5:\ (bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\l\
+clusters\ within\ frame:\ '__analyzer_eval'@2\l\
+\ \ cluster\ for:\ a:\ (bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec1:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec1:\ \{INIT_VAL(t_13(D))\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function___analyzer_eval" {
+    label="call string: [(SN: 18 -> SN: 8 in ss_out)] function: __analyzer_eval ";
+    subgraph "cluster_supernode_18" {
+      style="dashed";
+      label="SN: 18 (bb: 1; scc: 18)";
+exploded_node_62 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 62\l\
+callstring:\ [(SN:\ 18\ -\>\ SN:\ 8\ in\ ss_out)]\l\
+after\ SN:\ 18\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ '__analyzer_eval'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+clusters\ within\ frame:\ 'ss_out'@1\l\
+\ \ cluster\ for:\ _5:\ (bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\l\
+clusters\ within\ frame:\ '__analyzer_eval'@2\l\
+\ \ cluster\ for:\ a:\ (bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec1:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec1:\ \{INIT_VAL(t_13(D))\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function___analyzer_eval" {
+    label="call string: [(SN: 18 -> SN: 8 in ss_out)] function: __analyzer_eval ";
+    subgraph "cluster_supernode_16" {
+      style="dashed";
+      label="SN: 16 (bb: 0; scc: 16)";
+exploded_node_57 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 57\l\
+callstring:\ [(SN:\ 18\ -\>\ SN:\ 8\ in\ ss_out)]\l\
+after\ SN:\ 16\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ '__analyzer_eval'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+clusters\ within\ frame:\ 'ss_out'@1\l\
+\ \ cluster\ for:\ _5:\ (bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\l\
+clusters\ within\ frame:\ '__analyzer_eval'@2\l\
+\ \ cluster\ for:\ a:\ (bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec1:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec1:\ \{INIT_VAL(t_13(D))\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function___analyzer_eval" {
+    label="call string: [(SN: 18 -> SN: 8 in ss_out)] function: __analyzer_eval ";
+    subgraph "cluster_supernode_17" {
+      style="dashed";
+      label="SN: 17 (bb: 2; scc: 17)";
+exploded_node_58 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 58\l\
+callstring:\ [(SN:\ 18\ -\>\ SN:\ 8\ in\ ss_out)]\l\
+before\ SN:\ 17\ (from\ SN:\ 16\ (bb:\ 0))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ '__analyzer_eval'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+clusters\ within\ frame:\ 'ss_out'@1\l\
+\ \ cluster\ for:\ _5:\ (bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\l\
+clusters\ within\ frame:\ '__analyzer_eval'@2\l\
+\ \ cluster\ for:\ a:\ (bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec1:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec1:\ \{INIT_VAL(t_13(D))\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function___analyzer_eval" {
+    label="call string: [(SN: 18 -> SN: 8 in ss_out)] function: __analyzer_eval ";
+    subgraph "cluster_supernode_17" {
+      style="dashed";
+      label="SN: 17 (bb: 2; scc: 17)";
+exploded_node_59 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 59\l\
+callstring:\ [(SN:\ 18\ -\>\ SN:\ 8\ in\ ss_out)]\l\
+before\ (SN:\ 17\ stmt:\ 0):\ \l\
+return;\l\
+1\ \|\ void\ __analyzer_eval(int\ a)\ \{\}\l\
+\ \ \|\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ^\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ '__analyzer_eval'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+clusters\ within\ frame:\ 'ss_out'@1\l\
+\ \ cluster\ for:\ _5:\ (bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\l\
+clusters\ within\ frame:\ '__analyzer_eval'@2\l\
+\ \ cluster\ for:\ a:\ (bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec1:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec1:\ \{INIT_VAL(t_13(D))\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+stmts:\ 1\l\
+\ \ 0:\ return;\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function___analyzer_eval" {
+    label="call string: [(SN: 18 -> SN: 8 in ss_out)] function: __analyzer_eval ";
+    subgraph "cluster_supernode_17" {
+      style="dashed";
+      label="SN: 17 (bb: 2; scc: 17)";
+exploded_node_60 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 60\l\
+callstring:\ [(SN:\ 18\ -\>\ SN:\ 8\ in\ ss_out)]\l\
+after\ SN:\ 17\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ '__analyzer_eval'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+clusters\ within\ frame:\ 'ss_out'@1\l\
+\ \ cluster\ for:\ _5:\ (bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\l\
+clusters\ within\ frame:\ '__analyzer_eval'@2\l\
+\ \ cluster\ for:\ a:\ (bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec1:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec1:\ \{INIT_VAL(t_13(D))\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_3" {
+      style="dashed";
+      label="SN: 3 (bb: 2; scc: 3)";
+exploded_node_43 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 43\l\
+callstring:\ []\l\
+before\ (SN:\ 3\ stmt:\ 0):\ \l\
+ss\ =\{v\}\ \{CLOBBER(eol)\};\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+stmts:\ 1\l\
+\ \ 0:\ ss\ =\{v\}\ \{CLOBBER(eol)\};\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_3" {
+      style="dashed";
+      label="SN: 3 (bb: 2; scc: 3)";
+exploded_node_44 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 44\l\
+callstring:\ []\l\
+before\ (SN:\ 3\ stmt:\ 1):\ \l\
+_8\ =\ 0;\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+stmts:\ 1\l\
+\ \ 1:\ _8\ =\ 0;\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_3" {
+      style="dashed";
+      label="SN: 3 (bb: 2; scc: 3)";
+exploded_node_45 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 45\l\
+callstring:\ []\l\
+after\ SN:\ 3\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ _8:\ (int)0\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_4" {
+      style="dashed";
+      label="SN: 4 (bb: 3; scc: 4)";
+exploded_node_46 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 46\l\
+callstring:\ []\l\
+before\ SN:\ 4\ (from\ SN:\ 3\ (bb:\ 2))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ _8:\ (int)0\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_0" {
+      style="dashed";
+      label="SN: 0 (bb: 0; scc: 0)";
+exploded_node_4 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 4\l\
+callstring:\ []\l\
+after\ SN:\ 0\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_4" {
+      style="dashed";
+      label="SN: 4 (bb: 3; scc: 4)";
+exploded_node_47 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 47\l\
+callstring:\ []\l\
+before\ (SN:\ 4\ stmt:\ 0):\ \l\
+\<L0\>:\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ _8:\ (int)0\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+stmts:\ 1\l\
+\ \ 0:\ \<L0\>:\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_1" {
+      style="dashed";
+      label="SN: 1 (bb: 2; scc: 1)";
+exploded_node_6 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 6\l\
+callstring:\ []\l\
+before\ (SN:\ 1\ stmt:\ 0):\ \l\
+ss\ =\ ss_init\ ();\l\
+27\ \|\ \ \ \ \ struct\ ss_s\ ss\ =\ ss_init();\l\
+\ \ \ \|\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ^~~~~~~~~\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+stmts:\ 1\l\
+\ \ 0:\ ss\ =\ ss_init\ ();\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_4" {
+      style="dashed";
+      label="SN: 4 (bb: 3; scc: 4)";
+exploded_node_48 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 48\l\
+callstring:\ []\l\
+before\ (SN:\ 4\ stmt:\ 1):\ \l\
+return\ _8;\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ _8:\ (int)0\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+stmts:\ 1\l\
+\ \ 1:\ return\ _8;\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_2" {
+      style="dashed";
+      label="SN: 2 (bb: 2; scc: 2)";
+exploded_node_20 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 20\l\
+callstring:\ []\l\
+before\ (SN:\ 2\ stmt:\ 0):\ \l\
+_1\ =\ ss.counting;\l\
+28\ \|\ \ \ \ \ __analyzer_describe\ (0,\ ss.counting);\l\
+\ \ \ \|\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ~~^~~~~~~~~\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+stmts:\ 4\l\
+\ \ 0:\ _1\ =\ ss.counting;\l\
+\ \ 1:\ _2\ =\ (int)\ _1;\l\
+\ \ 2:\ __analyzer_describe\ (0,\ _2);\l\
+\ \ 3:\ ss_out\ (&ss,\ 97);\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_1" {
+      style="dashed";
+      label="SN: 1 (bb: 2; scc: 1)";
+exploded_node_5 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 5\l\
+callstring:\ []\l\
+before\ SN:\ 1\ (from\ SN:\ 0\ (bb:\ 0))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_4" {
+      style="dashed";
+      label="SN: 4 (bb: 3; scc: 4)";
+exploded_node_49 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 49\l\
+callstring:\ []\l\
+after\ SN:\ 4\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ _8:\ (int)0\l\
+\ \ cluster\ for:\ \<anonymous\>:\ (int)0\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_5" {
+      style="dashed";
+      label="SN: 5 (bb: 1; scc: 5)";
+exploded_node_50 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 50\l\
+callstring:\ []\l\
+before\ SN:\ 5\ (from\ SN:\ 4\ (bb:\ 3))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ \<anonymous\>:\ (int)0\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_1" {
+      style="dashed";
+      label="SN: 1 (bb: 2; scc: 1)";
+exploded_node_7 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 7\l\
+callstring:\ []\l\
+after\ SN:\ 1\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss:\ CONJURED(ss\ =\ ss_init\ ();,\ ss)\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_2" {
+      style="dashed";
+      label="SN: 2 (bb: 2; scc: 2)";
+exploded_node_21 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 21\l\
+callstring:\ []\l\
+after\ SN:\ 2\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_0" {
+      style="dashed";
+      label="SN: 0 (bb: 0; scc: 0)";
+exploded_node_1 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 1\l\
+callstring:\ []\l\
+before\ SN:\ 0\ (NULL\ from-edge)\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_5" {
+      style="dashed";
+      label="SN: 5 (bb: 1; scc: 5)";
+exploded_node_51 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 51\l\
+callstring:\ []\l\
+after\ SN:\ 5\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ \<anonymous\>:\ (int)0\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_2" {
+      style="dashed";
+      label="SN: 2 (bb: 2; scc: 2)";
+exploded_node_19 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 19\l\
+callstring:\ []\l\
+before\ SN:\ 2\ (NULL\ from-edge)\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_main" {
+    label="call string: [] function: main ";
+    subgraph "cluster_supernode_3" {
+      style="dashed";
+      label="SN: 3 (bb: 2; scc: 3)";
+exploded_node_42 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 42\l\
+callstring:\ []\l\
+before\ SN:\ 3\ (NULL\ from-edge)\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [(SN: 15 -> SN: 2 in main)] function: ss_init ";
+    subgraph "cluster_supernode_15" {
+      style="dashed";
+      label="SN: 15 (bb: 1; scc: 15)";
+exploded_node_18 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 18\l\
+callstring:\ [(SN:\ 15\ -\>\ SN:\ 2\ in\ main)]\l\
+after\ SN:\ 15\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_init'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss:\ CONJURED(ss\ =\ ss_init\ ();,\ ss)\l\
+clusters\ within\ frame:\ 'ss_init'@2\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [(SN: 15 -> SN: 2 in main)] function: ss_init ";
+    subgraph "cluster_supernode_13" {
+      style="dashed";
+      label="SN: 13 (bb: 2; scc: 13)";
+exploded_node_11 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 11\l\
+callstring:\ [(SN:\ 15\ -\>\ SN:\ 2\ in\ main)]\l\
+before\ (SN:\ 13\ stmt:\ 0):\ \l\
+rr\ =\ \{\};\l\
+12\ \|\ \ \ \ struct\ ss_s\ rr\ =\ \{\ .counting\ =\ 1\ \};\l\
+\ \ \ \|\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ^~\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_init'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss:\ CONJURED(ss\ =\ ss_init\ ();,\ ss)\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+stmts:\ 4\l\
+\ \ 0:\ rr\ =\ \{\};\l\
+\ \ 1:\ rr.counting\ =\ 1;\l\
+\ \ 2:\ D.2757\ =\ rr;\l\
+\ \ 3:\ rr\ =\{v\}\ \{CLOBBER(eol)\};\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [(SN: 15 -> SN: 2 in main)] function: ss_init ";
+    subgraph "cluster_supernode_13" {
+      style="dashed";
+      label="SN: 13 (bb: 2; scc: 13)";
+exploded_node_10 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 10\l\
+callstring:\ [(SN:\ 15\ -\>\ SN:\ 2\ in\ main)]\l\
+before\ SN:\ 13\ (from\ SN:\ 12\ (bb:\ 0))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_init'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss:\ CONJURED(ss\ =\ ss_init\ ();,\ ss)\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [(SN: 15 -> SN: 2 in main)] function: ss_init ";
+    subgraph "cluster_supernode_13" {
+      style="dashed";
+      label="SN: 13 (bb: 2; scc: 13)";
+exploded_node_12 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 12\l\
+callstring:\ [(SN:\ 15\ -\>\ SN:\ 2\ in\ main)]\l\
+after\ SN:\ 13\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_init'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss:\ CONJURED(ss\ =\ ss_init\ ();,\ ss)\l\
+clusters\ within\ frame:\ 'ss_init'@2\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [(SN: 15 -> SN: 2 in main)] function: ss_init ";
+    subgraph "cluster_supernode_14" {
+      style="dashed";
+      label="SN: 14 (bb: 3; scc: 14)";
+exploded_node_14 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 14\l\
+callstring:\ [(SN:\ 15\ -\>\ SN:\ 2\ in\ main)]\l\
+before\ (SN:\ 14\ stmt:\ 0):\ \l\
+\<L1\>:\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_init'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss:\ CONJURED(ss\ =\ ss_init\ ();,\ ss)\l\
+clusters\ within\ frame:\ 'ss_init'@2\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+stmts:\ 1\l\
+\ \ 0:\ \<L1\>:\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [(SN: 15 -> SN: 2 in main)] function: ss_init ";
+    subgraph "cluster_supernode_12" {
+      style="dashed";
+      label="SN: 12 (bb: 0; scc: 12)";
+exploded_node_8 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 8\l\
+callstring:\ [(SN:\ 15\ -\>\ SN:\ 2\ in\ main)]\l\
+before\ SN:\ 12\ (NULL\ from-edge)\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_init'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss:\ CONJURED(ss\ =\ ss_init\ ();,\ ss)\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [(SN: 15 -> SN: 2 in main)] function: ss_init ";
+    subgraph "cluster_supernode_14" {
+      style="dashed";
+      label="SN: 14 (bb: 3; scc: 14)";
+exploded_node_13 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 13\l\
+callstring:\ [(SN:\ 15\ -\>\ SN:\ 2\ in\ main)]\l\
+before\ SN:\ 14\ (from\ SN:\ 13\ (bb:\ 2))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_init'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss:\ CONJURED(ss\ =\ ss_init\ ();,\ ss)\l\
+clusters\ within\ frame:\ 'ss_init'@2\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [(SN: 15 -> SN: 2 in main)] function: ss_init ";
+    subgraph "cluster_supernode_14" {
+      style="dashed";
+      label="SN: 14 (bb: 3; scc: 14)";
+exploded_node_15 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 15\l\
+callstring:\ [(SN:\ 15\ -\>\ SN:\ 2\ in\ main)]\l\
+before\ (SN:\ 14\ stmt:\ 1):\ \l\
+return\ D.2757;\l\
+13\ \|\ \ \ \ return\ rr;\l\
+\ \ \ \|\ \ \ \ \ \ \ \ \ \ \ ^~\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_init'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss:\ CONJURED(ss\ =\ ss_init\ ();,\ ss)\l\
+clusters\ within\ frame:\ 'ss_init'@2\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+stmts:\ 1\l\
+\ \ 1:\ return\ D.2757;\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [(SN: 15 -> SN: 2 in main)] function: ss_init ";
+    subgraph "cluster_supernode_15" {
+      style="dashed";
+      label="SN: 15 (bb: 1; scc: 15)";
+exploded_node_17 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 17\l\
+callstring:\ [(SN:\ 15\ -\>\ SN:\ 2\ in\ main)]\l\
+before\ SN:\ 15\ (from\ SN:\ 14\ (bb:\ 3))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_init'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss:\ CONJURED(ss\ =\ ss_init\ ();,\ ss)\l\
+clusters\ within\ frame:\ 'ss_init'@2\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [(SN: 15 -> SN: 2 in main)] function: ss_init ";
+    subgraph "cluster_supernode_12" {
+      style="dashed";
+      label="SN: 12 (bb: 0; scc: 12)";
+exploded_node_9 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 9\l\
+callstring:\ [(SN:\ 15\ -\>\ SN:\ 2\ in\ main)]\l\
+after\ SN:\ 12\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_init'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss:\ CONJURED(ss\ =\ ss_init\ ();,\ ss)\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [(SN: 15 -> SN: 2 in main)] function: ss_init ";
+    subgraph "cluster_supernode_14" {
+      style="dashed";
+      label="SN: 14 (bb: 3; scc: 14)";
+exploded_node_16 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 16\l\
+callstring:\ [(SN:\ 15\ -\>\ SN:\ 2\ in\ main)]\l\
+after\ SN:\ 14\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_init'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss:\ CONJURED(ss\ =\ ss_init\ ();,\ ss)\l\
+clusters\ within\ frame:\ 'ss_init'@2\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [] function: ss_init ";
+    subgraph "cluster_supernode_13" {
+      style="dashed";
+      label="SN: 13 (bb: 2; scc: 13)";
+exploded_node_77 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 77\l\
+callstring:\ []\l\
+before\ (SN:\ 13\ stmt:\ 0):\ \l\
+rr\ =\ \{\};\l\
+12\ \|\ \ \ \ struct\ ss_s\ rr\ =\ \{\ .counting\ =\ 1\ \};\l\
+\ \ \ \|\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ^~\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_init'@1\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+stmts:\ 4\l\
+\ \ 0:\ rr\ =\ \{\};\l\
+\ \ 1:\ rr.counting\ =\ 1;\l\
+\ \ 2:\ D.2757\ =\ rr;\l\
+\ \ 3:\ rr\ =\{v\}\ \{CLOBBER(eol)\};\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [] function: ss_init ";
+    subgraph "cluster_supernode_14" {
+      style="dashed";
+      label="SN: 14 (bb: 3; scc: 14)";
+exploded_node_82 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 82\l\
+callstring:\ []\l\
+after\ SN:\ 14\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_init'@1\l\
+clusters\ within\ frame:\ 'ss_init'@1\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [] function: ss_init ";
+    subgraph "cluster_supernode_15" {
+      style="dashed";
+      label="SN: 15 (bb: 1; scc: 15)";
+exploded_node_84 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 84\l\
+callstring:\ []\l\
+after\ SN:\ 15\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_init'@1\l\
+clusters\ within\ frame:\ 'ss_init'@1\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [] function: ss_init ";
+    subgraph "cluster_supernode_14" {
+      style="dashed";
+      label="SN: 14 (bb: 3; scc: 14)";
+exploded_node_80 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 80\l\
+callstring:\ []\l\
+before\ (SN:\ 14\ stmt:\ 0):\ \l\
+\<L1\>:\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_init'@1\l\
+clusters\ within\ frame:\ 'ss_init'@1\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+stmts:\ 1\l\
+\ \ 0:\ \<L1\>:\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [] function: ss_init ";
+    subgraph "cluster_supernode_12" {
+      style="dashed";
+      label="SN: 12 (bb: 0; scc: 12)";
+exploded_node_3 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 3\l\
+callstring:\ []\l\
+before\ SN:\ 12\ (NULL\ from-edge)\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_init'@1\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [] function: ss_init ";
+    subgraph "cluster_supernode_13" {
+      style="dashed";
+      label="SN: 13 (bb: 2; scc: 13)";
+exploded_node_76 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 76\l\
+callstring:\ []\l\
+before\ SN:\ 13\ (from\ SN:\ 12\ (bb:\ 0))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_init'@1\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [] function: ss_init ";
+    subgraph "cluster_supernode_14" {
+      style="dashed";
+      label="SN: 14 (bb: 3; scc: 14)";
+exploded_node_79 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 79\l\
+callstring:\ []\l\
+before\ SN:\ 14\ (from\ SN:\ 13\ (bb:\ 2))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_init'@1\l\
+clusters\ within\ frame:\ 'ss_init'@1\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [] function: ss_init ";
+    subgraph "cluster_supernode_12" {
+      style="dashed";
+      label="SN: 12 (bb: 0; scc: 12)";
+exploded_node_75 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 75\l\
+callstring:\ []\l\
+after\ SN:\ 12\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_init'@1\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [] function: ss_init ";
+    subgraph "cluster_supernode_14" {
+      style="dashed";
+      label="SN: 14 (bb: 3; scc: 14)";
+exploded_node_81 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 81\l\
+callstring:\ []\l\
+before\ (SN:\ 14\ stmt:\ 1):\ \l\
+return\ D.2757;\l\
+13\ \|\ \ \ \ return\ rr;\l\
+\ \ \ \|\ \ \ \ \ \ \ \ \ \ \ ^~\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_init'@1\l\
+clusters\ within\ frame:\ 'ss_init'@1\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+stmts:\ 1\l\
+\ \ 1:\ return\ D.2757;\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [] function: ss_init ";
+    subgraph "cluster_supernode_13" {
+      style="dashed";
+      label="SN: 13 (bb: 2; scc: 13)";
+exploded_node_78 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 78\l\
+callstring:\ []\l\
+after\ SN:\ 13\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_init'@1\l\
+clusters\ within\ frame:\ 'ss_init'@1\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_init" {
+    label="call string: [] function: ss_init ";
+    subgraph "cluster_supernode_15" {
+      style="dashed";
+      label="SN: 15 (bb: 1; scc: 15)";
+exploded_node_83 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 83\l\
+callstring:\ []\l\
+before\ SN:\ 15\ (from\ SN:\ 14\ (bb:\ 3))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_init'@1\l\
+clusters\ within\ frame:\ 'ss_init'@1\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ cluster\ for:\ \<anonymous\>\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [(SN: 11 -> SN: 3 in main)] function: ss_out ";
+    subgraph "cluster_supernode_7" {
+      style="dashed";
+      label="SN: 7 (bb: 2; scc: 7)";
+exploded_node_25 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 25\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main)]\l\
+before\ (SN:\ 7\ stmt:\ 0):\ \l\
+_1\ =\ t_13(D)-\>counting;\l\
+17\ \|\ \ \ \ \ __analyzer_describe\ (0,\ t-\>counting);\l\
+\ \ \ \|\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ~^~~~~~~~~~\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+clusters\ within\ frame:\ 'ss_out'@2\l\
+\ \ cluster\ for:\ t_13(D):\ &ss\l\
+\ \ cluster\ for:\ cc_17(D):\ (int)97\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+stmts:\ 7\l\
+\ \ 0:\ _1\ =\ t_13(D)-\>counting;\l\
+\ \ 1:\ _2\ =\ (int)\ _1;\l\
+\ \ 2:\ __analyzer_describe\ (0,\ _2);\l\
+\ \ 3:\ _3\ =\ t_13(D)-\>counting;\l\
+\ \ 4:\ _4\ =\ ~_3;\l\
+\ \ 5:\ _5\ =\ (int)\ _4;\l\
+\ \ 6:\ __analyzer_eval\ (_5);\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [(SN: 11 -> SN: 3 in main)] function: ss_out ";
+    subgraph "cluster_supernode_10" {
+      style="dashed";
+      label="SN: 10 (bb: 4; scc: 10)";
+exploded_node_37 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 37\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main)]\l\
+before\ SN:\ 10\ (from\ SN:\ 8\ (bb:\ 2))\l\
+.MEM_11\ =\ PHI\ \<.MEM_15(2),\ .MEM_18(3)\>\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [(SN: 11 -> SN: 3 in main)] function: ss_out ";
+    subgraph "cluster_supernode_6" {
+      style="dashed";
+      label="SN: 6 (bb: 0; scc: 6)";
+exploded_node_22 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 22\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main)]\l\
+before\ SN:\ 6\ (NULL\ from-edge)\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+clusters\ within\ frame:\ 'ss_out'@2\l\
+\ \ cluster\ for:\ t_13(D):\ &ss\l\
+\ \ cluster\ for:\ cc_17(D):\ (int)97\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [(SN: 11 -> SN: 3 in main)] function: ss_out ";
+    subgraph "cluster_supernode_11" {
+      style="dashed";
+      label="SN: 11 (bb: 1; scc: 11)";
+exploded_node_41 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 41\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main)]\l\
+after\ SN:\ 11\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [(SN: 11 -> SN: 3 in main)] function: ss_out ";
+    subgraph "cluster_supernode_10" {
+      style="dashed";
+      label="SN: 10 (bb: 4; scc: 10)";
+exploded_node_39 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 39\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main)]\l\
+after\ SN:\ 10\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [(SN: 11 -> SN: 3 in main)] function: ss_out ";
+    subgraph "cluster_supernode_10" {
+      style="dashed";
+      label="SN: 10 (bb: 4; scc: 10)";
+exploded_node_38 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 38\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main)]\l\
+before\ (SN:\ 10\ stmt:\ 0):\ \l\
+return;\l\
+24\ \|\ \}\l\
+\ \ \ \|\ ^\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+stmts:\ 1\l\
+\ \ 0:\ return;\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [(SN: 11 -> SN: 3 in main)] function: ss_out ";
+    subgraph "cluster_supernode_6" {
+      style="dashed";
+      label="SN: 6 (bb: 0; scc: 6)";
+exploded_node_23 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 23\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main)]\l\
+after\ SN:\ 6\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+clusters\ within\ frame:\ 'ss_out'@2\l\
+\ \ cluster\ for:\ t_13(D):\ &ss\l\
+\ \ cluster\ for:\ cc_17(D):\ (int)97\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [(SN: 11 -> SN: 3 in main)] function: ss_out ";
+    subgraph "cluster_supernode_8" {
+      style="dashed";
+      label="SN: 8 (bb: 2; scc: 8)";
+exploded_node_35 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 35\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main)]\l\
+before\ (SN:\ 8\ stmt:\ 0):\ \l\
+_6\ =\ t_13(D)-\>counting;\l\
+19\ \|\ \ \ \ if\ (!t-\>counting)\ \{\l\
+\ \ \ \|\ \ \ \ \ \ \ \ \ ~^~~~~~~~~~\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+clusters\ within\ frame:\ 'ss_out'@2\l\
+\ \ cluster\ for:\ t_13(D):\ &ss\l\
+\ \ cluster\ for:\ cc_17(D):\ (int)97\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{&ss\}\l\
+\ \ \ \ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec0:\ \{&ss\}\ !=\ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+stmts:\ 3\l\
+\ \ 0:\ _6\ =\ t_13(D)-\>counting;\l\
+\ \ 1:\ _7\ =\ ~_6;\l\
+\ \ 2:\ if\ (_7\ !=\ 0)\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [(SN: 11 -> SN: 3 in main)] function: ss_out ";
+    subgraph "cluster_supernode_11" {
+      style="dashed";
+      label="SN: 11 (bb: 1; scc: 11)";
+exploded_node_40 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 40\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main)]\l\
+before\ SN:\ 11\ (from\ SN:\ 10\ (bb:\ 4))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [(SN: 11 -> SN: 3 in main)] function: ss_out ";
+    subgraph "cluster_supernode_7" {
+      style="dashed";
+      label="SN: 7 (bb: 2; scc: 7)";
+exploded_node_24 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 24\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main)]\l\
+before\ SN:\ 7\ (from\ SN:\ 6\ (bb:\ 0))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+clusters\ within\ frame:\ 'ss_out'@2\l\
+\ \ cluster\ for:\ t_13(D):\ &ss\l\
+\ \ cluster\ for:\ cc_17(D):\ (int)97\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [(SN: 11 -> SN: 3 in main)] function: ss_out ";
+    subgraph "cluster_supernode_8" {
+      style="dashed";
+      label="SN: 8 (bb: 2; scc: 8)";
+exploded_node_36 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 36\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main)]\l\
+after\ SN:\ 8\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+clusters\ within\ frame:\ 'ss_out'@2\l\
+\ \ cluster\ for:\ t_13(D):\ &ss\l\
+\ \ cluster\ for:\ cc_17(D):\ (int)97\l\
+\ \ cluster\ for:\ _7:\ (_Bool)0\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{&ss\}\l\
+\ \ \ \ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec0:\ \{&ss\}\ !=\ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [(SN: 11 -> SN: 3 in main)] function: ss_out ";
+    subgraph "cluster_supernode_8" {
+      style="dashed";
+      label="SN: 8 (bb: 2; scc: 8)";
+exploded_node_34 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 34\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main)]\l\
+before\ SN:\ 8\ (NULL\ from-edge)\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+clusters\ within\ frame:\ 'ss_out'@2\l\
+\ \ cluster\ for:\ t_13(D):\ &ss\l\
+\ \ cluster\ for:\ cc_17(D):\ (int)97\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{&ss\}\l\
+\ \ \ \ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec0:\ \{&ss\}\ !=\ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [(SN: 11 -> SN: 3 in main)] function: ss_out ";
+    subgraph "cluster_supernode_7" {
+      style="dashed";
+      label="SN: 7 (bb: 2; scc: 7)";
+exploded_node_26 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 26\l\
+callstring:\ [(SN:\ 11\ -\>\ SN:\ 3\ in\ main)]\l\
+after\ SN:\ 7\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 2\l\
+\ \ frame\ (index\ 1):\ frame:\ 'ss_out'@2\l\
+\ \ frame\ (index\ 0):\ frame:\ 'main'@1\l\
+clusters\ within\ frame:\ 'main'@1\l\
+\ \ cluster\ for:\ ss\l\
+\ \ \ \ key:\ \ \ \{bytes\ 0-7\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 64,\ size:\ 1,\ next:\ 65\}\l\
+\ \ \ \ value:\ '_Bool'\ \{(_Bool)1\}\l\
+\ \ \ \ key:\ \ \ \{start:\ 65,\ size:\ 63,\ next:\ 128\}\l\
+\ \ \ \ value:\ 'struct\ ss_s'\ \{CAST(struct\ ss_s,\ (char)0)\}\l\
+clusters\ within\ frame:\ 'ss_out'@2\l\
+\ \ cluster\ for:\ t_13(D):\ &ss\l\
+\ \ cluster\ for:\ cc_17(D):\ (int)97\l\
+\ \ cluster\ for:\ _5:\ (int)0\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{&ss\}\l\
+\ \ \ \ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec0:\ \{&ss\}\ !=\ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [] function: ss_out ";
+    subgraph "cluster_supernode_8" {
+      style="dashed";
+      label="SN: 8 (bb: 2; scc: 8)";
+exploded_node_63 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 63\l\
+callstring:\ []\l\
+before\ SN:\ 8\ (NULL\ from-edge)\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec1:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec1:\ \{INIT_VAL(t_13(D))\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [] function: ss_out ";
+    subgraph "cluster_supernode_6" {
+      style="dashed";
+      label="SN: 6 (bb: 0; scc: 6)";
+exploded_node_2 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 2\l\
+callstring:\ []\l\
+before\ SN:\ 6\ (NULL\ from-edge)\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [] function: ss_out ";
+    subgraph "cluster_supernode_10" {
+      style="dashed";
+      label="SN: 10 (bb: 4; scc: 10)";
+exploded_node_67 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 67\ (bulk\ merged)\l\
+callstring:\ []\l\
+before\ SN:\ 10\ (from\ SN:\ 8\ (bb:\ 2))\l\
+.MEM_11\ =\ PHI\ \<.MEM_15(2),\ .MEM_18(3)\>\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(_Bool)0\ ==\ (bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\ ==\ [m_constant]'0'\}\l\
+\ \ \ \ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec2:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec2:\ \{INIT_VAL(t_13(D))\}\ !=\ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [] function: ss_out ";
+    subgraph "cluster_supernode_7" {
+      style="dashed";
+      label="SN: 7 (bb: 2; scc: 7)";
+exploded_node_53 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 53\l\
+callstring:\ []\l\
+before\ SN:\ 7\ (from\ SN:\ 6\ (bb:\ 0))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [] function: ss_out ";
+    subgraph "cluster_supernode_10" {
+      style="dashed";
+      label="SN: 10 (bb: 4; scc: 10)";
+exploded_node_70 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 70\ (bulk\ merged)\l\
+callstring:\ []\l\
+before\ SN:\ 10\ (from\ SN:\ 9\ (bb:\ 3))\l\
+.MEM_11\ =\ PHI\ \<.MEM_15(2),\ .MEM_18(3)\>\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D))):\ UNKNOWN(struct\ ss_s)\ (ESCAPED)\l\
+\ \ cluster\ for:\ (*INIT_VAL((*INIT_VAL(t_13(D))).uu.newstr)):\ INIT_VAL(cc_17(D))\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec1:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec1:\ \{INIT_VAL(t_13(D))\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [] function: ss_out ";
+    subgraph "cluster_supernode_11" {
+      style="dashed";
+      label="SN: 11 (bb: 1; scc: 11)";
+exploded_node_74 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 74\l\
+callstring:\ []\l\
+after\ SN:\ 11\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D))):\ UNKNOWN(struct\ ss_s)\ (ESCAPED)\l\
+\ \ cluster\ for:\ (*INIT_VAL((*INIT_VAL(t_13(D))).uu.newstr)):\ UNKNOWN(char)\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec1:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec1:\ \{INIT_VAL(t_13(D))\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [] function: ss_out ";
+    subgraph "cluster_supernode_7" {
+      style="dashed";
+      label="SN: 7 (bb: 2; scc: 7)";
+exploded_node_55 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 55\l\
+callstring:\ []\l\
+after\ SN:\ 7\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+clusters\ within\ frame:\ 'ss_out'@1\l\
+\ \ cluster\ for:\ _5:\ (bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec1:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec1:\ \{INIT_VAL(t_13(D))\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [] function: ss_out ";
+    subgraph "cluster_supernode_10" {
+      style="dashed";
+      label="SN: 10 (bb: 4; scc: 10)";
+exploded_node_72 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 72\l\
+callstring:\ []\l\
+after\ SN:\ 10\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D))):\ UNKNOWN(struct\ ss_s)\ (ESCAPED)\l\
+\ \ cluster\ for:\ (*INIT_VAL((*INIT_VAL(t_13(D))).uu.newstr)):\ UNKNOWN(char)\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec1:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec1:\ \{INIT_VAL(t_13(D))\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [] function: ss_out ";
+    subgraph "cluster_supernode_8" {
+      style="dashed";
+      label="SN: 8 (bb: 2; scc: 8)";
+exploded_node_65 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 65\l\
+callstring:\ []\l\
+after\ SN:\ 8\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+clusters\ within\ frame:\ 'ss_out'@1\l\
+\ \ cluster\ for:\ _7:\ (bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec1:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec1:\ \{INIT_VAL(t_13(D))\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [] function: ss_out ";
+    subgraph "cluster_supernode_9" {
+      style="dashed";
+      label="SN: 9 (bb: 3; scc: 9)";
+exploded_node_68 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 68\l\
+callstring:\ []\l\
+before\ (SN:\ 9\ stmt:\ 0):\ \l\
+_8\ =\ t_13(D)-\>uu.newstr;\l\
+22\ \|\ \ \ \ \ \ \ \ *t-\>uu.newstr++\ =\ cc;\l\
+\ \ \ \|\ \ \ \ \ \ \ \ \ ~~~~~^~~~~~~\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(_Bool)0\ ==\ [m_constant]'0'\}\l\
+\ \ \ \ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec2:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ \ \ ec3:\ \{(bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec2:\ \{INIT_VAL(t_13(D))\}\ !=\ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ 1:\ ec3:\ \{(bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\}\ !=\ ec0:\ \{(_Bool)0\ ==\ [m_constant]'0'\}\l\
+\l\
+stmts:\ 5\l\
+\ \ 0:\ _8\ =\ t_13(D)-\>uu.newstr;\l\
+\ \ 1:\ _9\ =\ _8;\l\
+\ \ 2:\ _10\ =\ _9\ +\ 1;\l\
+\ \ 3:\ t_13(D)-\>uu.newstr\ =\ _10;\l\
+\ \ 4:\ *_9\ =\ cc_17(D);\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [] function: ss_out ";
+    subgraph "cluster_supernode_11" {
+      style="dashed";
+      label="SN: 11 (bb: 1; scc: 11)";
+exploded_node_73 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 73\l\
+callstring:\ []\l\
+before\ SN:\ 11\ (from\ SN:\ 10\ (bb:\ 4))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D))):\ UNKNOWN(struct\ ss_s)\ (ESCAPED)\l\
+\ \ cluster\ for:\ (*INIT_VAL((*INIT_VAL(t_13(D))).uu.newstr)):\ UNKNOWN(char)\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec1:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec1:\ \{INIT_VAL(t_13(D))\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [] function: ss_out ";
+    subgraph "cluster_supernode_10" {
+      style="dashed";
+      label="SN: 10 (bb: 4; scc: 10)";
+exploded_node_71 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 71\l\
+callstring:\ []\l\
+before\ (SN:\ 10\ stmt:\ 0):\ \l\
+return;\l\
+24\ \|\ \}\l\
+\ \ \ \|\ ^\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D))):\ UNKNOWN(struct\ ss_s)\ (ESCAPED)\l\
+\ \ cluster\ for:\ (*INIT_VAL((*INIT_VAL(t_13(D))).uu.newstr)):\ UNKNOWN(char)\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec1:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec1:\ \{INIT_VAL(t_13(D))\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+stmts:\ 1\l\
+\ \ 0:\ return;\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [] function: ss_out ";
+    subgraph "cluster_supernode_6" {
+      style="dashed";
+      label="SN: 6 (bb: 0; scc: 6)";
+exploded_node_52 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 52\l\
+callstring:\ []\l\
+after\ SN:\ 6\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [] function: ss_out ";
+    subgraph "cluster_supernode_8" {
+      style="dashed";
+      label="SN: 8 (bb: 2; scc: 8)";
+exploded_node_64 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 64\l\
+callstring:\ []\l\
+before\ (SN:\ 8\ stmt:\ 0):\ \l\
+_6\ =\ t_13(D)-\>counting;\l\
+19\ \|\ \ \ \ if\ (!t-\>counting)\ \{\l\
+\ \ \ \|\ \ \ \ \ \ \ \ \ ~^~~~~~~~~~\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec1:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec1:\ \{INIT_VAL(t_13(D))\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+stmts:\ 3\l\
+\ \ 0:\ _6\ =\ t_13(D)-\>counting;\l\
+\ \ 1:\ _7\ =\ ~_6;\l\
+\ \ 2:\ if\ (_7\ !=\ 0)\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [] function: ss_out ";
+    subgraph "cluster_supernode_7" {
+      style="dashed";
+      label="SN: 7 (bb: 2; scc: 7)";
+exploded_node_54 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 54\l\
+callstring:\ []\l\
+before\ (SN:\ 7\ stmt:\ 0):\ \l\
+_1\ =\ t_13(D)-\>counting;\l\
+17\ \|\ \ \ \ \ __analyzer_describe\ (0,\ t-\>counting);\l\
+\ \ \ \|\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ~^~~~~~~~~~\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ constraints:\l\
+\l\
+stmts:\ 7\l\
+\ \ 0:\ _1\ =\ t_13(D)-\>counting;\l\
+\ \ 1:\ _2\ =\ (int)\ _1;\l\
+\ \ 2:\ __analyzer_describe\ (0,\ _2);\l\
+\ \ 3:\ _3\ =\ t_13(D)-\>counting;\l\
+\ \ 4:\ _4\ =\ ~_3;\l\
+\ \ 5:\ _5\ =\ (int)\ _4;\l\
+\ \ 6:\ __analyzer_eval\ (_5);\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [] function: ss_out ";
+    subgraph "cluster_supernode_9" {
+      style="dashed";
+      label="SN: 9 (bb: 3; scc: 9)";
+exploded_node_66 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 66\l\
+callstring:\ []\l\
+before\ SN:\ 9\ (from\ SN:\ 8\ (bb:\ 2))\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D)))\l\
+\ \ \ \ ESCAPED\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(_Bool)0\ ==\ [m_constant]'0'\}\l\
+\ \ \ \ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec2:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ \ \ ec3:\ \{(bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec2:\ \{INIT_VAL(t_13(D))\}\ !=\ ec1:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ 1:\ ec3:\ \{(bit_not_exprINIT_VAL((*INIT_VAL(t_13(D))).counting))\}\ !=\ ec0:\ \{(_Bool)0\ ==\ [m_constant]'0'\}\l\
+\l\
+"];
+
+    }
+  }
+  subgraph "cluster_function_ss_out" {
+    label="call string: [] function: ss_out ";
+    subgraph "cluster_supernode_9" {
+      style="dashed";
+      label="SN: 9 (bb: 3; scc: 9)";
+exploded_node_69 [shape=none,margin=0,style=filled,fillcolor=lightgrey,label="EN:\ 69\l\
+callstring:\ []\l\
+after\ SN:\ 9\l\
+\l\
+rmodel:\l\
+stack\ depth:\ 1\l\
+\ \ frame\ (index\ 0):\ frame:\ 'ss_out'@1\l\
+clusters\ within\ root\ region\l\
+\ \ cluster\ for:\ (*INIT_VAL(t_13(D))):\ UNKNOWN(struct\ ss_s)\ (ESCAPED)\l\
+\ \ cluster\ for:\ (*INIT_VAL((*INIT_VAL(t_13(D))).uu.newstr)):\ INIT_VAL(cc_17(D))\l\
+clusters\ within\ frame:\ 'ss_out'@1\l\
+\ \ cluster\ for:\ _9:\ INIT_VAL((*INIT_VAL(t_13(D))).uu.newstr)\l\
+m_called_unknown_fn:\ FALSE\l\
+constraint_manager:\l\
+\ \ equiv\ classes:\l\
+\ \ \ \ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ ec1:\ \{INIT_VAL((*INIT_VAL(t_13(D))).uu.newstr)\}\l\
+\ \ \ \ ec2:\ \{INIT_VAL(t_13(D))\}\l\
+\ \ constraints:\l\
+\ \ \ \ 0:\ ec1:\ \{INIT_VAL((*INIT_VAL(t_13(D))).uu.newstr)\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\ \ \ \ 1:\ ec2:\ \{INIT_VAL(t_13(D))\}\ !=\ ec0:\ \{(void\ *)0B\ ==\ [m_constant]'0B'\}\l\
+\l\
+"];
+
+    }
+  }
+exploded_node_0 -> exploded_node_1 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_0 -> exploded_node_2 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_0 -> exploded_node_3 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_1 -> exploded_node_4 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_4 -> exploded_node_5 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=" (flags FALLTHRU)"];
+exploded_node_5 -> exploded_node_6 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_6 -> exploded_node_7 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_7 -> exploded_node_8 [style="solid,bold", color=red, weight=10, constraint=true, headlabel="call"];
+exploded_node_8 -> exploded_node_9 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_9 -> exploded_node_10 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=" (flags FALLTHRU)"];
+exploded_node_10 -> exploded_node_11 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_11 -> exploded_node_12 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_12 -> exploded_node_13 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=" (flags FALLTHRU)"];
+exploded_node_13 -> exploded_node_14 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_14 -> exploded_node_15 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_15 -> exploded_node_16 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_16 -> exploded_node_17 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_17 -> exploded_node_18 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_18 -> exploded_node_19 [style="solid,bold", color=green, weight=10, constraint=true, headlabel="return"];
+exploded_node_19 -> exploded_node_20 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_20 -> exploded_node_21 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_21 -> exploded_node_22 [style="solid,bold", color=red, weight=10, constraint=true, headlabel="call"];
+exploded_node_22 -> exploded_node_23 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_23 -> exploded_node_24 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=" (flags FALLTHRU)"];
+exploded_node_24 -> exploded_node_25 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_25 -> exploded_node_26 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_26 -> exploded_node_27 [style="solid,bold", color=red, weight=10, constraint=true, headlabel="call"];
+exploded_node_27 -> exploded_node_28 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_28 -> exploded_node_29 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=" (flags FALLTHRU)"];
+exploded_node_29 -> exploded_node_30 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_30 -> exploded_node_31 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_31 -> exploded_node_32 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_32 -> exploded_node_33 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_33 -> exploded_node_34 [style="solid,bold", color=green, weight=10, constraint=true, headlabel="return"];
+exploded_node_34 -> exploded_node_35 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_35 -> exploded_node_36 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_36 -> exploded_node_37 [style="solid,bold", color=black, weight=10, constraint=true, headlabel="false (flags FALSE_VALUE)"];
+exploded_node_37 -> exploded_node_38 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_38 -> exploded_node_39 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_39 -> exploded_node_40 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_40 -> exploded_node_41 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_41 -> exploded_node_42 [style="solid,bold", color=green, weight=10, constraint=true, headlabel="return"];
+exploded_node_42 -> exploded_node_43 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_43 -> exploded_node_44 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_44 -> exploded_node_45 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_45 -> exploded_node_46 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=" (flags FALLTHRU)"];
+exploded_node_46 -> exploded_node_47 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_47 -> exploded_node_48 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_48 -> exploded_node_49 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_49 -> exploded_node_50 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_50 -> exploded_node_51 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_2 -> exploded_node_52 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_52 -> exploded_node_53 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=" (flags FALLTHRU)"];
+exploded_node_53 -> exploded_node_54 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_54 -> exploded_node_55 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_55 -> exploded_node_56 [style="solid,bold", color=red, weight=10, constraint=true, headlabel="call"];
+exploded_node_56 -> exploded_node_57 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_57 -> exploded_node_58 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=" (flags FALLTHRU)"];
+exploded_node_58 -> exploded_node_59 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_59 -> exploded_node_60 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_60 -> exploded_node_61 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_61 -> exploded_node_62 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_62 -> exploded_node_63 [style="solid,bold", color=green, weight=10, constraint=true, headlabel="return"];
+exploded_node_63 -> exploded_node_64 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_64 -> exploded_node_65 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_65 -> exploded_node_66 [style="solid,bold", color=black, weight=10, constraint=true, headlabel="true (flags TRUE_VALUE)"];
+exploded_node_65 -> exploded_node_67 [style="solid,bold", color=black, weight=10, constraint=true, headlabel="false (flags FALSE_VALUE)"];
+exploded_node_66 -> exploded_node_68 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_68 -> exploded_node_69 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_69 -> exploded_node_70 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=" (flags FALLTHRU)"];
+exploded_node_67 -> exploded_node_71 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_70 -> exploded_node_71 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_71 -> exploded_node_72 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_72 -> exploded_node_73 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_73 -> exploded_node_74 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_3 -> exploded_node_75 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_75 -> exploded_node_76 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=" (flags FALLTHRU)"];
+exploded_node_76 -> exploded_node_77 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_77 -> exploded_node_78 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_78 -> exploded_node_79 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=" (flags FALLTHRU)"];
+exploded_node_79 -> exploded_node_80 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_80 -> exploded_node_81 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_81 -> exploded_node_82 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_82 -> exploded_node_83 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+exploded_node_83 -> exploded_node_84 [style="solid,bold", color=black, weight=10, constraint=true, headlabel=""];
+}

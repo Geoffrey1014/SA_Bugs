@@ -10,3 +10,4 @@ clang-tmp
 .vscode/
 *.o
 *.out
+testsuite/platform.info
