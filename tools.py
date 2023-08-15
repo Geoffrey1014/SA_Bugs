@@ -246,6 +246,8 @@ def check_dir_warning_line_reachable(cc, analyzer, warning_type, target_dir_absp
             instrumented_cfile = "instrument_" + short_name + ".c"
             run_out_file = "instrument_" + short_name + ".out"
             warning_exist = False
+            if os.path.exists(instrumented_cfile):
+                continue
 
             if not os.path.exists(report_abspath):
                 if verbose:
