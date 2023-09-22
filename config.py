@@ -36,3 +36,11 @@ GCC_OOB = "-Wanalyzer-out-of-bounds"
 RUN_TIMEOUT_NUM = "10s"
 FLAG_DIS_STR="FLAG disappear"
 UB_STR = "Undefined behavior"
+
+CLANG_CMD="/opt/working-place/pinpoint/third-party/bin/clang-3.6 -g -c -emit-llvm -I /usr/include/csmith "
+TRANS_CMD="/opt/working-place/pinpoint/bin/pp-transform "
+SEG_CMD="/opt/working-place/pinpoint/bin/pp-build  -execution-mode normal -falcon-cg "
+
+# CHECK_CMD="/opt/working-place/pinpoint/bin/pp-check -debug -debug-psa-trace -nworkers=1 -hide-progress-bar -ps-npd  -execution-mode normal  -enable-core-legacy -system-timeout=1800 -load-licence=/root/.pinpoint/sbrella.lic  "
+CHECK_CMD="/opt/working-place/pinpoint/bin/pp-check  -nworkers=1 -hide-progress-bar -ps-npd -execution-mode normal  -enable-core-legacy -system-timeout=1800 -load-licence=/root/.pinpoint/sbrella.lic  "
+# CHECK_CMD="/opt/working-place/pinpoint/bin/pp-check  -nworkers=1 -hide-progress-bar -ps-npd  -ps-npd-enable-null-analysis -ps-cnd -ps-drm-npd -execution-mode normal  -enable-core-legacy -system-timeout=1800  -iminfo-dir=/root/MY_CODES/random_code/iminfo  -report-inter-trace=/root/MY_CODES/random_code/iminfo/test.ibc.im.json -load-licence=/root/.pinpoint/sbrella.lic -load-external-spec=/root/pinpoint/resource/new-spec.json -load-external-spec=/root/pinpoint/resource/taint-common-spec.json -load-external-spec=/root/pinpoint/resource/taint-demangle-spec.json -load-external-spec=/root/pinpoint/resource/taint-regex-spec.json -load-external-spec=/root/pinpoint/resource/struts2-hiberate-mybatis-spec.json "

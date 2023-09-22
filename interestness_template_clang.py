@@ -2,7 +2,6 @@
 import os
 import subprocess
 import shlex
-
 CFILE = " "
 OPT_LEVEL = " "
 
