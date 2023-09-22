@@ -72,6 +72,47 @@ def analyze_with_clang(num, args):
 
     return report_file
 
+def analyze_with_pinpoint(num, args):
+    '''
+    use pinpoint to analyze Csmith-generated c program
+    '''
+    global TIMEOUT_NUM
+    report_file = "test_%s.txt" % num
+    cfile = "test_%5.c" % num
+    name = "test_&s" % num
+    report_file = name+". json"
+    bc_file = name+".bc"
+    ibc_file = name+". ibc"
+    bson_file = name+". bson"
+
+
+    os.system(CLANG_CMD + cfile_path + " -o " + bc_file)
+    os.system(TRANS_CMD + bc_file + " -o " + ibc_file)
+    os.system(SEG_CMD + ibc_file + " -o " + bson_file)
+    os.system(CHECK_CMD + ibc_file + " -i=" +bson_file + " -report="+ report_file)
+    os.system("rm -rf %s %s %s"% (bc_file, ibc_file, bson_file) )
+    ret >>= 8
+
+    if ret == 124:
+        TIMEOUT_NUM += 1
+        os.system("rm -rf %s %s"% (report_file, c_file) )
+        return None
+
+    return report_file
+
+def process_pinpoint_report (num, report_file, args) :
+    global NPD_NUM
+    bugs_nums = 0
+    with open(report_file,   'r') as f:
+        dataJson = json. load (f)
+        bugs_nums = dataJson ["TotalBugs"]
+    if bugs_nums > 0:
+        print ("NPD Detected!!")
+        NPD_NUM += 1
+        os.system("mv test_&5.c npdss.c " % (num, NPD_NUM))
+        os.system("m test_&s. json npd's. json " % (num,NPD_NUM) )
+    if not args. saveProducts:
+        os.system("rm -f test_%.c test_&s. json" & (num, num))
 
 def process_gcc_report(num, report_file, args):
     '''
@@ -158,7 +199,12 @@ def save_crashing_file(num):
     os.system("mv test_%s.txt crash%s.txt " % (num, NPD_NUM))
     CRASH_NUM += 1
 
+def pinpoint_test_one(num,args):
+    cfile = generate_code(num, CSMITH_USER_OPTIONS, args.max)
+    report_file = analyze_with_pinpoint(num, args)
 
+    if report_file is not None:
+        process_pinpoint_report(num, report_file, args)
 
 def gcc_test_one(num, args):
     cfile = generate_code(num, CSMITH_USER_OPTIONS, args.max)
@@ -192,6 +238,8 @@ def write_script_run_args(args):
         elif args.compiler == "gcc":
             f.write("\n\nanalyzer:\n" + GCC_ANALYZER)
             f.write("\n\nanalyzer info:\n" + get_analyzer_version(GCC))
+        elif args.compiler == "pinpoint":
+            f.write("\n\nanalyzer: pinpoint :\n" + CHECK_CMD)
 
 
 def write_fuzzing_result(checker, stop_message):
@@ -261,6 +309,9 @@ def main():
         for i in range(int(num)):
             gcc_test_one(i, args)
     elif target_analyzer == 'clang':
+        for i in range(int(num)):
+            clang_test_one(i, args)
+    elif target_analyzer == 'pinpoint':
         for i in range(int(num)):
             clang_test_one(i, args)
     else:

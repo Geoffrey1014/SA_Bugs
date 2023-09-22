@@ -19,6 +19,8 @@ def get_short_name(full_name:str) -> str:
     return name
 
 def get_analyzer_version(analyzer) -> str:
+    if analyzer == "pinpoint":
+        return "pinpoint 2.7"
     res = subprocess.run([analyzer, "-v"], stdout=subprocess.PIPE,
                          stderr=subprocess.PIPE, encoding='utf-8')
 
@@ -171,6 +173,8 @@ def compile_and_run_instrument_cfile(cc, optimize, instrumented_cfile, run_out_f
     Returns:
     bool: True if the program was compiled and run successfully, False otherwise.
     '''
+    if cc == "pinpoint":
+        cc = "gcc"
     try:
         subprocess.run([cc, "-O" + str(optimize), "-I", CSMITH_HEADER,
                                      instrumented_cfile], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, encoding="utf-8", check=True)
@@ -211,6 +215,8 @@ def get_compiler(analyzer):
         return GCC
     elif analyzer == "clang":
         return CLANG
+    elif analyzer == "pinpoint":
+        return "pinpoint"
     else:
         raise ValueError("Invalid analyzer specified: {}".format(analyzer))
 

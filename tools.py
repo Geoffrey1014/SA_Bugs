@@ -601,7 +601,7 @@ def handle_args():
     parser_gen_reduce.add_argument(
         "template", type=str, help="specify reduce template")
     parser_gen_reduce.add_argument("analyzer", type=str, choices={
-        'gcc', 'clang'}, help="give a analyzer")
+        'gcc', 'clang', pinpoint}, help="give a analyzer")
     parser_gen_reduce.add_argument("checker", type=str, choices=CHECKER_LIST, help="give a checker")
     parser_gen_reduce.add_argument("optimize", type=int, choices={
                                    0, 1, 2, 3}, help="optimization level")
@@ -645,10 +645,10 @@ def handle_args():
     parser_fuzz_fp.add_argument(
         "path", help="given a parent dir of fuzzing working dir")
     parser_fuzz_fp.add_argument("analyzer", type=str, choices={
-        'gcc', 'clang'}, help="give a analyzer")
+        'gcc', 'clang', 'pinpoint'}, help="give a analyzer")
     parser_fuzz_fp.add_argument("checker", type=str, choices=CHECKER_LIST, help="give a checker")
     parser_fuzz_fp.add_argument("optimize", type=int, choices={
-        0, 1, 2, 3}, default=0, help="optimization level ( if clang, ...")
+        0, 1, 2, 3}, default=0, help="optimization level")
     parser_fuzz_fp.add_argument(
         "thread", type=int, default=1, help="specify the thread num for fuzzing")
     parser_fuzz_fp.add_argument(
@@ -696,7 +696,7 @@ def handle_args():
     parser_create.add_argument(
         "path", help="give a parent dir of fuzzing working dir")
     parser_create.add_argument("analyzer", type=str, choices={
-                               'gcc', 'clang'}, help="give a analyzer")
+                               'gcc', 'clang', 'pinpoint'}, help="give a analyzer")
     parser_create.add_argument(
         "-n", "--num", type=int, required=True, help="the number of fuzzing")
 
@@ -707,7 +707,7 @@ def handle_args():
     parser_reach_warning_lines = subparsers.add_parser(
         "check-reach", help="check whether the warning line complained by the given analyzer is reachable")
     parser_reach_warning_lines.add_argument("analyzer", type=str, choices={
-                                        'gcc', 'clang'}, help="give a analyzer")
+                                        'gcc', 'clang', 'pinpoint'}, help="give a analyzer")
     parser_reach_warning_lines.add_argument("checker", type=str, choices=CHECKER_LIST, help="give a checker")
     parser_reach_warning_lines.add_argument("optimize", type=int, choices={0, 1, 2, 3}, default=0, help="optimization level")
     parser_reach_warning_lines.add_argument(
