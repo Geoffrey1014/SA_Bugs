@@ -246,6 +246,8 @@ def check_dir_warning_line_reachable(cc, analyzer, warning_type, target_dir_absp
             instrumented_cfile = "instrument_" + short_name + ".c"
             run_out_file = "instrument_" + short_name + ".out"
             warning_exist = False
+            if os.path.exists(instrumented_cfile):
+                continue
 
             if not os.path.exists(report_abspath):
                 if verbose:
@@ -301,17 +303,39 @@ def gen_reduce(args: argparse.Namespace):
         # handle dir path
         print(target_dir_abspath)
         os.chdir(target_dir_abspath)
-        shutil.copy(CONFIG_FILE, "config.py")
+        par_dir, cur_dir = os.path.split(target_dir_abspath)
+        if cur_dir == "reachable" :
+            # shutil.copy(CONFIG_FILE, "config.py")
 
-        files = os.listdir(target_dir_abspath)
-        print("file nums: " + str(len(files)))
+            files = os.listdir(target_dir_abspath)
+            print("file nums: " + str(len(files)))
 
-        for file in files:
-            if file.endswith(".c") and file.startswith("instrument"):
-                reduce_script = gen_reduce_script(
-                    template_abspath, get_short_name(file), opt_level, args.checker)
-                if not reduce_script:
-                    print("gen_reduce_script fail!")
+            for file in files:
+                if file.endswith(".c") and file.startswith("instrument"):
+                    reduce_script = gen_reduce_script(
+                        template_abspath, get_short_name(file), opt_level, args.checker)
+                    if not reduce_script:
+                        print("gen_reduce_script fail!")
+        else:
+            g = os.walk(target_dir_abspath)
+            for path,dir_list,file_list in g:  
+                for dir_name in dir_list:
+                    if dir_name == "reachable":
+                        
+                        reachable_dir = os.path.join(path, dir_name)
+                        print(reachable_dir)
+                        os.chdir(reachable_dir)
+                        files = os.listdir(reachable_dir)
+                        # print("file nums: " + str(len(files)))
+                        for file in files:
+                            if file.endswith(".c") and file.startswith("instrument"):
+                                print(file)
+                                reduce_script = gen_reduce_script(
+                                    template_abspath, get_short_name(file), opt_level, args.checker)
+                                if not reduce_script:
+                                    print("gen_reduce_script fail!")
+
+
         print("gen reduce script done!")
     else:
         print("Please give a cfile of a dir !")
@@ -481,10 +505,10 @@ def run_reduce(args: argparse.Namespace):
                 other_error_list.append(os.path.abspath(reduce_script))
                 os.system("rm -rf %s %s %s.o" % (cfile, reduce_script, short_name))
                 continue
-
-            ret = subprocess.run(["creduce", cfile, reduce_script,
+            print("run creduce")
+            ret = subprocess.run(["creduce", reduce_script, cfile,
                                     "--n", thread_num], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
-
+            print(ret)
             if ret.returncode == 0:
                 reduce_list.append(os.path.abspath(cfile))
                 os.system("mv %s %s %s.out reduce/" % (cfile, reduce_script, short_name))
