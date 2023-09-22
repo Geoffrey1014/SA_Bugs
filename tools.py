@@ -305,7 +305,7 @@ def gen_reduce(args: argparse.Namespace):
         os.chdir(target_dir_abspath)
         par_dir, cur_dir = os.path.split(target_dir_abspath)
         if cur_dir == "reachable" :
-            shutil.copy(CONFIG_FILE, "config.py")
+            # shutil.copy(CONFIG_FILE, "config.py")
 
             files = os.listdir(target_dir_abspath)
             print("file nums: " + str(len(files)))
@@ -505,10 +505,10 @@ def run_reduce(args: argparse.Namespace):
                 other_error_list.append(os.path.abspath(reduce_script))
                 os.system("rm -rf %s %s %s.o" % (cfile, reduce_script, short_name))
                 continue
-
-            ret = subprocess.run(["creduce", cfile, reduce_script,
+            print("run creduce")
+            ret = subprocess.run(["creduce", reduce_script, cfile,
                                     "--n", thread_num], stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
-
+            print(ret)
             if ret.returncode == 0:
                 reduce_list.append(os.path.abspath(cfile))
                 os.system("mv %s %s %s.out reduce/" % (cfile, reduce_script, short_name))
