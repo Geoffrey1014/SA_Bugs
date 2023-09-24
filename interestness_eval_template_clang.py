@@ -29,17 +29,17 @@ if analyzer_ret.stderr.count("warning: FALSE") == 0:
     # print("NullDereference disappear")  # cannot comment this line!
     exit(3)
 
-# # use ccomp to check if there are undefined behaviors
-# print("run compcert")
-# ccomp_ret = subprocess.run(['ccomp', '-I', CSMITH_HEADER, '-interp', '-fall', '-fstruct-passing',
-#                            CFILE], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
-# if ccomp_ret.stdout.count("Undefined behavior") != 0:
-#     print("Undefined behavior")
-#     # print(ccomp_ret)
-#     exit(4)
-# if ccomp_ret.returncode != 0:
-#     print("ccomp_ret returncode: %s" % ccomp_ret.returncode)
-#     print("Compcert failed")  # cannot comment this line!
-#     # print(ccomp_ret)
-#     exit(ccomp_ret.returncode)
-# exit(0)
+# use ccomp to check if there are undefined behaviors
+print("run compcert")
+ccomp_ret = subprocess.run(['ccomp', '-I', CSMITH_HEADER, '-interp', '-fall', '-fstruct-passing',
+                           CFILE], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
+if ccomp_ret.stdout.count("Undefined behavior") != 0:
+    print("Undefined behavior")
+    # print(ccomp_ret)
+    exit(4)
+if ccomp_ret.returncode != 0:
+    print("ccomp_ret returncode: %s" % ccomp_ret.returncode)
+    print("Compcert failed")  # cannot comment this line!
+    # print(ccomp_ret)
+    exit(ccomp_ret.returncode)
+exit(0)

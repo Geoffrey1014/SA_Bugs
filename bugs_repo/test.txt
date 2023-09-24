@@ -1,2 +1,0 @@
-
-  __HWG_ <identifier_node 0x7f020cc7dd70 __analyzer_describe>
