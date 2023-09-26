@@ -7,10 +7,10 @@ extern void __analyzer_dump ();
 extern void __analyzer_dump_state (const char *name, ...);
 extern void __analyzer_dump_region_model ();
 
-void foo (size_t size)
+void foo (int c)
 {
-  size_t a = size + 2;
-  size_t b = size + 1;
+  int a = c + 2;
+  int b = c + 1;
   __analyzer_dump ();
   if(a > b){
     __analyzer_dump ();
