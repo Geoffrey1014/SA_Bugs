@@ -1,46 +1,62 @@
+#!/usr/bin/python3
+
 from __future__ import print_function
-from pycparser.plyparser import Coord
-from pycparser import parse_file, c_ast
 
 import argparse
+import json
 import os
-import re
 import random
+import re
 import subprocess
 import sys
-import json
-import time
 
-# this is not required if you've installed pycparser into
-# your site-packages/ with setup.py
-sys.path.extend(['.', '..'])
+from pycparser import parse_file, c_ast
+from pycparser.plyparser import Coord
+
+sys.path.extend([".", ".."])
 
 CSMITH_HEADER = "/usr/include/csmith"
-CSMITH_USER_OPTIONS = "--ccomp"
+CSMITH_USER_OPTIONS = "--no-const-pointers --no-global-variables --no-safe-math"
 
-GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -Wno-analyzer-double-fclose -Wno-analyzer-double-free -Wno-analyzer-exposure-through-output-file -Wno-analyzer-file-leak -Wno-analyzer-free-of-non-heap -Wno-analyzer-malloc-leak -Wno-analyzer-mismatching-deallocation -Wno-analyzer-null-argument -Wno-analyzer-possible-null-argument -Wno-analyzer-possible-null-dereference -Wno-analyzer-shift-count-negative -Wno-analyzer-shift-count-overflow -Wno-analyzer-stale-setjmp-buffer -Wno-analyzer-unsafe-call-within-signal-handler -Wno-analyzer-use-after-free -Wno-analyzer-use-of-pointer-in-stale-stack-frame -Wno-analyzer-use-of-uninitialized-value -Wno-analyzer-write-to-const -Wno-analyzer-write-to-string-literal -fdiagnostics-plain-output -fdiagnostics-format=text"
-CLANG_ANALYZER = "scan-build -disable-checker core.CallAndMessage -disable-checker core.DivideZero -disable-checker core.NonNullParamChecker -disable-checker core.StackAddressEscape -disable-checker core.UndefinedBinaryOperatorResult -disable-checker core.VLASize -disable-checker core.uninitialized.ArraySubscript -disable-checker core.uninitialized.Assign -disable-checker core.uninitialized.Branch -disable-checker core.uninitialized.CapturedBlockVariable -disable-checker core.uninitialized.UndefReturn -disable-checker cplusplus.InnerPointer -disable-checker cplusplus.Move -disable-checker cplusplus.NewDelete -disable-checker cplusplus.NewDeleteLeaks -disable-checker cplusplus.PlacementNew -disable-checker cplusplus.PureVirtualCall -disable-checker deadcode.DeadStores -disable-checker nullability.NullPassedToNonnull -disable-checker nullability.NullReturnedFromNonnull -disable-checker security.insecureAPI.gets -disable-checker security.insecureAPI.mkstemp -disable-checker security.insecureAPI.mktemp -disable-checker security.insecureAPI.vfork -disable-checker unix.API -disable-checker unix.Malloc -disable-checker unix.MallocSizeof -disable-checker unix.MismatchedDeallocator -disable-checker unix.Vfork -disable-checker unix.cstring.BadSizeArg -disable-checker unix.cstring.NullArg"
-CLANG_OPTIONS = "-Wno-literal-conversion -Wno-bool-operation -Wno-pointer-sign -Wno-tautological-compare -Wno-incompatible-pointer-types -Wno-tautological-constant-out-of-range-compare -Wno-compare-distinct-pointer-types -Wno-implicit-const-int-float-conversion -Wno-constant-logical-operand -Wno-parentheses-equality -Wno-constant-conversion -Wno-unused-value -Xclang -analyzer-config -Xclang widen-loops=true"
+CLANG_ANALYZER = "clang --analyze -Xanalyzer -analyzer-checker=core.NullDereference -Xanalyzer -analyzer-checker=alpha.security.ArrayBoundV2 -Xclang -analyzer-config -Xclang widen-loops=true --analyzer-output text"
+GCC_ANALYZER = "gcc -fanalyzer -Wanalyzer-null-dereference -Wanalyzer-out-of-bounds -Wno-incompatible-pointer-types -Wno-overflow"
 
-ANALYZER_TIMEOUT = "timeout 180"
+# -fdiagnostics-plain-output -fdiagnostics-format=text
+
+ANALYZER_TIMEOUT = "timeout 5s"
 
 RE_CHILD_ARRAY = re.compile(r'(.*)\[(.*)\]')
 RE_INTERNAL_ATTR = re.compile('__.*__')
 
 CFILE = ""
-AST_FILE = ""
-OUT_FILE = ""
-REPORT_FILE_GSA = ""
+CFILE_TMP = ""
+SAN_FILE = ""
 REPORT_FILE_CSA = ""
-INFO_FILE = ""
+REPORT_FILE_GSA = ""
 
-MIS_NPD_NUM = 0
+NPD_LINE_SAN = []
+OOB_LINE_SAN = []
+NPD_LINE_CSA = []
+NPD_LINE_GSA = []
+OOB_LINE_CSA = []
+OOB_LINE_GSA = []
+
+FN_NPD_CSA_NUM = 0
+FN_NPD_GSA_NUM = 0
+FN_OOB_CSA_NUM = 0
+FN_OOB_GSA_NUM = 0
+
+PTRQQ_SCOPE_LIST = []
+
+TARGET_NAME_LIST = []
+TARGET_LINE_LIST = []
 
 
 def memodict(fn):
     """
-    fast memoization decorator for function taking single argument
+    fast memoization decorator for function with a single argument
     """
+
     class memodict(dict):
         def __missing__(self, key):
             ret = self[key] = fn(key)
@@ -52,8 +68,8 @@ def memodict(fn):
 @memodict
 def child_attrs_of(klass):
     """
-    given a node class, get a set of child attrs
-    memoized to avoid highly repetitive string manipulation
+    given a node class, retrieve a collection of child attributes that
+    have been memoized to prevent excessive repetition of string manipulation
     """
     non_child_attrs = set(klass.attr_names)
     all_attrs = set(
@@ -64,38 +80,31 @@ def child_attrs_of(klass):
 
 def to_dict(node):
     """
-    recursively convert ast into dict representation
+    recursively convert an AST into a dictionary representation
     """
     klass = node.__class__
     result = {}
-    # metadata
     result["_nodetype"] = klass.__name__
 
-    # local node attributes
     for attr in klass.attr_names:
         result[attr] = getattr(node, attr)
 
-    # coord object
     if node.coord:
         result["coord"] = str(node.coord)
     else:
         result["coord"] = None
 
-    # child attributes
     for child_name, child in node.children():
-        # child strings are either simple (e.g. "value") or arrays (e.g. "block_items[1]")
         match = RE_CHILD_ARRAY.match(child_name)
 
         if match:
             array_name, array_index = match.groups()
             array_index = int(array_index)
-            # arrays come in order, so we verify and append
             result[array_name] = result.get(array_name, [])
             result[array_name].append(to_dict(child))
         else:
             result[child_name] = to_dict(child)
 
-    # any child attributes that were missing need "none" values in the json
     for child_attr in child_attrs_of(klass):
         if child_attr not in result:
             result[child_attr] = None
@@ -105,40 +114,36 @@ def to_dict(node):
 
 def to_json(node, **kwargs):
     """
-    convert ast node to json string
+    convert AST node to JSON string
     """
     return json.dumps(to_dict(node), **kwargs)
 
 
 def file_to_dict(filename):
     """
-    load C file into dict representation of ast
+    load a C file into a dictionary representation of the AST
     """
     ast = parse_file(filename, use_cpp=True,
-                     cpp_path='gcc',
-                     # solve the problem that the introduction of standard libraries
-                     # and external libraries causes the parsing failed
-                     cpp_args=['-E', r'-Icsmith', r'-Ipycparser/utils/fake_libc_include'])
+                     cpp_path="gcc",
+                     cpp_args=["-E", r"-I/usr/include/csmith", r"-I/usr/include/pycparser/utils/fake_libc_include"])
 
     return to_dict(ast)
 
 
 def file_to_json(filename, **kwargs):
     """
-    load C file into json string representation of ast
+    load a C file into a JSON string representation of the AST
     """
     ast = parse_file(filename, use_cpp=True,
-                     cpp_path='gcc',
-                     # solve the problem that the introduction of standard libraries
-                     # and external libraries causes the parsing failed
-                     cpp_args=['-E', r'-Icsmith', r'-Ipycparser/utils/fake_libc_include'])
+                     cpp_path="gcc",
+                     cpp_args=["-E", r"-I/usr/include/csmith", r"-I/usr/include/pycparser/utils/fake_libc_include"])
 
     return to_json(ast, **kwargs)
 
 
 def _parse_coord(coord_str):
     """
-    parse coord string (file:line[:column]) into coord object
+    parse coord string `(file:line[:column])` into a coord object
     """
     if coord_str is None:
         return None
@@ -152,8 +157,8 @@ def _parse_coord(coord_str):
 
 def _convert_to_obj(value):
     """
-    convert object in the dict representation into object
-    note: mutually recursive with from_dict
+    convert an object in dictionary representation into an object
+    note: mutually recursive with `from_dict`
     """
     value_type = type(value)
 
@@ -162,43 +167,48 @@ def _convert_to_obj(value):
     elif value_type == list:
         return [_convert_to_obj(item) for item in value]
     else:
-        # string
         return value
 
 
 def from_dict(node_dict):
     """
-    recursively build ast from dict representation
+    recursively construct an AST from a dictionary representation
     """
+    objs = {}
     class_name = node_dict.pop('_nodetype')
     klass = getattr(c_ast, class_name)
 
-    # create a new dict containing the key-value pairs which
-    # we can pass to node constructors
-    objs = {}
     for key, value in node_dict.items():
         if key == "coord":
             objs[key] = _parse_coord(value)
         else:
             objs[key] = _convert_to_obj(value)
 
-    # use keyword parameters, which works thanks to
-    # beautifully consistent ast node initializers
     return klass(**objs)
 
 
 def from_json(ast_json):
     """
-    build ast from json string representation
+    construct an AST from a JSON string representation
     """
     return from_dict(json.loads(ast_json))
 
 
-def find_path_by_kv(ast):
+def fuzz_case_with_csmith():
     """
-    find path based on specified key-value pair
-    and return list of the keys passed
+    utilize Csmith to generate test cases
     """
+    global CSMITH_USER_OPTIONS, CFILE
+
+    os.system("csmith {} --output {}".format(CSMITH_USER_OPTIONS, CFILE))
+
+
+def find_path(ast, target_key, target_value):
+    """
+    find the path based on the specified key-value and 
+    return a list of the keys that are passed
+    """
+
     def iter_node(node_data, road_step):
         if isinstance(node_data, dict):
             key_value_iter = (x for x in node_data.items())
@@ -209,315 +219,491 @@ def find_path_by_kv(ast):
             current_path = road_step.copy()
             current_path.append(key)
 
-            if key == "_nodetype" and value == "PtrDecl":
+            if key == target_key and value == target_value:
                 yield current_path
+
             if isinstance(value, (dict, list)):
                 yield from iter_node(value, current_path)
 
-    """
-    there are **hundreds of** pointer types in a CFILE,
-    so it returns a two-dimensional list, which has
-    **hundreds of** one-dimensional lists in this list!
-    """
-
     path_list = []
-    # for each key-value pair, there is a corresponding list
+
     for item in iter_node(json.loads(ast), []):
         path_list.append(item)
 
     return path_list
 
 
-def read_value_from_file(match):
+def fetch_value(ast, path_list, tmp_list, ret_list, x):
     """
-    extra the group(1) of searched pattern
+    fetch a value from a JSON object using a specified path
+    """
+    index = 1
+    path_sublist = json.loads(ast)[path_list[x][0]]
+
+    tmp_list.clear()
+    ret_list.clear()
+
+    for y in range(len(path_list[x]) - 1):
+        item = ("tmp_{}".format(y))
+        tmp_list.append(item)
+
+    for _ in tmp_list:
+        item = path_sublist[path_list[x][index]]
+        index = index + 1
+        path_sublist = item
+        ret_list.append(item)
+
+    return ret_list
+
+
+def scope_analysis_helper(var_name, item):
+    """
+    scope analysis of ptr (branch nesting)
+    """
+    global PTRQQ_SCOPE_LIST
+
+    if item.__contains__("stmt") and item["stmt"] is not None and \
+       item["stmt"].__contains__("block_items") and item["stmt"]["block_items"] is not None:
+
+        for index in range(len(item["stmt"]["block_items"])):
+            if item["stmt"]["block_items"][index].__contains__("_nodetype") and item["stmt"]["block_items"][index]["_nodetype"] is not None and \
+                ((item["stmt"]["block_items"][index]["_nodetype"] == "If") or
+                 (item["stmt"]["block_items"][index]["_nodetype"] == "For")):
+                # TODO: ...
+                print(
+                    "if / for stmt: {}\n".format(item["stmt"]["block_items"][index]["cond"]["coord"])[-2])
+
+
+def scope_analysis(var_name, ret_list):
+    """
+    scope analysis of ptr
+    """
+    global PTRQQ_SCOPE_LIST
+
+    if ret_list.__contains__("_nodetype") and ret_list["_nodetype"] is not None and \
+            ((ret_list["_nodetype"] == "For") or
+             (ret_list["_nodetype"] == "If") or
+             (ret_list["_nodetype"] == "FuncDef")):
+
+        if ret_list.__contains__("stmt") and ret_list["stmt"].__contains__("block_items") and \
+           ret_list["stmt"]["block_items"] is not None:
+
+            branch_list = []
+            branch_dict = {}
+
+            for item in ret_list["stmt"]["block_items"]:
+                if item.__contains__("_nodetype") and item["_nodetype"] is not None and \
+                        ((item["_nodetype"] == "For") or (item["_nodetype"] == "If")):
+
+                    branch_line = re.split(":", item["cond"]["coord"])[-2]
+
+                    if branch_line not in branch_list:
+                        branch_list.append(branch_line)
+
+            if branch_list is not None:
+                branch_dict[var_name] = branch_list
+
+            if branch_dict not in PTRQQ_SCOPE_LIST:
+                PTRQQ_SCOPE_LIST.append(branch_dict)
+
+
+def filter_ptr_helper(ast, ret_list):
+    """
+    filter out global pointers, pointers to arrays, pointers to unions, and pointers to structures
+    """
+    global TARGET_NAME_LIST, TARGET_LINE_LIST
+
+    new_tmp_list = []
+    new_ret_list = []
+
+    new_path_list = find_path(ast, "name", ret_list[-2]["type"]["declname"])
+
+    for x in range(len(new_path_list)):
+        new_ret_list = fetch_value(
+            ast, new_path_list, new_tmp_list, new_ret_list, x)
+
+        if new_ret_list[-2].__contains__("type") and new_ret_list[-2]["type"] is not None and \
+                new_ret_list[-2]["type"].__contains__("_nodetype") and new_ret_list[-2]["type"][
+            "_nodetype"] is not None and \
+                new_ret_list[-2]["type"]["_nodetype"] != "ArrayDecl":
+
+            if ret_list[-2]["type"]["declname"] not in TARGET_NAME_LIST and \
+                    re.split(":", ret_list[-2]["coord"])[-2] not in TARGET_LINE_LIST:
+
+                TARGET_NAME_LIST.append(
+                    ret_list[-2]["type"]["declname"])
+                TARGET_LINE_LIST.append(
+                    re.split(":", ret_list[-2]["coord"])[-2])
+
+                scope_analysis(ret_list[-2]["type"]["declname"], ret_list[-6])
+
+
+def filter_ptr(ast, path_list):
+    """
+    filter out global pointers, pointers to array, pointers to union, and pointers to structure
     """
     global CFILE
 
-    with open(CFILE, "r") as f:
-        pattern = re.compile(r""+match)
-
-        for line in f.readlines():
-            seed = pattern.search(line)
-            if seed:
-                return seed.group(1)
-
-    return ""
-
-
-def generate_code():
-    """
-    use csmith to generate test cases
-    """
-    global CSMITH_USER_OPTIONS, CFILE
-
-    os.system("csmith {} --output {}".format(CSMITH_USER_OPTIONS, CFILE))
-    seed = read_value_from_file('Seed:\s+(\d+)')
-
-    if len(seed) <= 0:
-        print("random program {} has no seed information\n".format(CFILE))
-        return None
-    else:
-        return True
-
-
-def instrument_cfile(ast, path_list):
-    """
-    insert C statement (pointer = NULL) after specified line
-    """
-    global CFILE
-
-    res_list = []
     tmp_list = []
-    target_name_list = []
-    target_line_list = []
+    ret_list = []
 
     for x in range(len(path_list)):
-        index = 1
-        path_sublist = json.loads(ast)[path_list[x][0]]
-        res_list.clear()
-        tmp_list.clear()
+        ret_list = fetch_value(ast, path_list, tmp_list, ret_list, x)
 
-        """
-        [["key1", "key2", "key3"], ["key4", "key5", "key6", "key7"]]
-        x = 0: ["key1", "key2", "key3"]
-        x = 1: ["key4", "key5", "key6", "key7"]
-        """
+        if ret_list[-2].__contains__("coord") and ret_list[-2]["coord"] is not None and \
+                re.split(":", ret_list[-2]["coord"])[0] == CFILE and \
+                ret_list[-2].__contains__("type") and ret_list[-2]["type"] is not None and \
+                ret_list[-2]["type"].__contains__("declname") and ret_list[-2]["type"]["declname"] is not None and \
+                ret_list[-2]["type"].__contains__("type") and ret_list[-2]["type"]["type"] is not None and \
+                ret_list[-2]["type"]["type"].__contains__("_nodetype") and ret_list[-2]["type"]["type"][
+            "_nodetype"] is not None and \
+                ret_list[-2]["type"]["type"]["_nodetype"] != "Union" and \
+                ret_list[-2]["type"]["type"]["_nodetype"] != "Struct":
 
-        for y in range(len(path_list[x])-1):
-            item = ("t{}".format(y))
-            tmp_list.append(item)
+            if not re.match(r"g_*", ret_list[-2]["type"]["declname"]) and not re.match(r"p_*", ret_list[-2]["type"][
+                "declname"]) and \
+                    not re.match(r"func*", ret_list[-2]["type"]["declname"]) and \
+                    not re.match(r"argv", ret_list[-2]["type"]["declname"]):
 
-            """
-            x = 0: y in range (3) -> tmp_list[t0, t1, t2]
-            x = 1: y in range (4) -> tmp_list[t0, t1, t2, t3]
-            """
+                filter_ptr_helper(ast, ret_list)
 
-        for item in tmp_list:
-            item = path_sublist[path_list[x][index]]
-            index = index + 1
-            path_sublist = item
-            res_list.append(item)
 
-            # following this logic, the dict where
-            # the key-value pair are located is approached continuously
+def instrument_nullptr_then_defer():
+    """
+    insert `ptr = NULL` after the specified line;
+    insert `*ptr = 123456` in the specified scope
+    """
+    global CFILE, TARGET_NAME_LIST, TARGET_LINE_LIST, PTRQQ_SCOPE_LIST
 
-            """
-            t0 = t0[list[1]]
-            t1 = t0[list[2]]
-            t2 = t1[list[3]]
-            """
+    if len(TARGET_LINE_LIST) - 1 > 7:
+        index_list = []
 
-        """
-        {
-            "_nodetype": "PtrDecl",
-            "coord": "case_0.c:37:26",
-            "quals": [ "const" ],
-            "type": {
-                "_nodetype": "TypeDecl",
-                "align": null,
-                "coord": "case_0.c:37:34",
-                "declname": "g_54",
-                "quals": [ "volatile" ],
-                "type": {
-                    "_nodetype": "Union",
-                    "coord": "case_0.c:37:23",
-                    "decls": null,
-                    "name": "U1"
-                }
-            }
-        }
-        """
+        try:
+            while len(index_list) < 3:
+                index = random.randint(0, len(TARGET_LINE_LIST) - 1)
+                if index not in index_list:
+                    index_list.append(index)
+        except Exception as e:
+            write_exception("{}\n".format(str(e)))
 
-        # if res_list[-2]["type"].__contains__("type") and res_list[-2]["type"]["type"] is not None \
-        #         and res_list[-2]["type"]["type"]["_nodetype"] == "Union":
+        with open(CFILE, "r") as f1:
+            cfile_lines = f1.readlines()
 
-        if res_list[-2]["type"] is not None and \
-                res_list[-2]["coord"] is not None and re.split(":", res_list[-2]["coord"])[0] == CFILE and \
-                res_list[-2]["type"].__contains__("declname") and res_list[-2]["type"]["declname"] is not None:
+            for index in index_list:
+                target_name = TARGET_NAME_LIST[index]
+                target_line = TARGET_LINE_LIST[index]
 
-            if not re.match(r"func*", res_list[-2]["type"]["declname"]) \
-                    and not re.match(r"argv", res_list[-2]["type"]["declname"]):
+                ptr_stmt = cfile_lines[int(target_line) - 1]
+                cfile_lines[int(target_line) - 1] = ""
+                cfile_lines[int(
+                    target_line) - 1] = "{}{} = (void*)0;".format(ptr_stmt, target_name)
 
-                target_name_list.append(
-                    res_list[-2]["type"]["declname"])
-                target_line_list.append(
-                    re.split(":", res_list[-2]["coord"])[-2])
+                for item in PTRQQ_SCOPE_LIST:
+                    if item.get(target_name) is not None:
+                        for scope_line in item.get(target_name):
+                            branch_stmt = cfile_lines[int(scope_line)]
+                            cfile_lines[int(scope_line)] = ""
+                            cfile_lines[int(
+                                scope_line)] = "{}*{} = 123456;".format(branch_stmt, target_name)
 
-    if len(target_line_list)-1 > 0:
-        index = random.randint(0, len(target_line_list)-1)
-        target_line = target_line_list[index]
-        target_name = target_name_list[index]
+            with open(CFILE, "w") as f2:
+                f2.writelines(cfile_lines)
 
-        # test: target_name and target_line
-        print("{}: {}\n".format(target_name, target_line))
 
-        f = open(CFILE, "r")
-        cfile_lines = f.readlines()
-        cfile_lines[int(target_line)-1] = cfile_lines[int(target_line)-1] + \
-            "{} = (void*)0;\n".format(target_name)
-        f.close()
+def instrument_out_of_bound_index(ast):
+    """
+    such as: arr[1][2][3] -> arr[9][9][9]
+    """
+    global CFILE
 
-        with open(CFILE, "w") as f:
-            f.writelines(cfile_lines)
-            f.close()
+    TMP_FLAG = 42
 
-        return True
+    with open(CFILE, "r") as f1:
+        cfile_lines = f1.readlines()
 
-    else:
-        return None
+    tmp_list = []
+    ret_list = []
+    target_lines = []
+    target_comns = []
+
+    path_list = find_path(ast, "_nodetype", "ArrayRef")
+
+    for x in range(len(path_list)):
+        ret_list = fetch_value(ast, path_list, tmp_list, ret_list, x)
+
+        if ret_list[-2].__contains__("coord") and ret_list[-2]["coord"] is not None:
+            target_line = int(re.split(":", ret_list[-2]["coord"])[-2])
+            target_comn = int(re.split(":", ret_list[-2]["coord"])[-1])
+
+            if ((target_line not in target_lines) and (target_comn not in target_comns)):
+                target_lines.append(target_line)
+                target_comns.append(target_comn)
+
+                pattern = re.compile(r'\[(\d+)\]')
+                matches = pattern.finditer(
+                    str(cfile_lines[target_line - 1]), target_comn)
+
+                if str(cfile_lines[target_line - 1]).find("=") == -1:
+                    for match in matches:
+                        target_comn = match.end()
+
+                        # match_index.append(int(match.group(1)))
+
+                        tmp_x = str(
+                            cfile_lines[target_line - 1])[:int(str(cfile_lines[target_line - 1]).find("["))]
+                        tmp_y = str(cfile_lines[target_line - 1])[
+                            int(str(cfile_lines[target_line - 1]).find("[")):]
+
+                        tmp_y = tmp_y.replace(str(cfile_lines[target_line - 1])[target_comn - 2],
+                                              str(len(str(cfile_lines[target_line - 1])[target_comn - 2]) * 9))
+
+                        cfile_lines[target_line - 1] = tmp_x + tmp_y
+
+                        TMP_FLAG += 1
+
+                        if TMP_FLAG == 70:
+                            break
+
+                        if str(cfile_lines[target_line - 1])[target_comn:].startswith("["):
+                            continue
+                        else:
+                            break
+            else:
+                continue
+
+        if TMP_FLAG == 70:
+            break
+
+    with open(CFILE, "w") as f2:
+        f2.writelines(cfile_lines)
 
 
 def compile_and_run_cfile():
     """
-    compile and run instrumented CFILE
+    compile and run instrumented test cases
     """
-    global CSMITH_HEADER, CFILE
+    global CSMITH_HEADER, CFILE, SAN_FILE, NPD_LINE_SAN, OOB_LINE_SAN
 
-    compile_ret = subprocess.run(["gcc", "-I", CSMITH_HEADER, "-fsanitize=null", CFILE],
+    compile_ret = subprocess.run(["gcc", "-I", CSMITH_HEADER, "-fsanitize=null", "-fsanitize=bounds", CFILE],
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
 
     if compile_ret.returncode == 0:
-        run_ret = subprocess.run(["timeout", "3s", "./a.out"],
+        run_ret = subprocess.run(["timeout", "0.001s", "./a.out"],
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
 
-        if run_ret.stderr.count("runtime error") >= 1 and run_ret.stderr.count("null pointer") >= 1 and run_ret.stderr.count("the monitored command dumped core") >= 1:
-            return not run_ret
-        else:
-            # test: run_ret.stderr
-            with open("run_ret.error", "w") as f:
+        if run_ret.stderr.count("runtime error") >= 1 and \
+                ((run_ret.stderr.count("null pointer") >= 1) or (run_ret.stderr.count("out of bounds") >= 1)):
+
+            with open(SAN_FILE, "w") as f:
                 f.writelines(run_ret.stderr)
 
+            with open(SAN_FILE, "r") as f:
+                for line in f.readlines():
+                    if (("runtime error" in line) and ("null pointer" in line)) and \
+                       (int(re.split(":", line)[-4]) not in NPD_LINE_SAN):
+                        NPD_LINE_SAN.append(int(re.split(":", line)[-4]))
+                    if (("runtime error" in line) and ("out of bounds" in line)) and \
+                       (int(re.split(":", line)[-4]) not in OOB_LINE_SAN):
+                        OOB_LINE_SAN.append(int(re.split(":", line)[-4]))
+
+            return True
+        else:
+            return None
+
     else:
-        print("compile failed\n")
-
-
-def check_from_report(sa):
-    """
-    check NPD from report of analyzer
-    """
-    global REPORT_FILE_GSA, REPORT_FILE_CSA, MIS_NPD_NUM
-
-    if sa == "gsa":
-        check_cmd = 'grep "\[CWE\-476\]"'
-        ret = os.system(check_cmd + " < " + REPORT_FILE_GSA)
-
-    elif sa == "csa":
-        check_cmd = 'grep "\[core\.NullDereference\]"'
-        ret = os.system(check_cmd + " < " + REPORT_FILE_CSA)
-
-    ret >>= 8
-
-    if ret != 0:
-        MIS_NPD_NUM += 1
-        os.system("mv {} {}_mis_{}".format(CFILE, sa, CFILE))
-    else:
-        os.system("rm -rf {}".format(CFILE))
-
-
-def analyze_with_gsa():
-    """
-    analyze test cases with gcc static analyzer
-    """
-    global CSMITH_HEADER, GCC_ANALYZER, CFILE, REPORT_FILE_GSA, ANALYZER_TIMEOUT
-
-    ret = os.system(ANALYZER_TIMEOUT + " " + GCC_ANALYZER + " -msse4.2 -c " +
-                    "-I" + " " + CSMITH_HEADER + " " + CFILE + " > " + REPORT_FILE_GSA + " 2>&1")
-    ret >>= 8
-
-    if ret == 0:
-        check_from_report("gsa")
-    else:
-        print("analyze_with_gsa ret: {}\n".format(ret))
+        write_exception("{}\n".format(compile_ret.stderr))
 
 
 def analyze_with_csa():
     """
-    analyze test cases with clang static analyzer
+    analyze the test case with CSA
     """
-    global CSMITH_HEADER, CLANG_ANALYZER, CLANG_OPTIONS, CFILE, REPORT_FILE_CSA, ANALYZER_TIMEOUT
+    global CSMITH_HEADER, CLANG_ANALYZER, CFILE, REPORT_FILE_CSA, ANALYZER_TIMEOUT, \
+        FN_NPD_CSA_NUM, NPD_LINE_SAN, OOB_LINE_SAN, NPD_LINE_CSA, OOB_LINE_CSA
 
-    ret = os.system(ANALYZER_TIMEOUT + " " + CLANG_ANALYZER + " -o " + "report_html" + " clang " +
-                    CLANG_OPTIONS + " -c " + "-I" + " " + CSMITH_HEADER + " " + CFILE + " > " + REPORT_FILE_CSA + " 2>&1")
+    ret = os.system(
+        "{} {} {} > {} 2>&1".format(ANALYZER_TIMEOUT, CLANG_ANALYZER, CFILE, REPORT_FILE_CSA))
     ret >>= 8
 
     if ret == 0:
-        check_from_report("csa")
+        with open(REPORT_FILE_CSA, "r") as f:
+            for line in f.readlines():
+                if ("core.NullDereference" in line) and (int(re.split(":", line)[-4]) not in NPD_LINE_CSA):
+                    NPD_LINE_CSA.append(int(re.split(":", line)[-4]))
+                if (("alpha.security.ArrayBoundV2" in line) or ("array-bounds" in line)) and (int(re.split(":", line)[-4]) not in OOB_LINE_CSA):
+                    OOB_LINE_CSA.append(int(re.split(":", line)[-4]))
+
+        if len(NPD_LINE_CSA) < len(NPD_LINE_SAN):
+            os.system("cp {} fn_csa/{}".format(CFILE, CFILE))
+        else:
+            for item in NPD_LINE_SAN:
+                if item not in NPD_LINE_CSA:
+                    os.system("cp {} fn_csa/{}".format(CFILE, CFILE))
+
+        if len(OOB_LINE_CSA) < len(OOB_LINE_SAN):
+            os.system("cp {} fn_csa/{}".format(CFILE, CFILE))
+        else:
+            for item in NPD_LINE_SAN:
+                if item not in OOB_LINE_CSA:
+                    os.system("cp {} fn_csa/{}".format(CFILE, CFILE))
+
     else:
-        print("analyze_with_csa ret: {}\n".format(ret))
+        if ret == 124:
+            os.system("cp {} \"?_csa\"/timeout_{}".format(CFILE, CFILE))
+        else:
+            os.system("cp {} \"?_csa\"/case_{}.c".format(CFILE, CFILE))
 
 
-def ast_to_file(ast):
+def analyze_with_gsa():
     """
-    write ast to json file
+    analyze the test case with GSA
     """
-    global AST_FILE
+    global CSMITH_HEADER, GCC_ANALYZER, CFILE, REPORT_FILE_GSA, ANALYZER_TIMEOUT, \
+        FN_NPD_GSA_NUM, NPD_LINE_SAN, OOB_LINE_SAN, NPD_LINE_GSA, OOB_LINE_GSA
 
-    with open(AST_FILE, "w") as f:
-        f.writelines(ast)
-        f.close()
+    ret = os.system(
+        "{} {} {} > {} 2>&1".format(ANALYZER_TIMEOUT, GCC_ANALYZER, CFILE, REPORT_FILE_GSA))
+    ret >>= 8
+
+    if ret == 0:
+        with open(REPORT_FILE_CSA, "r") as f:
+            for line in f.readlines():
+                if ("core.NullDereference" in line) and (int(re.split(":", line)[-4]) not in NPD_LINE_CSA):
+                    NPD_LINE_CSA.append(int(re.split(":", line)[-4]))
+                if (("alpha.security.ArrayBoundV2" in line) or ("array-bounds" in line)) and (int(re.split(":", line)[-4]) not in OOB_LINE_CSA):
+                    OOB_LINE_CSA.append(int(re.split(":", line)[-4]))
+
+        if len(NPD_LINE_CSA) < len(NPD_LINE_SAN):
+            os.system("cp {} fn_csa/{}".format(CFILE, CFILE))
+        else:
+            for item in NPD_LINE_SAN:
+                if item not in NPD_LINE_CSA:
+                    os.system("cp {} fn_csa/{}".format(CFILE, CFILE))
+
+        if len(OOB_LINE_CSA) < len(OOB_LINE_SAN):
+            os.system("cp {} fn_csa/{}".format(CFILE, CFILE))
+        else:
+            for item in NPD_LINE_SAN:
+                if item not in OOB_LINE_CSA:
+                    os.system("cp {} fn_csa/{}".format(CFILE, CFILE))
+
+    else:
+        if ret == 124:
+            os.system("cp {} \"?_csa\"/timeout_{}".format(CFILE, CFILE))
+        else:
+            os.system("cp {} \"?_csa\"/case_{}.c".format(CFILE, CFILE))
 
 
-def write_script_run_args():
-    '''
-    write down script running args
-    '''
-    global CSMITH_USER_OPTIONS, GCC_ANALYZER, CLANG_ANALYZER, CLANG_OPTIONS
+def write_exception(exception):
+    """
+    write down the exception
+    """
+    global CFILE, CFILE_TMP
 
-    with open("script_run_args.info", "w") as f:
+    if CFILE_TMP != CFILE:
+        CFILE_TMP = CFILE
 
-        f.write("time: {}\n\n".format((time.strftime(
-            "%Y-%m-%d %H:%M:%S %a", time.localtime()))))
-        f.write("csmith options: {}\n\n".format(CSMITH_USER_OPTIONS))
-        f.write("gcc analyzer: {}\n\n".format(GCC_ANALYZER))
-        f.write("clang analyzer: {}\n\n".format(CLANG_ANALYZER))
-        f.write("clang options: {}\n\n".format(CLANG_OPTIONS))
+        with open("exception.md", "a+") as f:
+            f.write("## {}\n\n".format(CFILE))
 
-        f.close()
+    with open("exception.md", "a+") as f:
+        f.write("{}\n\n".format(exception))
+
+
+def write_fuzzing_result():
+    """
+    write down the result of fuzzing
+    """
+    global FN_NPD_CSA_NUM, FN_NPD_GSA_NUM, FN_OOB_CSA_NUM, FN_OOB_GSA_NUM
+
+    with open("fuzzing_result.txt", "w") as f:
+        f.write("FN_NPD_CSA_NUM: {} _ FN_NPD_GSA_NUM: {}\n".format(
+            FN_NPD_CSA_NUM, FN_NPD_GSA_NUM))
+        f.write("FN_OOB_CSA_NUM: {} _ FN_OOB_GSA_NUM: {}\n".format(
+            FN_OOB_CSA_NUM, FN_OOB_GSA_NUM))
 
 
 def handle_args():
-    '''
-    handle command line args
-    '''
+    """
+    handle the command line args
+    """
     parser = argparse.ArgumentParser(
-        description="fuzz static analyzers for false negative related null pointer dereference")
+        description="fuzz static analyzer for FN related NPD & OOB")
     parser.add_argument(
         "num_t", type=int, help="choose number of threads of fuzzing")
     parser.add_argument(
         "num_c", type=int, help="choose number of cases under each thread")
 
-    args = parser.parse_args()
-    return args
+    return parser.parse_args()
 
 
 def main():
-    global CFILE, AST_FILE, OUT_FILE, REPORT_FILE_GSA, REPORT_FILE_CSA
+    global CFILE, SAN_FILE, REPORT_FILE_CSA, REPORT_FILE_GSA, TARGET_NAME_LIST, TARGET_LINE_LIST
 
     args = handle_args()
-    write_script_run_args()
 
     for i in range(args.num_c):
         CFILE = "case_{}.c".format(i)
-        AST_FILE = "case_{}_ast.json".format(i)
-        OUT_FILE = "case_{}.o".format(i)
-        REPORT_FILE_GSA = "case_{}_gsa.txt".format(i)
         REPORT_FILE_CSA = "case_{}_csa.txt".format(i)
+        REPORT_FILE_GSA = "case_{}_gsa.txt".format(i)
+        SAN_FILE = "case_{}_san.txt".format(i)
 
-        if generate_code():
+        TARGET_NAME_LIST.clear()
+        TARGET_LINE_LIST.clear()
+
+        NPD_LINE_SAN.clear()
+        OOB_LINE_SAN.clear()
+        NPD_LINE_CSA.clear()
+        OOB_LINE_CSA.clear()
+        NPD_LINE_GSA.clear()
+        OOB_LINE_GSA.clear()
+
+        try:
+            fuzz_case_with_csmith()
+        except Exception as e:
+            write_exception("fuzz_case_with_csmith: {}\n".format(str(e)))
+            continue
+
+        try:
             ast = to_json(from_dict(file_to_dict(CFILE)),
                           sort_keys=True, indent=4)
+        except Exception as e:
+            write_exception("ast_to_json: {}\n".format(str(e)))
+            continue
 
-            if instrument_cfile(ast, find_path_by_kv(ast)) and compile_and_run_cfile():
-                analyze_with_gsa()
+        try:
+            filter_ptr(ast, find_path(ast, "_nodetype", "PtrDecl"))
+        except Exception as e:
+            write_exception("filter_ptr: {}\n".format(str(e)))
+            continue
+
+        try:
+            instrument_nullptr_then_defer()
+        except Exception as e:
+            write_exception(
+                "instrument_nullptr_then_defer: {}\n".format(str(e)))
+            continue
+
+        try:
+            instrument_out_of_bound_index(ast)
+        except Exception as e:
+            write_exception(
+                "instrument_out_of_bound_index: {}\n".format(str(e)))
+            continue
+
+        try:
+            cr_flag = compile_and_run_cfile()
+        except Exception as e:
+            write_exception("compile_and_run_cfile: {}\n".format(str(e)))
+            continue
+
+        try:
+            if cr_flag:
                 analyze_with_csa()
-            else:
-                # test: func ast_to_file
-                ast_to_file(ast)
-
-                # test: func analyze_with_gsa/csa
-                # analyze_with_gsa()
-                # analyze_with_csa()
+                analyze_with_gsa()
+        except Exception as e:
+            write_exception("analyze_with_(csa/gsa): {}\n".format(str(e)))
+            continue
 
 
 if __name__ == "__main__":
