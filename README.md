@@ -1,9 +1,9 @@
 # Finding and Understanding Defects in Static Analyzers
-## Abstract
+## 1. Abstract
 Static analyzers are playing crucial roles in finding program bugs or vulnerabilities, and thus improving software reliability. However, these analyzers often report with both false positives (FPs) and false negatives (FNs) resulting from implementation flaws and design choices, which obstruct their practical applicability. Detecting the defects of analyzers remains challenging since static analyzers usually lack clear specifications,
 and the results obtained from different static analyzers may differ.To overcome this challenge, this paper designs two types of oracles to find defects in static analyzers with randomly generated programs. The first oracle is derived from dynamic execution results and the second one leverages the program states reasoned by the static analyzers. To evaluate the effectiveness of these two oracles, we built a testing framework to perform a testing campaign on three state-of-the-art static analyzers: Clang Static Analyzer (CSA), GCC Static Analyzer (GSA), and Pinpoint. We found 38 unique defects in these analyzers, 28 of which have been confirmed or fixed by the developer. We conducted a comprehensive case study on the found defects followed by several insights and lessons learned for improving static analyzers.
 
-## Methodology
+## 2. Methodology
 In this paper we propose two novel types of oracles to find defects in static analyzers. On the one hand, we observe that many static analyzers support checkers to find specific coding issues such as null pointer dereference (NPD) and out of bounds (OOB). Thus, our insight is to leverage such checkers as the handler to validate the correctness of static analyzers. Specifically, we can use the runtime properties (e.g., existence of NPD or OOB) of the given program as the ground-truth to validate the results of the corresponding checkers. We named this type of oracle as the dynamic oracle. On the other hand, we observe that many static analyzers privode debug checks to inspect the program states. Thus, our insight is to generate equivalent but different representations of program states to validate the analysis results. We named this type of oracle as the static oracle.  
 
 <p align="center">
@@ -22,7 +22,7 @@ In the static oracle, we generate ground truths by inserting equivalent expressi
 <img src="./figures/listing-2.png" alt= “Workflow” width="600">
 </p>
 
-## Results of the Found Defects
+## 3. Results of the Found Defects
 Table 3 gives the results of found defects in CSA, GSA, and Pinpoint. Specifically, the dynamic oracle found 5, 12, and 3 defects in CSA, GSA, and Pinpoint, respectively, while the static oracle found 7 and 11 defects in CSA and GSA, respectively. Overall, the dynamic and static oracle found 20 and 18 defects, respectively. The numbers of defects found in CSA, GSA, and Pinpoint are 12, 23, and 3, respectively. In total, we found 38 defects in the three static analyzers.
 <p align="center">
 <img src="./figures/table-3.png" alt= “Workflow” width="400">
@@ -33,4 +33,27 @@ Table 4 lists these found defects. Specifically, to facilitate understanding the
 <img src="./figures/table-4.png" alt= “Workflow” width="800">
 </p>
 
-## Replication
+## 4. Replication
+This replication package includes all the artifacts in this study, i.e., the found defects and the source code of testing static analyzers.
+
+### 4.1 Contents
+```bash
+Root Dir
+    |
+    |--- defects: the found defeccts
+    |--- tools.py: the script scripts for running testing 
+    |--- run_pinpoint.py: the script to use pinpoint to analyze Csmith-generated c program
+    |--- interestness_template_pinpoint.py: the template for generate the reducing script to reducing the FP-inducing program of pinpoint
+    |--- interestness_template_gcc.py:  the template for generate the reducing script to reducing the FP-inducing program of gcc
+    |--- interestness_template_clang.py: the template for generate the reducing script to reducing the FP-inducing program of csa
+    |--- fn_interestness_template_gsa.py:  the template for generate the reducing script to reducing the FN-inducing program of gcc
+    |--- fn_interestness_template_csa.py: the template for generate the reducing script to reducing the FN-inducing program of csa
+    |--- interestness_eval_template_gcc.py: the template for generate the reducing script to reducing the evaluation-error-inducing program of gcc
+    |--- interestness_eval_template_clang.py: the template for generate the reducing script to reducing the evaluation-error-inducing program of csa
+    |--- fuzz_sa_fp.py: the script to find fp-inducing programs in the static analyzers
+    |--- fuzz_sa_fn.py: the script to find fn-inducing programs in the static analyzers
+    |--- fuzz_sa_eval.py: the script to find evaluation-error-inducing programs in the static analyzers
+    |--- config.py: the configrations during testing
+    |--- static_muation: the instrumentation tools for creating the static oracles
+       
+```
