@@ -37,7 +37,7 @@ Table 4 lists these found defects. Specifically, to facilitate understanding the
 This replication package includes all the artifacts in this study, i.e., the found defects and the source code of testing static analyzers.
 
 ### 4.1 Contents
-```bash
+```text
 Root Dir
     |
     |--- defects: the found defeccts
@@ -56,4 +56,133 @@ Root Dir
     |--- config.py: the configrations during testing
     |--- static_muation: the instrumentation tools for creating the static oracles
        
+```
+### 4.2 Instructions for using this replication package
+Before testing, first you need to install GCC, Clang and pinpoint.
+Second, you need to download the source code of llvm-program and put the ''static _mutate'' directory in the ''clang-tools-extra'' directory of llvm-program and compile it. Then you can follow the steps below to testing static analyzers.
+
+#### Fuzzing FP  (The dynamic oracle)
+
+**Step 1. Fuzzing**
+
+Fuzzing GSA with the `npd` checker, -O0 optimaztion, 1 thread, and 10 iterations at the current dir:
+``` bash
+python3 tools.py fuzz-fp . gcc npd 0 1 10
+```
+The usage of fuzz-fp is as following:
+``` bash
+$ python3 tools.py fuzz-fp -h
+usage: tools.py fuzz-fp [-h] path {gcc,pinpoint,clang} {npd,oob} {0,1,2,3} thread num
+
+positional arguments:
+  path                  given a parent dir of fuzzing working dir
+  {gcc,pinpoint,clang}  give a analyzer
+  {npd,oob}             give a checker
+  {0,1,2,3}             optimization level
+  thread                specify the thread num for fuzzing
+  num                   the iteration times of fuzzing
+```
+**Step 2. Generating the reducing scripts:**
+
+Aftering entering the fuzzing dir, typing the following command:
+```bash
+python3 tools.py gen-reduce /path/to/interestness_template_gcc.py gcc 0 -d=.
+```
+The usage of gen-reduce:
+```bash
+$ python3 tools.py gen-reduce -h
+usage: tools.py gen-reduce [-h] [-f CFILE | -d DIR] template {clang,pinpoint,gcc} {npd,oob} {0,1,2,3}
+
+positional arguments:
+  template              specify reduce template
+  {clang,pinpoint,gcc}  give a analyzer
+  {npd,oob}             give a checker
+  {0,1,2,3}             optimization level
+
+options:
+  -h, --help            show this help message and exit
+  -f CFILE, --cfile CFILE
+                        specify cfile
+  -d DIR, --dir DIR     give a directory
+```
+
+**Step 3. Running the reducing script :**
+```bash
+python3 tools.py run-reduce -d=. 10 
+```
+The usage of run-reduce-eval:
+```bash
+$ python3 tools.py run-reduce-eval -h
+positional arguments:
+  dir         give a directory
+  thread      specify the thread num for reducing
+
+options:
+  -h, --help  show this help message and exit
+```
+
+#### Fuzzing eval usage (The static oracle)
+**Step 1. Fuzzing**
+
+Fuzzing GSA with -O0 optimaztion, 1 thread, and 10 iterations at the current dir:
+``` bash
+python3 tools.py fuzz-eval . gcc 0 1 10
+```
+The usage of fuzz-fp is as following:
+``` bash
+$ python3 tools.py fuzz-eval -h
+usage: tools.py fuzz-eval [-h] path {gcc,clang} {0,1,2,3} thread num
+
+positional arguments:
+  path         given a parent dir of fuzzing working dir
+  {gcc,clang}  give a analyzer
+  {0,1,2,3}    optimization level
+  thread       specify the thread num for fuzzing
+  num          the iteration times of fuzzing
+
+options:
+  -h, --help   show this help message and exit
+```
+**Step 2. Generating the reducing scripts:**
+
+Aftering entering the fuzzing dir, typing the following command:
+```bash
+python3 tools.py gen-reduce /path/to/interestness_eval_template_gcc.py gcc 0 -d=.
+```
+The usage of gen-reduce:
+```bash
+$ python3 tools.py gen-reduce -h
+usage: tools.py gen-reduce [-h] [-f CFILE | -d DIR] template {clang,pinpoint,gcc} {npd,oob} {0,1,2,3}
+
+positional arguments:
+  template              specify reduce template
+  {clang,pinpoint,gcc}  give a analyzer
+  {npd,oob}             give a checker
+  {0,1,2,3}             optimization level
+
+options:
+  -h, --help            show this help message and exit
+  -f CFILE, --cfile CFILE
+                        specify cfile
+  -d DIR, --dir DIR     give a directory
+```
+
+**Step 3. Running the reducing script :**
+```bash
+python3 tools.py run-reduce-eval -d=. 10 gcc 0
+```
+The usage of run-reduce-eval:
+```bash
+$ python3 tools.py run-reduce-eval -h
+usage: tools.py run-reduce-eval [-h] [-d DIR] [-f FILE] thread {gcc,clang} {0,1,2,3}
+
+positional arguments:
+  thread                specify the thread num for reducing
+  {gcc,clang}           give a analyzer
+  {0,1,2,3}             optimization level
+
+options:
+  -h, --help            show this help message and exit
+  -d DIR, --dir DIR     give a directory
+  -f FILE, --file FILE  give a file
 ```

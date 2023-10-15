@@ -601,7 +601,7 @@ def handle_args():
     parser_gen_reduce.add_argument(
         "template", type=str, help="specify reduce template")
     parser_gen_reduce.add_argument("analyzer", type=str, choices={
-        'gcc', 'clang', pinpoint}, help="give a analyzer")
+        'gcc', 'clang', 'pinpoint'}, help="give a analyzer")
     parser_gen_reduce.add_argument("checker", type=str, choices=CHECKER_LIST, help="give a checker")
     parser_gen_reduce.add_argument("optimize", type=int, choices={
                                    0, 1, 2, 3}, help="optimization level")
