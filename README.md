@@ -84,6 +84,7 @@ positional arguments:
 ```
 
 **Step 2. Checking the wrning line reachable:**
+
 Aftering entering the fuzzing dir, typing the following command:
 ```bash
 python3 tools.py check-reach gcc npd 0 -d=.
@@ -138,9 +139,9 @@ options:
 ```bash
 python3 tools.py run-reduce -d=. 10 
 ```
-The usage of run-reduce-eval:
+The usage of run-reduce:
 ```bash
-$ python3 tools.py run-reduce-eval -h
+$ python3 tools.py run-reduce -h
 positional arguments:
   dir         give a directory
   thread      specify the thread num for reducing
