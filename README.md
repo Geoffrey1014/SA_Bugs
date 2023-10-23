@@ -58,7 +58,7 @@ Root Dir
        
 ```
 ### 4.2 Instructions for using this replication package
-Before testing, first you need to install GCC, Clang and pinpoint.
+Before testing, first you need to install GCC, Clang, Pinpoint, Csmith, and Creduce.
 Second, you need to download the source code of llvm-program and put the ''static _mutate'' directory in the ''clang-tools-extra'' directory of llvm-program and compile it. Then you can follow the steps below to testing static analyzers.
 
 #### Fuzzing FP  (The dynamic oracle)
@@ -82,9 +82,37 @@ positional arguments:
   thread                specify the thread num for fuzzing
   num                   the iteration times of fuzzing
 ```
-**Step 2. Generating the reducing scripts:**
 
+**Step 2. Checking the wrning line reachable:**
 Aftering entering the fuzzing dir, typing the following command:
+```bash
+python3 tools.py check-reach gcc npd 0 -d=.
+```
+The usage of check-reach:
+```bash
+$ ftool check-reach -h
+usage: tools.py check-reach [-h] [-s] [-mn | -ma] [-cf CFILE | -d DIR] {gcc,pinpoint,clang} {npd,oob} {0,1,2,3}
+
+positional arguments:
+  {gcc,pinpoint,clang}  give a analyzer
+  {npd,oob}             give a checker
+  {0,1,2,3}             optimization level
+
+options:
+  -h, --help            show this help message and exit
+  -s, --saveOutput      do not delete generated files in checking process
+  -mn, --rmNonReachable
+                        remove non-warning-line-reachable test c files
+  -ma, --rmAllReachable
+                        remove all-warning-line-reachable test c files
+  -cf CFILE, --cfile CFILE
+                        give a cfile
+  -d DIR, --dir DIR     give a directory
+```
+
+**Step 3. Generating the reducing scripts:**
+
+Aftering entering the "reachable" dir, typing the following command:
 ```bash
 python3 tools.py gen-reduce /path/to/interestness_template_gcc.py gcc 0 -d=.
 ```
@@ -106,7 +134,7 @@ options:
   -d DIR, --dir DIR     give a directory
 ```
 
-**Step 3. Running the reducing script :**
+**Step 4. Running the reducing script :**
 ```bash
 python3 tools.py run-reduce -d=. 10 
 ```
