@@ -2,6 +2,9 @@
 
 from __future__ import print_function
 
+from config import CSMITH_HEADER, CSMITH_USER_OPTIONS, CLANG_ANALYZER, GCC_ANALYZER, ANALYZER_TIMEOUT
+from myutils import generate_code
+
 import argparse
 import json
 import os
@@ -15,15 +18,6 @@ from pycparser.plyparser import Coord
 
 sys.path.extend([".", ".."])
 
-CSMITH_HEADER = "/usr/include/csmith"
-CSMITH_USER_OPTIONS = "--no-const-pointers --no-global-variables --no-safe-math"
-
-CLANG_ANALYZER = "clang --analyze -Xanalyzer -analyzer-checker=core.NullDereference -Xanalyzer -analyzer-checker=alpha.security.ArrayBoundV2 -Xclang -analyzer-config -Xclang widen-loops=true --analyzer-output text"
-GCC_ANALYZER = "gcc -fanalyzer -Wanalyzer-null-dereference -Wanalyzer-out-of-bounds -Wno-incompatible-pointer-types -Wno-overflow"
-
-# -fdiagnostics-plain-output -fdiagnostics-format=text
-
-ANALYZER_TIMEOUT = "timeout 5s"
 
 RE_CHILD_ARRAY = re.compile(r'(.*)\[(.*)\]')
 RE_INTERNAL_ATTR = re.compile('__.*__')
@@ -194,15 +188,6 @@ def from_json(ast_json):
     return from_dict(json.loads(ast_json))
 
 
-def fuzz_case_with_csmith():
-    """
-    utilize Csmith to generate test cases
-    """
-    global CSMITH_USER_OPTIONS, CFILE
-
-    os.system("csmith {} --output {}".format(CSMITH_USER_OPTIONS, CFILE))
-
-
 def find_path(ast, target_key, target_value):
     """
     find the path based on the specified key-value and 
@@ -269,7 +254,7 @@ def scope_analysis_helper(var_name, item):
             if item["stmt"]["block_items"][index].__contains__("_nodetype") and item["stmt"]["block_items"][index]["_nodetype"] is not None and \
                 ((item["stmt"]["block_items"][index]["_nodetype"] == "If") or
                  (item["stmt"]["block_items"][index]["_nodetype"] == "For")):
-                # TODO: ...
+                # Tips: It works, but there's still some other work to do.
                 print(
                     "if / for stmt: {}\n".format(item["stmt"]["block_items"][index]["cond"]["coord"])[-2])
 
@@ -375,16 +360,16 @@ def instrument_nullptr_then_defer():
     """
     global CFILE, TARGET_NAME_LIST, TARGET_LINE_LIST, PTRQQ_SCOPE_LIST
 
-    if len(TARGET_LINE_LIST) - 1 > 7:
+    if len(TARGET_LINE_LIST) - 1 > 17:
         index_list = []
 
         try:
-            while len(index_list) < 3:
+            while len(index_list) < 10:
                 index = random.randint(0, len(TARGET_LINE_LIST) - 1)
                 if index not in index_list:
                     index_list.append(index)
         except Exception as e:
-            write_exception("{}\n".format(str(e)))
+            log_exception("{}\n".format(str(e)))
 
         with open(CFILE, "r") as f1:
             cfile_lines = f1.readlines()
@@ -511,7 +496,7 @@ def compile_and_run_cfile():
             return None
 
     else:
-        write_exception("{}\n".format(compile_ret.stderr))
+        log_exception("{}\n".format(compile_ret.stderr))
 
 
 def analyze_with_csa():
@@ -534,24 +519,24 @@ def analyze_with_csa():
                     OOB_LINE_CSA.append(int(re.split(":", line)[-4]))
 
         if len(NPD_LINE_CSA) < len(NPD_LINE_SAN):
-            os.system("cp {} fn_csa/{}".format(CFILE, CFILE))
+            os.system("cp {} fn_csa_npd/{}".format(CFILE, CFILE))
         else:
             for item in NPD_LINE_SAN:
                 if item not in NPD_LINE_CSA:
-                    os.system("cp {} fn_csa/{}".format(CFILE, CFILE))
+                    os.system("cp {} fn_csa_npd/{}".format(CFILE, CFILE))
 
         if len(OOB_LINE_CSA) < len(OOB_LINE_SAN):
-            os.system("cp {} fn_csa/{}".format(CFILE, CFILE))
+            os.system("cp {} fn_csa_oob/{}".format(CFILE, CFILE))
         else:
-            for item in NPD_LINE_SAN:
+            for item in OOB_LINE_SAN:
                 if item not in OOB_LINE_CSA:
-                    os.system("cp {} fn_csa/{}".format(CFILE, CFILE))
+                    os.system("cp {} fn_csa_oob/{}".format(CFILE, CFILE))
 
     else:
         if ret == 124:
             os.system("cp {} \"?_csa\"/timeout_{}".format(CFILE, CFILE))
         else:
-            os.system("cp {} \"?_csa\"/case_{}.c".format(CFILE, CFILE))
+            os.system("cp {} \"?_csa\"/{}".format(CFILE, CFILE))
 
 
 def analyze_with_gsa():
@@ -566,35 +551,35 @@ def analyze_with_gsa():
     ret >>= 8
 
     if ret == 0:
-        with open(REPORT_FILE_CSA, "r") as f:
+        with open(REPORT_FILE_GSA, "r") as f:
             for line in f.readlines():
-                if ("core.NullDereference" in line) and (int(re.split(":", line)[-4]) not in NPD_LINE_CSA):
-                    NPD_LINE_CSA.append(int(re.split(":", line)[-4]))
-                if (("alpha.security.ArrayBoundV2" in line) or ("array-bounds" in line)) and (int(re.split(":", line)[-4]) not in OOB_LINE_CSA):
-                    OOB_LINE_CSA.append(int(re.split(":", line)[-4]))
+                if ("CWE-476" in line) and (int(re.split(":", line)[-4]) not in NPD_LINE_GSA):
+                    NPD_LINE_GSA.append(int(re.split(":", line)[-4]))
+                if ((("CWE-121" in line) or ("CWE-122" in line) or ("CWE-126" in line)) and (int(re.split(":", line)[-4]) not in OOB_LINE_SAN)):
+                    OOB_LINE_GSA.append(int(re.split(":", line)[-4]))
 
-        if len(NPD_LINE_CSA) < len(NPD_LINE_SAN):
-            os.system("cp {} fn_csa/{}".format(CFILE, CFILE))
+        if len(NPD_LINE_GSA) < len(NPD_LINE_SAN):
+            os.system("cp {} fn_gsa_npd/{}".format(CFILE, CFILE))
         else:
             for item in NPD_LINE_SAN:
-                if item not in NPD_LINE_CSA:
-                    os.system("cp {} fn_csa/{}".format(CFILE, CFILE))
+                if item not in NPD_LINE_GSA:
+                    os.system("cp {} fn_gsa_npd/{}".format(CFILE, CFILE))
 
-        if len(OOB_LINE_CSA) < len(OOB_LINE_SAN):
-            os.system("cp {} fn_csa/{}".format(CFILE, CFILE))
+        if len(OOB_LINE_GSA) < len(OOB_LINE_SAN):
+            os.system("cp {} fn_gsa_oob/{}".format(CFILE, CFILE))
         else:
-            for item in NPD_LINE_SAN:
-                if item not in OOB_LINE_CSA:
-                    os.system("cp {} fn_csa/{}".format(CFILE, CFILE))
+            for item in OOB_LINE_SAN:
+                if item not in OOB_LINE_GSA:
+                    os.system("cp {} fn_gsa_oob/{}".format(CFILE, CFILE))
 
     else:
         if ret == 124:
             os.system("cp {} \"?_csa\"/timeout_{}".format(CFILE, CFILE))
         else:
-            os.system("cp {} \"?_csa\"/case_{}.c".format(CFILE, CFILE))
+            os.system("cp {} \"?_csa\"/{}".format(CFILE, CFILE))
 
 
-def write_exception(exception):
+def log_exception(exception):
     """
     write down the exception
     """
@@ -610,17 +595,26 @@ def write_exception(exception):
         f.write("{}\n\n".format(exception))
 
 
-def write_fuzzing_result():
+def log_fuzzing_result(analyzer, checker):
     """
     write down the result of fuzzing
     """
     global FN_NPD_CSA_NUM, FN_NPD_GSA_NUM, FN_OOB_CSA_NUM, FN_OOB_GSA_NUM
 
-    with open("fuzzing_result.txt", "w") as f:
-        f.write("FN_NPD_CSA_NUM: {} _ FN_NPD_GSA_NUM: {}\n".format(
-            FN_NPD_CSA_NUM, FN_NPD_GSA_NUM))
-        f.write("FN_OOB_CSA_NUM: {} _ FN_OOB_GSA_NUM: {}\n".format(
-            FN_OOB_CSA_NUM, FN_OOB_GSA_NUM))
+    if analyzer == "clang" and checker == "npd":
+        with open("fuzzing_result.txt", "w") as f:
+            f.write("FN_NPD_CSA_NUM: {}\n".format(FN_NPD_CSA_NUM))
+    elif analyzer == "gcc" and checker == "npd":
+        with open("fuzzing_result.txt", "w") as f:
+            f.write("FN_NPD_GSA_NUM: {}\n".format(FN_NPD_GSA_NUM))
+    elif analyzer == "clang" and checker == "oob":
+        with open("fuzzing_result.txt", "w") as f:
+            f.write("FN_OOB_CSA_NUM: {}\n".format(FN_NPD_CSA_NUM))
+    elif analyzer == "gcc" and checker == "oob":
+        with open("fuzzing_result.txt", "w") as f:
+            f.write("FN_OOB_GSA_NUM: {}\n".format(FN_OOB_GSA_NUM))
+    else:
+        log_exception("Invalid analyzer or checker!\n")
 
 
 def handle_args():
@@ -628,11 +622,16 @@ def handle_args():
     handle the command line args
     """
     parser = argparse.ArgumentParser(
-        description="fuzz static analyzer for FN related NPD & OOB")
+        description="Fuzz static analyzers to find false nagetives.")
+
+    parser.add_argument("analyzer", type=str, choices=[
+                        "clang", "gcc"], help="choose an analyzer")
+    parser.add_argument("checker", type=str, choices=[
+                        "npd", "oob"], help="choose a checker")
     parser.add_argument(
-        "num_t", type=int, help="choose number of threads of fuzzing")
+        "-o", type=int, choices=[0, 1, 2, 3], help="choose an opt level")
     parser.add_argument(
-        "num_c", type=int, help="choose number of cases under each thread")
+        "num", type=int, help="choose iteration times of fuzzing under each thread")
 
     return parser.parse_args()
 
@@ -642,67 +641,78 @@ def main():
 
     args = handle_args()
 
-    for i in range(args.num_c):
-        CFILE = "case_{}.c".format(i)
+    for i in range(args.num):
+        SAN_FILE = "case_{}_san.txt".format(i)
         REPORT_FILE_CSA = "case_{}_csa.txt".format(i)
         REPORT_FILE_GSA = "case_{}_gsa.txt".format(i)
-        SAN_FILE = "case_{}_san.txt".format(i)
 
         TARGET_NAME_LIST.clear()
         TARGET_LINE_LIST.clear()
 
         NPD_LINE_SAN.clear()
-        OOB_LINE_SAN.clear()
         NPD_LINE_CSA.clear()
-        OOB_LINE_CSA.clear()
         NPD_LINE_GSA.clear()
+
+        OOB_LINE_SAN.clear()
+        OOB_LINE_CSA.clear()
         OOB_LINE_GSA.clear()
 
         try:
-            fuzz_case_with_csmith()
+            CFILE = generate_code(i, CSMITH_USER_OPTIONS)
         except Exception as e:
-            write_exception("fuzz_case_with_csmith: {}\n".format(str(e)))
+            log_exception("generate_code: {}\n".format(str(e)))
             continue
 
         try:
             ast = to_json(from_dict(file_to_dict(CFILE)),
                           sort_keys=True, indent=4)
         except Exception as e:
-            write_exception("ast_to_json: {}\n".format(str(e)))
+            log_exception("ast_to_json: {}\n".format(str(e)))
             continue
 
-        try:
-            filter_ptr(ast, find_path(ast, "_nodetype", "PtrDecl"))
-        except Exception as e:
-            write_exception("filter_ptr: {}\n".format(str(e)))
-            continue
-
-        try:
-            instrument_nullptr_then_defer()
-        except Exception as e:
-            write_exception(
-                "instrument_nullptr_then_defer: {}\n".format(str(e)))
-            continue
-
-        try:
-            instrument_out_of_bound_index(ast)
-        except Exception as e:
-            write_exception(
-                "instrument_out_of_bound_index: {}\n".format(str(e)))
+        if args.checker == "npd":
+            try:
+                filter_ptr(ast, find_path(ast, "_nodetype", "PtrDecl"))
+            except Exception as e:
+                log_exception("filter_ptr: {}\n".format(str(e)))
+                continue
+            try:
+                instrument_nullptr_then_defer()
+            except Exception as e:
+                log_exception(
+                    "instrument_nullptr_then_defer: {}\n".format(str(e)))
+                continue
+        elif args.checker == "oob":
+            try:
+                instrument_out_of_bound_index(ast)
+            except Exception as e:
+                log_exception(
+                    "instrument_out_of_bound_index: {}\n".format(str(e)))
+                continue
+        else:
+            log_exception("Invalid checker!\n")
             continue
 
         try:
             cr_flag = compile_and_run_cfile()
         except Exception as e:
-            write_exception("compile_and_run_cfile: {}\n".format(str(e)))
+            log_exception("compile_and_run_cfile: {}\n".format(str(e)))
             continue
 
         try:
             if cr_flag:
-                analyze_with_csa()
-                analyze_with_gsa()
+                if args.analyzer == "clang":
+                    analyze_with_csa()
+                if args.analyzer == "gcc":
+                    analyze_with_gsa()
         except Exception as e:
-            write_exception("analyze_with_(csa/gsa): {}\n".format(str(e)))
+            log_exception("analyze_with_analyzer: {}\n".format(str(e)))
+            continue
+
+        try:
+            log_fuzzing_result(args.analyzer, args.checker)
+        except Exception as e:
+            log_exception("log_fuzzing_result: {}\n".format(str(e)))
             continue
 
 
