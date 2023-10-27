@@ -115,7 +115,7 @@ options:
 
 Aftering entering the "reachable" dir, typing the following command:
 ```bash
-python3 tools.py gen-reduce /path/to/interestness_template_gcc.py gcc 0 -d=.
+python3 tools.py gen-reduce /path/to/interestness_template_gcc.py gcc npd 0 -d=.
 ```
 The usage of gen-reduce:
 ```bash
