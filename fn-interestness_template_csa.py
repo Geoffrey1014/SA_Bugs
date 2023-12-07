@@ -1,8 +1,9 @@
 #!/usr/bin/python3
-
 import os
 import subprocess
 import shlex
+CFILE = " "
+OPT_LEVEL = " "
 
 CSMITH_HEADER = "/usr/include/csmith"
 CLANG_OPTIONS = "-Xclang -analyzer-config -Xclang widen-loops=true"
@@ -11,7 +12,7 @@ CLANG_ANALYZER = "scan-build"
 U_FLAG = 0
 N_FLAG = 0
 
-subprocess.run(["gcc", "-I", CSMITH_HEADER, "-O3", "-fsanitize=null", "example.c"],
+subprocess.run(["gcc", "-I", CSMITH_HEADER, "-O3", "-fsanitize=null", CFILE],
                stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
 
 run_ret = subprocess.run(["timeout", "10s", "./a.out"],
@@ -27,7 +28,7 @@ if not os.path.exists("report_html"):
 clang_analyzer_args_split = shlex.split(CLANG_ANALYZER)
 clang_args_split = shlex.split(CLANG_OPTIONS)
 
-analyze_ret = subprocess.run(clang_analyzer_args_split + ["-o", report_html, "clang"] + clang_args_split + ["-O3", "-c", "-I", CSMITH_HEADER, "example.c"],
+analyze_ret = subprocess.run(clang_analyzer_args_split + ["-o", report_html, "clang"] + clang_args_split + ["-O3", "-c", "-I", CSMITH_HEADER, CFILE],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
 
 if analyze_ret.stderr.count("error") != 0:
