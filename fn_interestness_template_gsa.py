@@ -1,8 +1,9 @@
 #!/usr/bin/python3
-
 import os
 import subprocess
 import shlex
+CFILE = " "
+OPT_LEVEL = " "
 
 CSMITH_HEADER = "/usr/include/csmith"
 GCC_ANALYZER = "gcc -fanalyzer -fdiagnostics-plain-output -fdiagnostics-format=text"
@@ -10,7 +11,7 @@ GCC_ANALYZER = "gcc -fanalyzer -fdiagnostics-plain-output -fdiagnostics-format=t
 U_FLAG = 0
 N_FLAG = 0
 
-subprocess.run(["gcc", "-I", CSMITH_HEADER, "-O3", "-fsanitize=null", "example.c"],
+subprocess.run(["gcc", "-I", CSMITH_HEADER, "-O3", "-fsanitize=null", CFILE],
                stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
 
 run_ret = subprocess.run(["timeout", "10s", "./a.out"],
@@ -21,7 +22,7 @@ if run_ret.stderr.count("runtime error") < 1 and run_ret.stderr.count("null poin
 
 analyze_args_split = shlex.split(GCC_ANALYZER)
 analyze_ret = subprocess.run(
-    analyze_args_split + ["-I", CSMITH_HEADER, "-O3", "example.c"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
+    analyze_args_split + ["-I", CSMITH_HEADER, "-O3", CFILE], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
 
 if analyze_ret.stderr.count("error") != 0:
     exit(5)
