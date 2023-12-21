@@ -17,22 +17,21 @@ RUN_FILE = "run_" + FILE_NAME
 RUN_P_FILE = "run_p_" + FILE_NAME
 
 
-def get_eval_false_lines(analysis_result:str):
+def get_eval_false_lines(analysis_result: str):
     eval_false_lines = set()
     lines = analysis_result.split('\n')
 
     for line in lines:
-        # print("line %s" %line)
         if re.search("warning: FALSE", line):
             false_info = re.split(":", line)
             eval_false_lines.add(false_info.pop(1))
 
-    print("eval_false_lines: %s" %eval_false_lines)
+    print("eval_false_lines: %s" % eval_false_lines)
 
     return eval_false_lines
 
 
-def instrument_cfile( eval_falase_lines):
+def instrument_cfile(eval_falase_lines):
     print("instrument_cfile: %s" % INSTRUMENT_FILE)
     print("instrument_p_cfile: %s" % INSTRUMENT_P_FILE)
     with open(INSTRUMENT_FILE, "r") as f:
@@ -42,7 +41,8 @@ def instrument_cfile( eval_falase_lines):
             c_num = int(num)-1
             print(c_num)
             print(cfile_lines[c_num])
-            cfile_lines[c_num] = 'printf("FALSE_FLAG\\n");' + cfile_lines[c_num]
+            cfile_lines[c_num] = 'printf("FALSE_FLAG\\n");' + \
+                cfile_lines[c_num]
             print(cfile_lines[c_num])
 
         with open(INSTRUMENT_P_FILE, "w") as f:
@@ -52,14 +52,14 @@ def instrument_cfile( eval_falase_lines):
 
 
 print("instrument __analyzer_eval to cfile")
-instru_ret = subprocess.run("%s %s -- -I %s "%(TOOLING_CFE,CFILE,CSMITH_HEADER),
-                               stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True, check=True)
+instru_ret = subprocess.run("%s %s -- -I %s " % (TOOLING_CFE, CFILE, CSMITH_HEADER),
+                            stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True, check=True)
 
 if instru_ret.returncode != 0:
     exit(instru_ret.returncode)
 
-instru_ret = subprocess.run("%s gcc %s -- -I %s > %s"%(TOOLING_EVAL, CFILE, CSMITH_HEADER, INSTRUMENT_FILE),
-                               stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True , check=True )
+instru_ret = subprocess.run("%s gcc %s -- -I %s > %s" % (TOOLING_EVAL, CFILE, CSMITH_HEADER, INSTRUMENT_FILE),
+                            stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True, check=True)
 
 if instru_ret.returncode != 0:
     exit(instru_ret.returncode)
@@ -68,7 +68,7 @@ if instru_ret.returncode != 0:
 print("run analyzer")
 analyzer_args_split = shlex.split(GCC_ANALYZER)
 analyzer_ret = subprocess.run(
-    analyzer_args_split + ['-O' + OPT_LEVEL, '-c' ,'-I', CSMITH_HEADER, INSTRUMENT_FILE], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
+    analyzer_args_split + ['-O' + OPT_LEVEL, '-c', '-I', CSMITH_HEADER, INSTRUMENT_FILE], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
 print(analyzer_ret.stderr)
 
 
@@ -77,19 +77,19 @@ if analyzer_ret.stderr.count("warning: FALSE") == 0:
     # print("NullDereference disappear")  # cannot comment this line!
     exit(3)
 
-if analyzer_ret.stderr.count("-Wanalyzer-use-of-uninitialized-value") != 0 :
+if analyzer_ret.stderr.count("-Wanalyzer-use-of-uninitialized-value") != 0:
     print("has -Wanalyzer-use-of-uninitialized-value ")
     exit(4)
 
-if analyzer_ret.stderr.count("-Wanalyzer-infinite-recursion") != 0 :
+if analyzer_ret.stderr.count("-Wanalyzer-infinite-recursion") != 0:
     print("has -Wanalyzer-infinite-recursion ")
     exit(5)
-    
-if analyzer_ret.stderr.count("undefined reference") != 0 :
+
+if analyzer_ret.stderr.count("undefined reference") != 0:
     print("has undefined reference ")
     exit(6)
-    
-# 从 analyze 的结果中拿到 FALSE 的行号， 然后插桩 printf(“FALSE_FLAG”); 
+
+# 从 analyze 的结果中拿到 FALSE 的行号， 然后插桩 printf(“FALSE_FLAG”);
 
 eval_false_lines = get_eval_false_lines(analyzer_ret.stderr)
 instrument_cfile(eval_false_lines)
@@ -111,7 +111,7 @@ run_ret = subprocess.run(['timeout', '5s', './'+RUN_FILE],
 print(run_ret)
 
 
-# check 是否有 flag 
+# check 是否有 flag
 if run_ret.stdout.count("FALSE_FLAG") == 0:
     exit(7)
 
@@ -119,21 +119,12 @@ if run_ret.stdout.count("FALSE_FLAG") == 0:
 if run_ret.stdout.count("FALSE_FLAG") > 10000:
     exit(8)
 
-# if run_ret.returncode == 124:
-#     print("Timeout!")  # cannot comment this line!
-#     exit(run_ret.returncode)
-# elif run_ret.returncode != 0: #TODO： run fail 没有关系其实
-#     print("Run failed!")  # cannot comment this line!
-#     exit(run_ret.returncode)
-
-
-
 
 # 要保证 main 函数还在，
 
 # use ccomp to check if there are undefined behaviors
 print("run compcert")
-ccomp_ret = subprocess.run(['ccomp', '-I', CSMITH_HEADER, '-interp', '-fall', 
+ccomp_ret = subprocess.run(['ccomp', '-I', CSMITH_HEADER, '-interp', '-fall',
                            CFILE], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
 if ccomp_ret.stdout.count("Undefined behavior") != 0:
     print("Undefined behavior")

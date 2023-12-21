@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import subprocess,shlex,sys,json
+import os,subprocess,shlex,sys,json
 from config import *
 
 CFILE = " "

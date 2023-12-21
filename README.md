@@ -24,11 +24,13 @@ In the static oracle, we generate ground truths by inserting equivalent expressi
 
 ## 3. Results of the Found Defects
 Table 3 gives the results of found defects in CSA, GSA, and Pinpoint. Specifically, the dynamic oracle found 5, 12, and 3 defects in CSA, GSA, and Pinpoint, respectively, while the static oracle found 7 and 11 defects in CSA and GSA, respectively. Overall, the dynamic and static oracle found 20 and 18 defects, respectively. The numbers of defects found in CSA, GSA, and Pinpoint are 12, 23, and 3, respectively. In total, we found 38 defects in the three static analyzers.
+
 <p align="center">
 <img src="./figures/table-3.png" alt= “Workflow” width="400">
 </p>
 
-Table 4 lists these found defects. Specifically, to facilitate understanding these found defects, we classified them into 8 major groups from low-level to high-level issues, including “Implementation Errors”, “Defects in Heuristics”, “Defects in Handling Loops”, “Mishandling Language Features”, “Overly Eager Assumption”, “Defects Induced by Design Choices”, “Defects Induced by Compiler Optimizations”, and “Others”. In Table 4, column “Class" gives classification of the defect. Column “Status" gives the status of the defect, including “fixed”, “confirmed”, “duplicated” (also reported by others), and “pending” (under active discussion between developers). Column “Oracle” indicates which type of oracle found this defect. Specifically, for the dynamic oracle type, the annotation of the “-” sign indicates that the corresponding defect is a false nagetive (FN), while the annotation of the “+” sign indicates that the corresponding defect is a false positive (FP). In total, by using the dynamic oracle, we found 7 false negatives and 13 false positives. Column “Analyzer” indicates which static analyzer is affected. Column “Defect Description” gives a brief description of the defect. Among all the 38 found defects, 28 have been confirmed by developers. Of these 28 confirmed defects, four were confirmed as duplicated (which were also reported by others) and four defects have been quickly fixed. 
+Table 4 lists these found defects. Specifically, to facilitate understanding these found defects, we classified them into 8 major groups from low-level to high-level issues, including “Implementation Errors”, “Defects in Heuristics”, “Defects in Handling Loops”, “Mishandling Language Features”, “Overly Eager Assumption”, “Defects Induced by Design Choices”, “Defects Induced by Compiler Optimizations”, and “Others”. In Table 4, column “Class" gives classification of the defect. Column “Status" gives the status of the defect, including “fixed”, “confirmed”, “duplicated” (also reported by others), and “pending” (under active discussion between developers). Column “Oracle” indicates which type of oracle found this defect. Specifically, for the dynamic oracle type, the annotation of the “-” sign indicates that the corresponding defect is a false nagetive (FN), while the annotation of the “+” sign indicates that the corresponding defect is a false positive (FP). In total, by using the dynamic oracle, we found 7 false negatives and 13 false positives. Column “Analyzer” indicates which static analyzer is affected. Column “Defect Description” gives a brief description of the defect. Among all the 38 found defects, 28 have been confirmed by developers. Of these 28 confirmed defects, four were confirmed as duplicated (which were also reported by others) and four defects have been quickly fixed.
+ 
 <p align="center">
 <img src="./figures/table-4.png" alt= “Workflow” width="800">
 </p>
@@ -44,10 +46,10 @@ Root Dir
     |--- tools.py: the script scripts for running testing 
     |--- run_pinpoint.py: the script to use pinpoint to analyze Csmith-generated c program
     |--- interestness_template_pinpoint.py: the template for generate the reducing script to reducing the FP-inducing program of pinpoint
-    |--- interestness_template_gcc.py:  the template for generate the reducing script to reducing the FP-inducing program of gcc
+    |--- interestness_template_gcc.py: the template for generate the reducing script to reducing the FP-inducing program of gcc
     |--- interestness_template_clang.py: the template for generate the reducing script to reducing the FP-inducing program of csa
-    |--- fn_interestness_template_gsa.py:  the template for generate the reducing script to reducing the FN-inducing program of gcc
-    |--- fn_interestness_template_csa.py: the template for generate the reducing script to reducing the FN-inducing program of csa
+    |--- fn_interestness_template_gcc.py: the template for generate the reducing script to reducing the FN-inducing program of gcc
+    |--- fn_interestness_template_clang.py: the template for generate the reducing script to reducing the FN-inducing program of csa
     |--- interestness_eval_template_gcc.py: the template for generate the reducing script to reducing the evaluation-error-inducing program of gcc
     |--- interestness_eval_template_clang.py: the template for generate the reducing script to reducing the evaluation-error-inducing program of csa
     |--- fuzz_sa_fp.py: the script to find fp-inducing programs in the static analyzers
