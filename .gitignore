@@ -11,3 +11,4 @@ clang-tmp
 *.o
 *.out
 testsuite/platform.info
+.DS_Store
