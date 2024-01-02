@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import argparse
-import os
+import os,json
 import signal
 import time
 from myutils import get_analyzer_version, generate_code
@@ -9,6 +9,7 @@ from config import *
 CRASH_NUM = 0
 NPD_NUM = 0
 OOB_NUM = 0
+DZ_NUM = 0
 TIMEOUT_NUM = 0
 
 
@@ -104,7 +105,7 @@ def process_pinpoint_report (num, report_file, args) :
     global NPD_NUM
     bugs_nums = 0
     with open(report_file,   'r') as f:
-        dataJson = json. load (f)
+        dataJson = json.load (f)
         bugs_nums = dataJson ["TotalBugs"]
     if bugs_nums > 0:
         print ("NPD Detected!!")
@@ -145,6 +146,15 @@ def process_gcc_report(num, report_file, args):
             os.system("mv test_%s*.c oob%s.c " % (num, OOB_NUM))
             os.system("mv test_%s*.txt oob%s.txt " % (num, OOB_NUM))
             OOB_NUM += 1
+    elif args.checker == "sco":
+        check_cmd = 'grep "\-Wanalyzer\-shift\-count\-overflow"'
+        ret = os.system(check_cmd + " < " + report_file)
+        ret >>= 8
+
+        if ret == 0:
+            os.system("mv test_%s*.c sco%s.c " % (num, SCO_NUM))
+            os.system("mv test_%s*.txt sco%s.txt " % (num, SCO_NUM))
+            SCO_NUM += 1
 
     clean_analysis_products(num, save_products_flag)
 
@@ -158,7 +168,7 @@ def process_clang_report(num, report_file, args):
     '''
     check whether the given report contains the target warning
     '''
-    global NPD_NUM, OOB_NUM
+    global NPD_NUM, OOB_NUM, DZ_NUM
     save_products_flag = args.saveProducts
 
     if not os.path.exists(report_file):
@@ -185,7 +195,17 @@ def process_clang_report(num, report_file, args):
             NPD_NUM += 1
         elif args.verbose:
             print("grep oob ret: " + str(ret))
+    elif args.checker == "dz":
+        check_cmd = 'grep "\[core\.DivideZero\]"'
+        ret = os.system(check_cmd + " < " + report_file)
+        ret >> 8
 
+        if ret == 0:
+            os.system("mv test_%s.c dz%s.c " % (num, DZ_NUM))
+            os.system("mv test_%s.txt dz%s.txt " % (num, DZ_NUM))
+            DZ_NUM += 1
+        elif args.verbose:
+            print("grep dz ret: " + str(ret))
 
     clean_analysis_products(num, save_products_flag)
 

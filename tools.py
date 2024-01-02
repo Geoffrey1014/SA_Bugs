@@ -24,8 +24,18 @@ def fuzz_fp(args: argparse.Namespace):
     thread_num = args.thread
     iter_times = args.num
 
+    if analyzer == "gcc" and args.checker == "dz":
+        print("gcc does not support dz checker")
+        exit(-1)
+    
+    if analyzer == "clang" and args.checker == "sco":
+        print("clang does not support sco checker")
+        exit(-1)
+
     fuzzing_working_dir = create_fuzzing_place(
         fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
+    if args.verbose:
+        print("make the fuzzing working dir:" + fuzzing_working_dir)
     os.chdir(fuzzing_working_dir)
 
     for i in range(thread_num):

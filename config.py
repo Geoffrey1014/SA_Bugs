@@ -23,11 +23,11 @@ CLANG = "clang"
 CLANG_OPTIONS = " --analyze --analyzer-output text -Xclang  -analyzer-constraints=range -Xclang  -setup-static-analyzer  -Xclang -analyzer-config  -Xclang  eagerly-assume=false   -Xclang  -analyzer-checker=core,alpha.security "
 CLANG_ANALYZER = CLANG + CLANG_OPTIONS
 
-CSMITH_USER_OPTIONS = "--no-bitfields --no-global-variables --max-pointer-depth 2 "
+CSMITH_USER_OPTIONS = "--no-argc --no-bitfields --no-global-variables --max-pointer-depth 2 "
 MIN_PROGRAM_SIZE = "8000" 
 MAX_PROGRAM_SIZE = "8000"
 
-CHECKER_LIST = ["npd", "oob"]
+CHECKER_LIST = ["npd", "oob", "dz", "sco"]
 ANALYZER_TIMEOUT = "timeout 60 "
 
 GCC_NPD = "-Wanalyzer-null-dereference"
