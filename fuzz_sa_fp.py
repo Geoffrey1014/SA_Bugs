@@ -5,11 +5,13 @@ import signal
 import time
 from myutils import get_analyzer_version, generate_code
 from config import *
-
+from config import SEG_CMD, CHECK_CMD, CLANG_CMD, TRANS_CMD
 CRASH_NUM = 0
 NPD_NUM = 0
 OOB_NUM = 0
 DZ_NUM = 0
+SCO_NUM = 0
+UPOS_NUM = 0
 TIMEOUT_NUM = 0
 
 
@@ -87,7 +89,7 @@ def analyze_with_pinpoint(num, args):
     bson_file = name+". bson"
 
 
-    os.system(CLANG_CMD + cfile_path + " -o " + bc_file)
+    os.system(CLANG_CMD + cfile + " -o " + bc_file)
     os.system(TRANS_CMD + bc_file + " -o " + ibc_file)
     os.system(SEG_CMD + ibc_file + " -o " + bson_file)
     os.system(CHECK_CMD + ibc_file + " -i=" +bson_file + " -report="+ report_file)
@@ -96,7 +98,7 @@ def analyze_with_pinpoint(num, args):
 
     if ret == 124:
         TIMEOUT_NUM += 1
-        os.system("rm -rf %s %s"% (report_file, c_file) )
+        os.system("rm -rf %s %s"% (report_file, cfile) )
         return None
 
     return report_file
@@ -119,7 +121,7 @@ def process_gcc_report(num, report_file, args):
     '''
     check whether the given report contains the target warning
     '''
-    global NPD_NUM, OOB_NUM
+    global NPD_NUM, OOB_NUM, SCO_NUM, UPOS_NUM
     save_products_flag = args.saveProducts
 
     if not os.path.exists(report_file):
@@ -155,6 +157,15 @@ def process_gcc_report(num, report_file, args):
             os.system("mv test_%s*.c sco%s.c " % (num, SCO_NUM))
             os.system("mv test_%s*.txt sco%s.txt " % (num, SCO_NUM))
             SCO_NUM += 1
+    elif args.checker == "upos":
+        check_cmd = 'grep "\-Wanalyzer\-use\-of\-pointer\-in\-stale\-stack\-frame"'
+        ret = os.system(check_cmd + " < " + report_file)
+        ret >>= 8
+
+        if ret == 0:
+            os.system("mv test_%s*.c upos%s.c " % (num, UPOS_NUM))
+            os.system("mv test_%s*.txt upos%s.txt " % (num, UPOS_NUM))
+            UPOS_NUM += 1
 
     clean_analysis_products(num, save_products_flag)
 

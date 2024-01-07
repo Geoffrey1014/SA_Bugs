@@ -25,15 +25,15 @@ def fuzz_fp(args: argparse.Namespace):
     iter_times = args.num
 
     if analyzer == "gcc" and args.checker == "dz":
-        print("gcc does not support dz checker")
+        print("gcc does not support this checker: %s", args.checker)
         exit(-1)
     
-    if analyzer == "clang" and args.checker == "sco":
-        print("clang does not support sco checker")
+    if analyzer == "clang" and (args.checker == "sco" or args.checker == "upos"):
+        print("clang does not support this checker : %s", args.checker)
         exit(-1)
 
     fuzzing_working_dir = create_fuzzing_place(
-        fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
+        fuzzing_par_dir, script_path, analyzer, args.checker, str(opt), thread_num)
     if args.verbose:
         print("make the fuzzing working dir:" + fuzzing_working_dir)
     os.chdir(fuzzing_working_dir)
@@ -58,7 +58,7 @@ def fuzz_fn(args: argparse.Namespace):
     iter_times = args.num
 
     fuzzing_working_dir = create_fuzzing_place(
-        fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
+        fuzzing_par_dir, script_path, analyzer, args.checker, str(opt), thread_num)
     os.chdir(fuzzing_working_dir)
 
     for i in range(thread_num):
@@ -81,7 +81,7 @@ def fuzz_eval(args: argparse.Namespace):
     iter_times = args.num
 
     fuzzing_working_dir = create_fuzzing_place(
-        fuzzing_par_dir, script_path, analyzer, str(opt), thread_num)
+        fuzzing_par_dir, script_path, analyzer, "eval", str(opt), thread_num)
     os.chdir(fuzzing_working_dir)
 
     for i in range(thread_num):
@@ -101,10 +101,10 @@ def create(args: argparse.Namespace):
     num = args.num
     script_path = args.script
 
-    create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, "not", num)
+    create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, "not", "not", num)
 
 
-def create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, opt_level, dir_num):
+def create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, checker, opt_level, dir_num):
     """
     Create $dir_num directories in fuzzing_par_dir
     and copy script_path to those dirs.
@@ -137,7 +137,7 @@ def create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, opt_level, dir_
 
     abs_working_path = os.path.join(
         abs_par_path,
-        f"{analyzer}_{ret.stdout.strip()}_O{opt_level}_{time_now}"
+        f"{analyzer}_{ret.stdout.strip()}_{checker}_O{opt_level}_{time_now}"
     )
 
     if not os.path.exists(abs_working_path):
@@ -708,7 +708,7 @@ def handle_args():
     parser_fuzz_fp.add_argument("analyzer", type=str, choices={
         "gcc", "clang", "pinpoint"}, help="give a analyzer")
     parser_fuzz_fp.add_argument(
-        "checker", type=str, choices=CHECKER_LIST, help="give a checker")
+        "checker", type=str, choices=CHECKER_LIST, help="give a checker like npd, oob, dz, sco, upos")
     parser_fuzz_fp.add_argument("optimize", type=int, choices={
         0, 1, 2, 3}, default=0, help="optimization level")
     parser_fuzz_fp.add_argument(

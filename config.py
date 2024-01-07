@@ -27,7 +27,7 @@ CSMITH_USER_OPTIONS = "--no-argc --no-bitfields --no-global-variables --max-poin
 MIN_PROGRAM_SIZE = "8000" 
 MAX_PROGRAM_SIZE = "8000"
 
-CHECKER_LIST = ["npd", "oob", "dz", "sco"]
+CHECKER_LIST = ["npd", "oob", "dz", "sco", "upos"]
 ANALYZER_TIMEOUT = "timeout 60 "
 
 GCC_NPD = "-Wanalyzer-null-dereference"
