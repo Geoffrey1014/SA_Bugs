@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-
+import os,json,sys
 from config import *
-
+from config import SEG_CMD, CHECK_CMD, CLANG_CMD, TRANS_CMD
 
 def analyze_with_pinpoint(cfile_path):
     """

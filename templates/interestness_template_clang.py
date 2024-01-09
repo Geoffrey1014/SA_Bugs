@@ -1,14 +1,20 @@
 #!/usr/bin/python3
-import os
-import subprocess
-import shlex
+import subprocess,shlex,sys
+from config import *
+
 CFILE = " "
 OPT_LEVEL = " "
+CHECKER = "dz"
 
-CSMITH_HEADER = "/usr/include/csmith"
-
-CLANG_ANALYZER = "scan-build -disable-checker core.CallAndMessage -disable-checker core.DivideZero -disable-checker core.NonNullParamChecker -disable-checker core.StackAddressEscape -disable-checker core.UndefinedBinaryOperatorResult -disable-checker core.VLASize -disable-checker core.uninitialized.ArraySubscript -disable-checker core.uninitialized.Assign -disable-checker core.uninitialized.Branch -disable-checker core.uninitialized.CapturedBlockVariable -disable-checker core.uninitialized.UndefReturn -disable-checker cplusplus.InnerPointer -disable-checker cplusplus.Move -disable-checker cplusplus.NewDelete -disable-checker cplusplus.NewDeleteLeaks -disable-checker cplusplus.PlacementNew -disable-checker cplusplus.PureVirtualCall -disable-checker deadcode.DeadStores -disable-checker nullability.NullPassedToNonnull -disable-checker nullability.NullReturnedFromNonnull -disable-checker security.insecureAPI.gets -disable-checker security.insecureAPI.mkstemp -disable-checker security.insecureAPI.mktemp -disable-checker security.insecureAPI.vfork -disable-checker unix.API -disable-checker unix.Malloc -disable-checker unix.MallocSizeof -disable-checker unix.MismatchedDeallocator -disable-checker unix.Vfork -disable-checker unix.cstring.BadSizeArg -disable-checker unix.cstring.NullArg "
-CLANG_OPTIONS = "-Wno-literal-conversion -Wno-bool-operation -Wno-pointer-sign -Wno-tautological-compare -Wno-incompatible-pointer-types -Wno-tautological-constant-out-of-range-compare -Wno-compare-distinct-pointer-types -Wno-implicit-const-int-float-conversion -Wno-constant-logical-operand -Wno-parentheses-equality -Wno-constant-conversion -Wno-unused-value -Xclang -analyzer-config -Xclang widen-loops=true "
+if CHECKER == "npd":
+    warning_name = CLANG_NPD
+elif CHECKER == "oob":
+    warning_name = CLANG_OOB
+elif CHECKER == "dz":   
+    warning_name = CLANG_DZ
+else:
+    print("checker not found!")
+    exit(-1)
 
 compile_ret = subprocess.run(['clang', '-I', CSMITH_HEADER, CFILE],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
@@ -27,30 +33,21 @@ elif run_ret.returncode != 0:
     print("run failed!")
     exit(run_ret.returncode)
 
-count_npd_flag = run_ret.stdout.count("NPD_FLAG")
-print("count NPD_FLAG: %s" % count_npd_flag)
+count_flag = run_ret.stdout.count("FLAG")
+print("count FLAG: %s" % count_flag)
 
-if count_npd_flag == 0:
-    print("NPD_FLAG disappear!")
+if count_flag == 0:
+    print(FLAG_DIS_STR)  # cannot comment this line!
     exit(2)
 
-if not os.path.exists("report_html"):
-    ret = os.system("mkdir report_html")
-    if ret != 0:
-        print("fail to mkdir report_html")
-        exit(ret >> 8)
+analyzer_args_split = shlex.split(CLANG_ANALYZER)
 
-report_html = "report_html"
+analyzer_ret = subprocess.run(
+    analyzer_args_split + ['-O' + OPT_LEVEL, '-c', '-I', CSMITH_HEADER, CFILE], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
+print(analyzer_ret.stderr)
 
-clang_args_split = shlex.split(CLANG_OPTIONS)
-clang_analyzer_args_split = shlex.split(CLANG_ANALYZER)
-
-analyze_ret = subprocess.run(clang_analyzer_args_split + ['-o', report_html, 'clang'] + clang_args_split + ['-c', '-I', CSMITH_HEADER, CFILE],
-                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
-print(analyze_ret.stderr)
-
-if analyze_ret.stderr.count("[core.NullDereference]") == 0:
-    print("NullDereference disappear!")
+if analyzer_ret.stderr.count(warning_name) == 0:
+    print("%s disappear!" % warning_name)  # cannot comment this line!
     exit(3)
 
 # use ccomp to check if there are undefined behaviors

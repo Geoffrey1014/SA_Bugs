@@ -1,5 +1,5 @@
 # config.py
-__all__ = ["CSMITH_HEADER", "CSMITH_TIMEOUT", "COMPILER_TIMEOUT", "PROG_TIMEOUT", "CFE", "INSTRUMENT_TOOL", "GCC", "GCC_OPTIONS", "GCC_ANALYZER", "CLANG", "CLANG_OPTIONS", "CLANG_ANALYZER", "CSMITH_USER_OPTIONS", "MIN_PROGRAM_SIZE", "MAX_PROGRAM_SIZE", "CHECKER_LIST", "ANALYZER_TIMEOUT", "GCC_NPD", "GCC_OOB", "RUN_TIMEOUT_NUM", "FLAG_DIS_STR", "UB_STR"]
+__all__ = ["CSMITH_HEADER", "CSMITH_TIMEOUT", "COMPILER_TIMEOUT", "PROG_TIMEOUT", "CFE", "INSTRUMENT_TOOL", "GCC", "GCC_OPTIONS", "GCC_ANALYZER", "CLANG", "CLANG_OPTIONS", "CLANG_ANALYZER", "CSMITH_USER_OPTIONS", "MIN_PROGRAM_SIZE", "MAX_PROGRAM_SIZE", "CHECKER_LIST", "ANALYZER_TIMEOUT", "GCC_NPD", "GCC_OOB", "GCC_SCO", "GCC_UPOS", "RUN_TIMEOUT_NUM", "FLAG_DIS_STR", "UB_STR", "CLANG_DZ", "CLANG_OOB", "CLANG_NPD"]
 # user-configurable stuff
 CSMITH_HEADER = "/usr/include/csmith"
 
@@ -32,6 +32,12 @@ ANALYZER_TIMEOUT = "timeout 60 "
 
 GCC_NPD = "-Wanalyzer-null-dereference"
 GCC_OOB = "-Wanalyzer-out-of-bounds"
+GCC_SCO = "-Wanalyzer-shift-count-overflow"
+GCC_UPOS = "-Wanalyzer-use-of-pointer-in-stale-stack-frame"
+
+CLANG_NPD = "core.NullDereference"
+CLANG_OOB = "alpha.security.ArrayBoundV2"
+CLANG_DZ = "core.DivideZero"
  
 RUN_TIMEOUT_NUM = "10s"
 FLAG_DIS_STR="FLAG disappear"

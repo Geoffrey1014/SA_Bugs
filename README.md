@@ -85,7 +85,7 @@ positional arguments:
   num                   the iteration times of fuzzing
 ```
 
-**Step 2. Checking the wrning line reachable:**
+**Step 2. Checking the warning line reachable:**
 
 Aftering entering the fuzzing dir, typing the following command:
 ```bash
@@ -93,7 +93,7 @@ python3 tools.py check-reach gcc npd 0 -d=.
 ```
 The usage of check-reach:
 ```bash
-$ ftool check-reach -h
+$ python3 tools.py check-reach -h
 usage: tools.py check-reach [-h] [-s] [-mn | -ma] [-cf CFILE | -d DIR] {gcc,pinpoint,clang} {npd,oob} {0,1,2,3}
 
 positional arguments:

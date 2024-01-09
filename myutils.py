@@ -116,20 +116,26 @@ def get_warning_lines(analyzer, checker, report_abspath):
     '''
     if analyzer == "gcc":
         if checker == "npd":
-            warning_name = "-Wanalyzer-null-dereference"
+            warning_name = GCC_NPD
         elif checker == "oob":
-            warning_name = "-Wanalyzer-out-of-bounds"
+            warning_name = GCC_OOB
+        elif checker == "sco":
+            warning_name = GCC_SCO
+        elif checker == "upos":
+            warning_name = GCC_UPOS
         else:
             raise ValueError("please make sure the checker is npd or oob!")
         warning_lines = get_warning_line_from_file(report_abspath, warning_name)
         
     elif analyzer == "clang":
         if checker == "npd":
-            warning_name = "core.NullDereference"
+            warning_name = CLANG_NPD
         elif checker == "oob":
-            warning_name = "alpha.security.ArrayBound"
+            warning_name = CLANG_OOB
+        elif checker == "dz":
+            warning_name = CLANG_DZ
         else:
-            raise ValueError("please make sure the checker is npd or oob!")
+            raise ValueError("please make sure the clang checker is npd or oob or dz!")
         warning_lines = get_warning_line_from_file(report_abspath, warning_name)
     else:
         raise ValueError("Invalid analyzer specified: {}".format(analyzer))

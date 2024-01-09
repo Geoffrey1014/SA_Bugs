@@ -15,6 +15,14 @@ MYUTILS_FILE = ROOT_DIR + "/myutils.py"
 
 REACHABLE_DIR = "reachable"
 
+def analyzer_and_checker_check(analyzer, checker):
+    if analyzer == "gcc" and checker == "dz":
+        print("gcc does not support this checker: %s", checker)
+        exit(-1)
+    
+    if analyzer == "clang" and (checker == "sco" or checker == "upos"):
+        print("clang does not support this checker : %s", checker)
+        exit(-1)
 
 def fuzz_fp(args: argparse.Namespace):
     script_path = ROOT_DIR + "/fuzz_sa_fp.py"
@@ -24,13 +32,7 @@ def fuzz_fp(args: argparse.Namespace):
     thread_num = args.thread
     iter_times = args.num
 
-    if analyzer == "gcc" and args.checker == "dz":
-        print("gcc does not support this checker: %s", args.checker)
-        exit(-1)
-    
-    if analyzer == "clang" and (args.checker == "sco" or args.checker == "upos"):
-        print("clang does not support this checker : %s", args.checker)
-        exit(-1)
+    analyzer_and_checker_check(analyzer, args.checker)
 
     fuzzing_working_dir = create_fuzzing_place(
         fuzzing_par_dir, script_path, analyzer, args.checker, str(opt), thread_num)
@@ -160,6 +162,8 @@ def create_fuzzing_place(fuzzing_par_dir, script_path, analyzer, checker, opt_le
 
 
 def check_reachable(args: argparse.Namespace):
+    analyzer_and_checker_check(args.analyzer, args.checker)
+    
     if args.cfile and os.path.exists(args.cfile):
         print(args.cfile)
 
@@ -563,7 +567,7 @@ def run_reduce(args: argparse.Namespace):
                 reduce_list.append(os.path.abspath(cfile))
                 os.system(
                     f"mv {cfile} {reduce_script} {short_name}.out reduce/")
-                os.remove(f"{short_name}.o")
+                os.system(f"rm -rf {short_name}.o")
 
             subprocess.run(f"rm -rf /tmp/{short_name}*", shell=True,
                            stderr=subprocess.PIPE, stdout=subprocess.PIPE)
