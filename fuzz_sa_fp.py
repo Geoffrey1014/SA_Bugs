@@ -2,8 +2,8 @@
 import argparse
 import os,json
 import signal
-import time
-from myutils import get_analyzer_version, generate_code
+import time,shlex, subprocess
+from myutils import get_analyzer_version, generate_code, get_warning_line_from_report
 from config import *
 from config import SEG_CMD, CHECK_CMD, CLANG_CMD, TRANS_CMD
 CRASH_NUM = 0
@@ -20,21 +20,21 @@ def analyze_with_gcc(num, optimization_level, args):
     use gcc to analyze csmith-generated c program
     '''
     global TIMEOUT_NUM, CRASH_NUM
-    report_file = "test_%s.txt" % num
     cfile = "test_%s.c" % num
+    
+    analyzer_args_split = shlex.split(GCC_ANALYZER)
 
-    ret = os.system(ANALYZER_TIMEOUT + GCC_ANALYZER + " -O" + optimization_level +
-                    " -c -I " + CSMITH_HEADER + " " + cfile + " > " + report_file + " 2>&1")
-    ret >>= 8
+    analyzer_ret = subprocess.run( [ANALYZER_TIMEOUT] + analyzer_args_split + ['-O' + optimization_level, '-c', '-I', CSMITH_HEADER, cfile], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
+
     if args.verbose:
-        print("gcc static analyzer ret: " + str(ret))
+        print("gcc static analyzer ret: " + str(analyzer_ret.stderr))
 
-    if ret == 124:
+    if analyzer_ret.returncode == 124:
         TIMEOUT_NUM += 1
         print(ANALYZER_TIMEOUT)
         clean_analysis_products(num, args.saveProducts)
         return None
-    elif ret == 1:
+    elif analyzer_ret.returncode == 1:
         # TODO: Is there a problem with the logic there?
         # I have seen a crash case, the return code is 1. But I am not sure what the other return codes (e.g. 2, 3) mean.
         CRASH_NUM += 1
@@ -42,7 +42,7 @@ def analyze_with_gcc(num, optimization_level, args):
         clean_analysis_products(num, args.saveProducts)
         return None
 
-    return report_file
+    return analyzer_ret.stderr
 
 
 def analyze_with_clang(num, args):
@@ -50,30 +50,28 @@ def analyze_with_clang(num, args):
     use clang to analyze csmith-generated c program
     '''
     global TIMEOUT_NUM, CRASH_NUM
-    report_file = "test_%s.txt" % num
     cfile = "test_%s.c" % num
 
-    ret = os.system(ANALYZER_TIMEOUT + CLANG_ANALYZER + " -c -I " + CSMITH_HEADER + " " + cfile + " > " + report_file + " 2>&1")
-    ret >>= 8
+    analyzer_args_split = shlex.split(ANALYZER_TIMEOUT) + shlex.split(CLANG_ANALYZER)
+
+    analyzer_ret = subprocess.run(  analyzer_args_split + [ '-c', '-I', CSMITH_HEADER, cfile], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
 
     if args.verbose:
-        print("clang static analyzer ret: " + str(ret))
+        print("clang static analyzer ret: " + str(analyzer_ret.stderr))
 
-    if ret == 124:
+    if analyzer_ret.returncode == 124:
         TIMEOUT_NUM += 1
         print(ANALYZER_TIMEOUT)
         clean_analysis_products(num, args.saveProducts)
         return None
-    elif ret == 1:
+    elif analyzer_ret.returncode == 1:
         # TODO: Is there a problem with the logic there?
         # I have seen a crash case, the return code is 1. But I am not sure what the other return codes (e.g. 2, 3) mean.
         save_crashing_file(num)
         clean_analysis_products(num, args.saveProducts)
         CRASH_NUM += 1
         return None
-    
-
-    return report_file
+    return analyzer_ret.stderr
 
 def analyze_with_pinpoint(num, args):
     '''
@@ -117,55 +115,37 @@ def process_pinpoint_report (num, report_file, args) :
     if not args. saveProducts:
         os.system("rm -f test_%.c test_&s. json" & (num, num))
 
-def process_gcc_report(num, report_file, args):
+def process_gcc_report(num, report, args):
     '''
     check whether the given report contains the target warning
     '''
     global NPD_NUM, OOB_NUM, SCO_NUM, UPOS_NUM
     save_products_flag = args.saveProducts
-
-    if not os.path.exists(report_file):
-        print("report does not exist: " + str(report_file))
-        clean_analysis_products(num, save_products_flag)
-        return
-
-    # TODO: more checkers
+    report_file = ""
     if args.checker == "npd":
-        check_cmd = 'grep "\-Wanalyzer\-null\-dereference"'
-        ret = os.system(check_cmd + " < " + report_file)
-        ret >>= 8
-        
-        if ret == 0:
-            os.system("mv test_%s*.c npd%s.c " % (num, NPD_NUM))
-            os.system("mv test_%s*.txt npd%s.txt " % (num, NPD_NUM))
+        if len(get_warning_line_from_report(report, GCC_NPD)) != 0:
+            os.system("mv test_%s.c npd%s.c " % (num, NPD_NUM))
+            report_file = "npd_%s.txt" % NPD_NUM
             NPD_NUM += 1
     elif args.checker == "oob":
-        check_cmd = 'grep "\-Wanalyzer\-out\-of\-bounds"'
-        ret = os.system(check_cmd + " < " + report_file)
-        ret >>= 8
-
-        if ret == 0:
-            os.system("mv test_%s*.c oob%s.c " % (num, OOB_NUM))
-            os.system("mv test_%s*.txt oob%s.txt " % (num, OOB_NUM))
+        if len(get_warning_line_from_report(report, GCC_OOB)) != 0:
+            os.system("mv test_%s.c oob%s.c " % (num, OOB_NUM))
+            report_file = "oob_%s.txt" % OOB_NUM
             OOB_NUM += 1
     elif args.checker == "sco":
-        check_cmd = 'grep "\-Wanalyzer\-shift\-count\-overflow"'
-        ret = os.system(check_cmd + " < " + report_file)
-        ret >>= 8
-
-        if ret == 0:
-            os.system("mv test_%s*.c sco%s.c " % (num, SCO_NUM))
-            os.system("mv test_%s*.txt sco%s.txt " % (num, SCO_NUM))
+        if len(get_warning_line_from_report(report, GCC_SCO)) != 0:
+            os.system("mv test_%s.c sco%s.c " % (num, SCO_NUM))
+            report_file = "sco_%s.txt" % SCO_NUM
             SCO_NUM += 1
     elif args.checker == "upos":
-        check_cmd = 'grep "\-Wanalyzer\-use\-of\-pointer\-in\-stale\-stack\-frame"'
-        ret = os.system(check_cmd + " < " + report_file)
-        ret >>= 8
-
-        if ret == 0:
-            os.system("mv test_%s*.c upos%s.c " % (num, UPOS_NUM))
-            os.system("mv test_%s*.txt upos%s.txt " % (num, UPOS_NUM))
+        if len(get_warning_line_from_report(report, GCC_UPOS)) != 0:
+            os.system("mv test_%s.c upos%s.c " % (num, UPOS_NUM))
+            report_file = "upos_%s.txt" % UPOS_NUM
             UPOS_NUM += 1
+    
+    if report_file != "":
+        with open(report_file, 'w') as f:
+            f.write(report)
 
     clean_analysis_products(num, save_products_flag)
 
@@ -175,48 +155,32 @@ def clean_analysis_products(num, save_products_flag):
         os.system("rm -f test_%s*" % num)
 
 
-def process_clang_report(num, report_file, args):
+def process_clang_report(num, report:str, args):
     '''
     check whether the given report contains the target warning
     '''
     global NPD_NUM, OOB_NUM, DZ_NUM
     save_products_flag = args.saveProducts
-
-    if not os.path.exists(report_file):
-        print("report does not exist: " + str(report_file))
-        clean_analysis_products(num, save_products_flag)
-        return
+    report_file = ""
     if args.checker == "npd":
-        check_cmd = 'grep "\[core\.NullDereference\]"'
-        ret = os.system(check_cmd + " < " + report_file)
-        ret >> 8
-
-        if ret == 0:
+        if len(get_warning_line_from_report(report, CLANG_NPD)) != 0:
             os.system("mv test_%s.c npd%s.c " % (num, NPD_NUM))
-            os.system("mv test_%s.txt npd%s.txt " % (num, NPD_NUM))
+            report_file = "npd_%s.txt" % NPD_NUM
             NPD_NUM += 1
     elif args.checker == "oob":
-        check_cmd = 'grep "\[alpha\.security\.ArrayBound\]"'
-        ret = os.system(check_cmd + " < " + report_file)
-        ret >> 8
-
-        if ret == 0:
+        if len(get_warning_line_from_report(report, CLANG_OOB)) != 0:
             os.system("mv test_%s.c oob%s.c " % (num, OOB_NUM))
-            os.system("mv test_%s.txt oob%s.txt " % (num, OOB_NUM))
-            NPD_NUM += 1
-        elif args.verbose:
-            print("grep oob ret: " + str(ret))
+            report_file = "oob_%s.txt" % OOB_NUM
+            OOB_NUM += 1
     elif args.checker == "dz":
-        check_cmd = 'grep "\[core\.DivideZero\]"'
-        ret = os.system(check_cmd + " < " + report_file)
-        ret >> 8
-
-        if ret == 0:
+        if len(get_warning_line_from_report(report, CLANG_DZ)) != 0:
             os.system("mv test_%s.c dz%s.c " % (num, DZ_NUM))
-            os.system("mv test_%s.txt dz%s.txt " % (num, DZ_NUM))
+            report_file = "dz_%s.txt" % DZ_NUM
             DZ_NUM += 1
-        elif args.verbose:
-            print("grep dz ret: " + str(ret))
+
+    if report_file != "":
+        with open(report_file, 'w') as f:
+            f.write(report)
 
     clean_analysis_products(num, save_products_flag)
 
@@ -283,9 +247,12 @@ def write_fuzzing_result(checker, stop_message):
             f.write("NPD_NUM: %s\n" % NPD_NUM)
         elif checker == "oob":
             f.write("OOB_NUM: %s\n" % OOB_NUM)
-        else:
-            f.write("NPD_NUM: %s\n" % NPD_NUM)
-            f.write("OOB_NUM: %s\n" % OOB_NUM)
+        elif checker == "sco":
+            f.write("SCO_NUM: %s\n" % SCO_NUM)
+        elif checker == "upos":
+            f.write("UPOS_NUM: %s\n" % UPOS_NUM)
+        elif checker == "dz":
+            f.write("DZ_NUM: %s\n" % DZ_NUM)
         f.write("\nTIMEOUT_NUM: %s\n" % TIMEOUT_NUM)
         f.write("\nCRASH_NUM: %s\n" % CRASH_NUM)
 

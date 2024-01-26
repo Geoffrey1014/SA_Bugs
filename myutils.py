@@ -102,6 +102,19 @@ def get_warning_line_from_file(report_file, warning):
                 warning_lines.append(warning_info.pop(1))
     return warning_lines
 
+def get_warning_line_from_report(report_lines, warning):
+    '''
+    get warning line number from report_lines
+    '''
+    warning_lines = []
+    for line in report_lines:
+        if re.search(warning, line):
+            warning_info = re.split(":", line)
+            # warning_info[1] is the warning line number
+            if warning_info[0].count("include/csmith") == 0:
+                warning_lines.append(warning_info.pop(1))
+    return warning_lines
+
 def get_warning_lines(analyzer, checker, report_abspath):
     '''
     Given an analyzer, checker, and report file path, returns a list of warning lines.

@@ -35,23 +35,24 @@ if count_flag == 0:
 
 # analyzer has to keep the warning
 name, _ = CFILE.split('.')
-report_file =  os.path.join(par_path, name+".json")
-bc_file =  os.path.join(par_path, name+".bc")
-ibc_file = os.path.join(par_path, name+".ibc")
-bson_file = os.path.join(par_path, name+".bson")
+report_file =   name+".json"
+bc_file =   name+".bc"
+ibc_file = name+".ibc"
+bson_file = name+".bson"
 
-os.system(CLANG_CMD + cfile_path + " -o " + bc_file)
+os.system(CLANG_CMD + CFILE + " -o " + bc_file)
 os.system(TRANS_CMD + bc_file + " -o " + ibc_file)
 os.system(SEG_CMD + ibc_file + " -o " + bson_file)
 ret = os.system(CHECK_CMD + ibc_file + " -i=" +bson_file + " -report="+ report_file)
 os.system("rm -rf %s %s %s"% (bc_file, ibc_file, bson_file) )
 
-bugs _nums = 0
+bugs_nums = 0
 with open (report_file, 'r') as f:
     dataJson = json.load(f)
     bugs_nums = dataJson ("TotalBugs")
 
-if bugs_nums print ("NullDereference disappear") # cannot comment this line!
+if bugs_nums == 0: 
+    print ("NullDereference disappear") # cannot comment this line!
     exit (3)
 
 # use ccomp to check if there are undefined behaviors
