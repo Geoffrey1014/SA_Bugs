@@ -24,6 +24,28 @@ def analyzer_and_checker_check(analyzer, checker):
         print("clang does not support this checker : %s", checker)
         exit(-1)
 
+def analyze_code_gen_by_csmith(args: argparse.Namespace):
+    script_path = ROOT_DIR + "/analyze_csmith_gen_code.py"
+    fuzzing_par_dir = args.path
+    thread_num = args.thread
+    iter_times = args.num
+    opt = args.optimize
+    analyzer = args.analyzer
+    fuzzing_working_dir = create_fuzzing_place(
+        fuzzing_par_dir, script_path, analyzer, "csmith", str(opt), thread_num)
+
+    os.chdir(fuzzing_working_dir)
+
+    for i in range(thread_num):
+        os.chdir(f"fuzz_{i}")
+        subprocess.Popen(
+            ["python3", "analyze_csmith_gen_code.py", analyzer,
+               str(iter_times), f"-o={opt}"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+        os.chdir("..")
+
 def fuzz_fp(args: argparse.Namespace):
     script_path = ROOT_DIR + "/fuzz_sa_fp.py"
     fuzzing_par_dir = args.path
@@ -787,6 +809,22 @@ def handle_args():
     group_reach_warning_lines.add_argument(
         "-d", "--dir", type=str, help="give a directory")
     parser_reach_warning_lines.set_defaults(func=check_reachable)
+
+
+    # add subcommand fuzz-csmith-gen-code
+    parser_fuzz_csmith = subparsers.add_parser(
+        "fuzz-csmith", help="analyzing csmith-generated-code in a given dir")
+    parser_fuzz_csmith.add_argument(
+        "path", help="given a parent dir of fuzzing working dir")
+    parser_fuzz_csmith.add_argument("analyzer", type=str, choices={
+        "gcc", "clang"}, help="give a analyzer")
+    parser_fuzz_csmith.add_argument("optimize", type=int, choices={
+        0, 1, 2, 3}, default=0, help="optimization level")
+    parser_fuzz_csmith.add_argument(
+        "thread", type=int, default=1, help="specify thread nums for fuzzing")
+    parser_fuzz_csmith.add_argument(
+        "num", type=int, default=1, help="specify iteration times of fuzzing")
+    parser_fuzz_csmith.set_defaults(func=analyze_code_gen_by_csmith)
 
     args = parser.parse_args()
     return args
