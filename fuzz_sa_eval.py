@@ -6,48 +6,8 @@ import signal
 import subprocess
 import sys
 import time
+from config import *
 
-#############
-# user-configurable stuff
-#############
-
-# programs shorter than this many bytes are too boring to test
-MIN_PROGRAM_SIZE = 8000
-# MAX_PROGRAM_SIZE = 8000
-
-# kill Csmith after this many seconds
-CSMITH_TIMEOUT = 90
-
-# kill a compiler after this many seconds
-COMPILER_TIMEOUT = 120
-
-# kill a compiler's output after this many seconds
-PROG_TIMEOUT = 8
-
-# These options are more important and need to be singled out
-CSMITH_USER_OPTIONS = "--no-global-variables --no-safe-math --max-pointer-depth 2"
-# CSMITH_USER_OPTIONS = " --no-global-variables --max-funcs 1 "
-# CSMITH_USER_OPTIONS = " --no-global-variables --max-funcs 1 --no-safe-math"
-# CSMITH_USER_OPTIONS = " --no-bitfields --packed-struct --no-global-variables --max-pointer-depth 2 "
-
-# Command line options:
-# ...
-
-#############
-# end user-configurable stuff
-#############
-
-CSMITH_HEADER = "/usr/include/csmith"
-
-GCC_ANALYZER = "gcc -fanalyzer -fanalyzer-call-summaries -Wanalyzer-too-complex -fdiagnostics-format=text "
-
-# CLANG_ANALYZER = "clang --analyze -Xclang -analyzer-stats -Xclang -setup-static-analyzer -Xclang -analyzer-config -Xclang eagerly-assume=false -Xclang -analyzer-checker=core,alpha.security.taint,debug.ExprInspection,debug.TaintTest"
-
-CLANG_ANALYZER = "/usr/local/llvm-0407/bin/clang --analyze -Xclang -analyzer-stats -Xclang -setup-static-analyzer -Xclang -analyzer-config -Xclang eagerly-assume=false -Xclang -analyzer-checker=core,alpha.security.taint,debug.ExprInspection,debug.TaintTest -Xanalyzer -analyzer-config -Xanalyzer crosscheck-with-z3=true"
-
-TOOLING_EVAL = "/home/working-space/build-llvm-main/bin/tooling-sample"
-TOOLING_CFE = "/home/working-space/build-llvm-main/bin/cfe_preprocess"
-# CLANG_OPTIONS = " "
 
 CSMITH_ERROR = 0
 EVAL_NUM = 0
@@ -81,7 +41,7 @@ def save_crashing_file(num):
 
 
 def do_preprocess(file_path, analyzer):
-    subprocess.run("%s %s -- -I %s "%(TOOLING_CFE, file_path, CSMITH_HEADER),
+    subprocess.run("%s %s -- -I %s "%(CFE, file_path, CSMITH_HEADER),
                                stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True, check=True)
 
     new_lines = []
@@ -101,10 +61,10 @@ def do_preprocess(file_path, analyzer):
 
     instrument_file = "instrument_" + file_path
     if analyzer == "gcc":
-        subprocess.run("%s gcc %s -- -I %s > %s"%(TOOLING_EVAL, file_path, CSMITH_HEADER, instrument_file),
+        subprocess.run("%s gcc %s -- -I %s > %s"%(INSTRUMENT_TOOL, file_path, CSMITH_HEADER, instrument_file),
                                stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True , check=True )
     elif analyzer == "clang":
-        subprocess.run("%s clang %s -- -I %s > %s"%(TOOLING_EVAL, file_path, CSMITH_HEADER, instrument_file),
+        subprocess.run("%s clang %s -- -I %s > %s"%(INSTRUMENT_TOOL, file_path, CSMITH_HEADER, instrument_file),
                                stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL, shell=True , check=True )
     return instrument_file
 
@@ -180,7 +140,7 @@ def analyze_with_clang(num, optimization_level, args):
 
     instrument_cfile = do_preprocess(cfile, args.analyzer)
 
-    ret = os.system(ANALYZER_TIMEOUT + CLANG_ANALYZER + " -O" + optimization_level +
+    ret = os.system(ANALYZER_TIMEOUT + CLANG + CLANG_DEBUG_OPTIONS + " -O" + optimization_level +
                     " -c -I " + CSMITH_HEADER + " " + instrument_cfile + " > " + report_file + " 2>&1")
     ret >>= 8
     print("clang ret: " + str(ret))
@@ -252,12 +212,12 @@ def generate_code(num, args):
         ctrl_max = args.max
         if ctrl_max:
             print("ctrl_max %d"%ctrl_max)
-            if file_size < ctrl_max and file_size > MIN_PROGRAM_SIZE:
+            if file_size < ctrl_max and file_size > int(MIN_PROGRAM_SIZE):
                 print("succ generated a file whose size is larger than %s and smaller than %s, seed %s: " % (
                     MIN_PROGRAM_SIZE, ctrl_max, seed))
                 break
         else:
-            if file_size > MIN_PROGRAM_SIZE:
+            if file_size > int(MIN_PROGRAM_SIZE):
                 print("succ generated a file whose size is larger than %s, seed %s: " % (
                     MIN_PROGRAM_SIZE, seed))
                 break

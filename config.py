@@ -1,5 +1,5 @@
 # config.py
-__all__ = ["CSMITH_HEADER", "CSMITH_TIMEOUT", "COMPILER_TIMEOUT", "PROG_TIMEOUT", "CFE", "INSTRUMENT_TOOL", "GCC", "GCC_OPTIONS", "GCC_ANALYZER", "CLANG", "CLANG_OPTIONS", "CLANG_ANALYZER", "CSMITH_USER_OPTIONS", "MIN_PROGRAM_SIZE", "MAX_PROGRAM_SIZE", "CHECKER_LIST", "ANALYZER_TIMEOUT", "GCC_NPD", "GCC_OOB", "GCC_SCO", "GCC_UPOS", "RUN_TIMEOUT_NUM", "FLAG_DIS_STR", "UB_STR", "CLANG_DZ", "CLANG_OOB", "CLANG_NPD"]
+__all__ = ["CSMITH_HEADER","CLANG_DEBUG_OPTIONS", "CSMITH_TIMEOUT", "COMPILER_TIMEOUT", "PROG_TIMEOUT", "CFE", "INSTRUMENT_TOOL", "GCC", "GCC_OPTIONS", "GCC_ANALYZER", "CLANG", "CLANG_OPTIONS", "CLANG_ANALYZER", "CSMITH_USER_OPTIONS", "MIN_PROGRAM_SIZE", "MAX_PROGRAM_SIZE", "CHECKER_LIST", "ANALYZER_TIMEOUT", "GCC_NPD", "GCC_OOB", "GCC_SCO", "GCC_UPOS", "RUN_TIMEOUT_NUM", "FLAG_DIS_STR", "UB_STR", "CLANG_DZ", "CLANG_OOB", "CLANG_NPD"]
 # user-configurable stuff
 CSMITH_HEADER = "/usr/include/csmith"
 
@@ -12,15 +12,16 @@ COMPILER_TIMEOUT = "120"
 # kill compiler's output after this many seconds
 PROG_TIMEOUT = "8"
 
-CFE = "/home/working-space/build-llvm-main/bin/cfe_preprocess"
-INSTRUMENT_TOOL = "/home/working-space/build-llvm-main/bin/tooling-sample"
+CFE = "/home/build-clang-16/bin/cfe_preprocess"
+INSTRUMENT_TOOL = "/home/build-clang-16/bin/tooling-sample"
 
-GCC = "/usr/local/gcc-13-9533/bin/gcc"
+GCC = "/usr/local/gcc-13-cov/bin/gcc"
 GCC_OPTIONS = " -fanalyzer -fanalyzer-call-summaries -fdiagnostics-plain-output -fdiagnostics-format=text "
 GCC_ANALYZER = GCC + GCC_OPTIONS
 
-CLANG = "clang"
+CLANG = "/usr/local/clang-16-gcov/bin/clang"
 CLANG_OPTIONS = " --analyze --analyzer-output text -Xclang  -analyzer-constraints=range -Xclang  -setup-static-analyzer  -Xclang -analyzer-config  -Xclang  eagerly-assume=false   -Xclang  -analyzer-checker=core,alpha.security "
+CLANG_DEBUG_OPTIONS = " --analyze --analyzer-output text -Xclang  -analyzer-constraints=range -Xclang  -setup-static-analyzer  -Xclang -analyzer-config  -Xclang  eagerly-assume=false   -Xclang  -analyzer-checker=debug.ExprInspection "
 CLANG_ANALYZER = CLANG + CLANG_OPTIONS
 
 CSMITH_USER_OPTIONS = "--no-argc --no-bitfields --no-global-variables --max-pointer-depth 2 "
