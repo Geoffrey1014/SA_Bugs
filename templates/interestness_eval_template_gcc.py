@@ -89,6 +89,24 @@ if analyzer_ret.stderr.count("undefined reference") != 0:
     print("has undefined reference ")
     exit(6)
 
+# UB
+if analyzer_ret.stderr.count("-Wanalyzer-null-dereference") != 0:
+    exit(10)
+if analyzer_ret.stderr.count("-Wanalyzer-out-of-bounds") != 0:
+    exit(11)
+if analyzer_ret.stderr.count("-Wanalyzer-use-of-uninitialized-value") != 0:
+    exit(12)
+if analyzer_ret.stderr.count("-Wanalyzer-shift-count-negative") != 0:
+    exit(13)
+if analyzer_ret.stderr.count("-Wanalyzer-shift-count-overflow") != 0:
+    exit(14)
+if analyzer_ret.stderr.count("-Wanalyzer-write-to-const") != 0:
+    exit(15)
+if analyzer_ret.stderr.count("-Wanalyzer-write-to-string-literal") != 0:
+    exit(16)
+if analyzer_ret.stderr.count("-Wdiv-by-zero") != 0:
+    exit(17)
+
 # 从 analyze 的结果中拿到 FALSE 的行号， 然后插桩 printf(“FALSE_FLAG”);
 
 eval_false_lines = get_eval_false_lines(analyzer_ret.stderr)
