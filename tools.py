@@ -65,6 +65,12 @@ def fuzz_fn(args: argparse.Namespace):
 
     for i in range(thread_num):
         os.chdir(f"fuzz_{i}")
+        subprocess.run(["mkdir", "fn_csa_npd"])
+        subprocess.run(["mkdir", "fn_gsa_npd"])
+        subprocess.run(["mkdir", "fn_csa_oob"])
+        subprocess.run(["mkdir", "fn_gsa_oob"])
+        subprocess.run(["mkdir", "?_csa"])
+        subprocess.run(["mkdir", "?_gsa"])
         subprocess.Popen(
             ["python3", "fuzz_sa_fn.py", analyzer,
                 args.checker, f"-o={opt}", str(iter_times)],
