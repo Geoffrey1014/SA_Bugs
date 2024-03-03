@@ -15,7 +15,7 @@ else:
     exit(-1)
 
 
-compile_ret = subprocess.run([GCC, '-O' + OPT_LEVEL, '-I', CSMITH_HEADER, CFILE],
+compile_ret = subprocess.run([GCC, '-O' + OPT_LEVEL, '-I', CSMITH_HEADER, CFILE, "-o", "hwg"],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
 # print(compile_ret)
 
@@ -24,7 +24,7 @@ if compile_ret.returncode != 0:
     print("compile failed!")  # cannot comment this line!
     exit(compile_ret.returncode)
 
-run_ret = subprocess.run(['timeout', RUN_TIMEOUT_NUM, './a.out'],
+run_ret = subprocess.run(['timeout', RUN_TIMEOUT_NUM, './hwg'],
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
 
 if run_ret.returncode == 124:

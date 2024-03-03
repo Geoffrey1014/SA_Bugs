@@ -19,12 +19,18 @@ GCC = "/usr/local/gcc-13-cov/bin/gcc"
 GCC_OPTIONS = " -fanalyzer -fanalyzer-call-summaries -fdiagnostics-plain-output -fdiagnostics-format=text "
 GCC_ANALYZER = GCC + GCC_OPTIONS
 
+<<<<<<< HEAD
 CLANG = "/usr/local/clang-16-gcov/bin/clang"
 CLANG_OPTIONS = " --analyze --analyzer-output text -Xclang  -analyzer-constraints=range -Xclang  -setup-static-analyzer  -Xclang -analyzer-config  -Xclang  eagerly-assume=false   -Xclang  -analyzer-checker=core,alpha.security "
 CLANG_DEBUG_OPTIONS = " --analyze --analyzer-output text -Xclang  -analyzer-constraints=range -Xclang  -setup-static-analyzer  -Xclang -analyzer-config  -Xclang  eagerly-assume=false   -Xclang  -analyzer-checker=debug.ExprInspection "
+=======
+CLANG = "clang"
+CLANG_OPTIONS = " --analyze --analyzer-output text -Xclang -analyzer-constraints=range -Xclang -setup-static-analyzer -Xclang -analyzer-config -Xclang eagerly-assume=false -Xclang -analyzer-checker=core,alpha.security "
+>>>>>>> fe3dea2 (small fix)
 CLANG_ANALYZER = CLANG + CLANG_OPTIONS
 
-CSMITH_USER_OPTIONS = "--no-argc --no-bitfields --no-global-variables --max-pointer-depth 2 "
+# CSMITH_USER_OPTIONS = "--no-argc --no-bitfields --no-global-variables --max-pointer-depth 2 "
+CSMITH_USER_OPTIONS = " --no-bitfields --no-global-variables --max-pointer-depth 2 "
 MIN_PROGRAM_SIZE = "8000" 
 MAX_PROGRAM_SIZE = "8000"
 

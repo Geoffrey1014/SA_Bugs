@@ -26,6 +26,8 @@ ANALYZER_TIMEOUT = "timeout 60"
 CLANG_ANALYZER = "clang --analyze -Xanalyzer -analyzer-checker=core.NullDereference -Xanalyzer -analyzer-checker=alpha.security.ArrayBoundV2"
 GCC_ANALYZER = "gcc -fanalyzer"
 
+CSMITH_USER_OPTIONS = " --no-const-pointers --no-bitfields --no-global-variables --max-pointer-depth 2 "
+
 CFILE = ""
 CFILE_TMP = ""
 SAN_FILE = ""

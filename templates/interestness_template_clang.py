@@ -16,14 +16,14 @@ else:
     print("checker not found!")
     exit(-1)
 
-compile_ret = subprocess.run(['clang', '-I', CSMITH_HEADER, CFILE],
+compile_ret = subprocess.run(['clang', '-I', CSMITH_HEADER, CFILE, "-o", "hwg"],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
 
 if compile_ret.returncode != 0:
     print("compile failed!")
     exit(compile_ret.returncode)
 
-run_ret = subprocess.run(['timeout', '10s', './a.out'],
+run_ret = subprocess.run(['timeout', '10s', './hwg'],
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
 
 if run_ret.returncode == 124:

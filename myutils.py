@@ -196,7 +196,7 @@ def compile_and_run_instrument_cfile(cc, optimize, instrumented_cfile, run_out_f
         cc = "gcc"
     try:
         subprocess.run([cc, "-O" + str(optimize), "-I", CSMITH_HEADER,
-                                     instrumented_cfile], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, encoding="utf-8", check=True)
+                                     instrumented_cfile, "-o", "a.out"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, encoding="utf-8", check=True)
     except subprocess.CalledProcessError as e:
         print(e)
         return False
@@ -207,7 +207,8 @@ def compile_and_run_instrument_cfile(cc, optimize, instrumented_cfile, run_out_f
     except subprocess.CalledProcessError as e:
         print(e)
         return False
-    # os.remove("a.out")
+    subprocess.run(["rm", "-f", "a.out"], stdout=subprocess.DEVNULL,
+                                 stderr=subprocess.DEVNULL, encoding="utf-8", check=False)
 
     try:
         with open(run_out_file, "w") as f:
