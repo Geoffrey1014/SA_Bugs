@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 
-from config import CSMITH_HEADER, CSMITH_USER_OPTIONS, CLANG_ANALYZER, GCC_ANALYZER, ANALYZER_TIMEOUT
+from config import CSMITH_HEADER, CSMITH_USER_OPTIONS
 from myutils import generate_code
 
 import argparse
@@ -21,6 +21,10 @@ sys.path.extend([".", ".."])
 
 RE_CHILD_ARRAY = re.compile(r'(.*)\[(.*)\]')
 RE_INTERNAL_ATTR = re.compile('__.*__')
+
+ANALYZER_TIMEOUT = "timeout 60"
+CLANG_ANALYZER = "clang --analyze -Xanalyzer -analyzer-checker=core.NullDereference -Xanalyzer -analyzer-checker=alpha.security.ArrayBoundV2"
+GCC_ANALYZER = "gcc -fanalyzer"
 
 CFILE = ""
 CFILE_TMP = ""
@@ -469,11 +473,11 @@ def compile_and_run_cfile():
     """
     global CSMITH_HEADER, CFILE, SAN_FILE, NPD_LINE_SAN, OOB_LINE_SAN
 
-    compile_ret = subprocess.run(["gcc", "-I", CSMITH_HEADER, "-fsanitize=null", "-fsanitize=bounds", CFILE],
+    compile_ret = subprocess.run(["gcc", "-I", "/usr/include/csmith", "-fsanitize=null", "-fsanitize=bounds", CFILE],
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
 
     if compile_ret.returncode == 0:
-        run_ret = subprocess.run(["timeout", "0.001s", "./a.out"],
+        run_ret = subprocess.run(["timeout", "0.1s", "./a.out"],
                                  stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding="utf-8")
 
         if run_ret.stderr.count("runtime error") >= 1 and \
@@ -507,7 +511,7 @@ def analyze_with_csa():
         FN_NPD_CSA_NUM, NPD_LINE_SAN, OOB_LINE_SAN, NPD_LINE_CSA, OOB_LINE_CSA
 
     ret = os.system(
-        "{} {} {} > {} 2>&1".format(ANALYZER_TIMEOUT, CLANG_ANALYZER, CFILE, REPORT_FILE_CSA))
+        "{} {} -I /usr/include/csmith {} > {} 2>&1".format(ANALYZER_TIMEOUT, CLANG_ANALYZER, CFILE, REPORT_FILE_CSA))
     ret >>= 8
 
     if ret == 0:
@@ -547,7 +551,7 @@ def analyze_with_gsa():
         FN_NPD_GSA_NUM, NPD_LINE_SAN, OOB_LINE_SAN, NPD_LINE_GSA, OOB_LINE_GSA
 
     ret = os.system(
-        "{} {} {} > {} 2>&1".format(ANALYZER_TIMEOUT, GCC_ANALYZER, CFILE, REPORT_FILE_GSA))
+        "{} {} -I /usr/include/csmith {} > {} 2>&1".format(ANALYZER_TIMEOUT, GCC_ANALYZER, CFILE, REPORT_FILE_GSA))
     ret >>= 8
 
     if ret == 0:
@@ -555,7 +559,7 @@ def analyze_with_gsa():
             for line in f.readlines():
                 if ("CWE-476" in line) and (int(re.split(":", line)[-4]) not in NPD_LINE_GSA):
                     NPD_LINE_GSA.append(int(re.split(":", line)[-4]))
-                if ((("CWE-121" in line) or ("CWE-122" in line) or ("CWE-126" in line)) and (int(re.split(":", line)[-4]) not in OOB_LINE_SAN)):
+                if ((("CWE-121" in line) or ("CWE-122" in line) or ("CWE-126" in line)) and (int(re.split(":", line)[-4]) not in OOB_LINE_GSA)):
                     OOB_LINE_GSA.append(int(re.split(":", line)[-4]))
 
         if len(NPD_LINE_GSA) < len(NPD_LINE_SAN):
@@ -574,9 +578,9 @@ def analyze_with_gsa():
 
     else:
         if ret == 124:
-            os.system("cp {} \"?_csa\"/timeout_{}".format(CFILE, CFILE))
+            os.system("cp {} \"?_gsa\"/timeout_{}".format(CFILE, CFILE))
         else:
-            os.system("cp {} \"?_csa\"/{}".format(CFILE, CFILE))
+            os.system("cp {} \"?_gsa\"/{}".format(CFILE, CFILE))
 
 
 def log_exception(exception):
@@ -642,9 +646,9 @@ def main():
     args = handle_args()
 
     for i in range(args.num):
-        SAN_FILE = "case_{}_san.txt".format(i)
-        REPORT_FILE_CSA = "case_{}_csa.txt".format(i)
-        REPORT_FILE_GSA = "case_{}_gsa.txt".format(i)
+        SAN_FILE = "test_{}_san.txt".format(i)
+        REPORT_FILE_CSA = "test_{}_csa.txt".format(i)
+        REPORT_FILE_GSA = "test_{}_gsa.txt".format(i)
 
         TARGET_NAME_LIST.clear()
         TARGET_LINE_LIST.clear()
