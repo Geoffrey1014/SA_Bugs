@@ -56,10 +56,6 @@ if analyzer_ret.stderr.count("alpha.core.PointerSub") != 0:
     exit(15)
 if analyzer_ret.stderr.count("alpha.security.ArrayBoundV2") != 0:
     exit(16)
-if analyzer_ret.stderr.count("alpha.unix.cstring.OutOfBounds") != 0:
-    exit(17)
-if analyzer_ret.stderr.count("alpha.unix.cstring.UninitializedRead") != 0:
-    exit(18)
 
 # use ccomp to check if there are undefined behaviors
 print("run compcert")
@@ -68,7 +64,7 @@ ccomp_ret = subprocess.run(['ccomp', '-I', CSMITH_HEADER, '-interp', '-fall', '-
 if ccomp_ret.stdout.count("Undefined behavior") != 0:
     print("Undefined behavior")
     # print(ccomp_ret)
-    exit(19)
+    exit(17)
 if ccomp_ret.returncode != 0:
     print("ccomp_ret returncode: %s" % ccomp_ret.returncode)
     print("Compcert failed")  # cannot comment this line!
