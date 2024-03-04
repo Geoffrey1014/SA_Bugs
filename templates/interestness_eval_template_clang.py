@@ -40,30 +40,28 @@ if analyzer_ret.stderr.count("core.StackAddressEscape") != 0:
     exit(7)
 if analyzer_ret.stderr.count("core.UndefinedBinaryOperatorResult") != 0:
     exit(8)
-if analyzer_ret.stderr.count("core.VLASize") != 0:
-    exit(9)
 if analyzer_ret.stderr.count("core.uninitialized.ArraySubscript") != 0:
-    exit(10)
+    exit(9)
 if analyzer_ret.stderr.count("core.uninitialized.Assign") != 0:
-    exit(11)
+    exit(10)
 if analyzer_ret.stderr.count("core.uninitialized.Branch") != 0:
-    exit(12)
+    exit(11)
 if analyzer_ret.stderr.count("core.uninitialized.CapturedBlockVariable") != 0:
-    exit(13)
+    exit(12)
 if analyzer_ret.stderr.count("core.uninitialized.UndefReturn") != 0:
-    exit(14)
+    exit(13)
 if analyzer_ret.stderr.count("alpha.core.PointerArithm") != 0:
-    exit(15)
+    exit(14)
 if analyzer_ret.stderr.count("alpha.core.PointerSub") != 0:
-    exit(16)
+    exit(15)
 if analyzer_ret.stderr.count("alpha.core.StackAddressAsyncEscape") != 0:
-    exit(17)
+    exit(16)
 if analyzer_ret.stderr.count("alpha.security.ArrayBoundV2") != 0:
-    exit(18)
+    exit(17)
 if analyzer_ret.stderr.count("alpha.unix.cstring.OutOfBounds") != 0:
-    exit(19)
+    exit(18)
 if analyzer_ret.stderr.count("alpha.unix.cstring.UninitializedRead") != 0:
-    exit(20)
+    exit(19)
 
 # use ccomp to check if there are undefined behaviors
 print("run compcert")
@@ -72,7 +70,7 @@ ccomp_ret = subprocess.run(['ccomp', '-I', CSMITH_HEADER, '-interp', '-fall', '-
 if ccomp_ret.stdout.count("Undefined behavior") != 0:
     print("Undefined behavior")
     # print(ccomp_ret)
-    exit(21)
+    exit(20)
 if ccomp_ret.returncode != 0:
     print("ccomp_ret returncode: %s" % ccomp_ret.returncode)
     print("Compcert failed")  # cannot comment this line!
