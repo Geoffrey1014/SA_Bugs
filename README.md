@@ -35,7 +35,7 @@ Table 4 lists these found defects. Specifically, to facilitate understanding the
 <img src="./figures/table-4.png" alt= “Workflow” width="800">
 </p>
 
-## 4. The performance of the three analyzers on the 38 defect-exposing programs
+<!-- ## 4. The performance of the three analyzers on the 38 defect-exposing programs
  Column “Original Analyzer” indicates in which analyzer does this defect found. “Y” and “N” represent whether or not this
 defect-exposing program reveals a problem in the analyzer. “-” means that it is the original defect-exposing
 program found in that analyzer.
@@ -79,15 +79,15 @@ program found in that analyzer.
 | 35  | Dynamic       | CSA               | -   | Y   | N        |
 | 36  | Dynamic       | GSA               | Y   | -   | N        |
 | 37  | Static        | GSA               | N   | -   | N        |
-| 38  | Static        | CSA               | -   | N   | N        |
+| 38  | Static        | CSA               | -   | N   | N        | -->
 
 
 
 
-## 5. Replication
+## 4. Replication
 This replication package includes all the artifacts in this study, i.e., the found defects and the source code of testing static analyzers.
 
-### 5.1 Contents
+### 4.1 Contents
 ```text
 Root Dir
     |
@@ -108,7 +108,7 @@ Root Dir
     |--- static_muation: the instrumentation tools for creating the static oracles
        
 ```
-### 5.2 Instructions for using this replication package
+### 4.2 Instructions for using this replication package
 Before testing, first you need to install GCC, Clang, Pinpoint, Csmith, and Creduce.
 Second, you need to download the source code of llvm-program and put the ''static _mutate'' directory in the ''clang-tools-extra'' directory of llvm-program and compile it. Then you can follow the steps below to testing static analyzers.
 
